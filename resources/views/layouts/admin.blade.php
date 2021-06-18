@@ -6,11 +6,13 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('img/logo_aljauhar.jpg') }}" type="image/icon type">
 
     <title>@yield('title')</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -28,12 +30,12 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
+                {{-- <li class="nav-item d-none d-sm-inline-block">
                     <a href="index3.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
-                </li>
+                </li> --}}
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -62,9 +64,9 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
-                <img src="{{ asset('img/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <a href="{{route('home')}}" class="brand-link">
+                <img src="{{ asset('img/logo_aljauhar.jpg') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">AL-JAUHAR</span>
             </a>
 
             <!-- Sidebar -->
@@ -75,7 +77,7 @@
                         <img src="{{ asset('img/avatar.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{ auth()->user()->name }}</a>
+                        <a href="{{route("user.profile")}}" class="d-block">{{ auth()->user()->name }}</a>
                     </div>
                 </div>
 
@@ -83,7 +85,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('home')}}" class="nav-link {{ request()->is('home') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-chalkboard"></i>
                                 <p>
                                     Dashboard
@@ -91,7 +93,7 @@
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link active">
+                            <a href="#" class="nav-link {{ request()->is('Management') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>
                                     Management
@@ -101,34 +103,36 @@
                             <ul class="nav nav-treeview">
                                 @can('create role')
                                     <li class="nav-item ml-3">
-                                        <a href="{{ route('role.index') }}" class="nav-link">
+                                        <a href="{{ route('role.index') }}" class="nav-link {{ request()->is('role') ? 'active' : ''}}">
                                             <i class="fas fa-bomb nav-icon"></i>
                                             <p>Roles</p>
                                         </a>
                                     </li>
                                     <li class="nav-item ml-3">
-                                        <a href="{{ route('permission.index') }}" class="nav-link">
+                                        <a href="{{ route('permission.index') }}" class="nav-link {{ request()->is('permission') ? 'active' : ''}}">
                                             <i class="fas fa-bomb nav-icon"></i>
                                             <p>Permissions</p>
                                         </a>
                                     </li>
                                 @endcan
-                                <li class="nav-item ml-3">
-                                    <a href="{{ route('user.index') }}" class="nav-link">
-                                        <i class="fas fa-users-cog nav-icon"></i>
-                                        <p>Users</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item ml-3">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-users nav-icon"></i>
-                                        <p>Alumni</p>
-                                    </a>
-                                </li>
+                                @can('create user')
+                                    <li class="nav-item ml-3">
+                                        <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user') ? 'active' : ''}}">
+                                            <i class="fas fa-users-cog nav-icon"></i>
+                                            <p>Users</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ml-3">
+                                        <a href="/alumni" class="nav-link {{ request()->is('alumni') ? 'active' : ''}}">
+                                            <i class="fas fa-users nav-icon"></i>
+                                            <p>Alumni</p>
+                                        </a>
+                                    </li>
+                                @endcan
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link {{ request()->is('artikel') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-paste"></i>
                                 <p>
                                     Artikel
@@ -137,7 +141,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link {{ request()->is('berita') ? 'active' : ''}}">
                                 <i class="fas fa-newspaper nav-icon"></i>
                                 <p>
                                     Berita
@@ -146,7 +150,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('userGetPassword') }}" class="nav-link">
+                            <a href="{{ route('userGetPassword') }}" class="nav-link {{ request()->is('/password/change') ? 'active' : ''}}">
                                 <i class="fas fa-lock nav-icon"></i>
                                 <p>
                                     Change Password
@@ -155,7 +159,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('user.profile') }}" class="nav-link">
+                            <a href="{{ route('user.profile') }}" class="nav-link {{ request()->is('profile') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>
                                     Profile
@@ -192,12 +196,12 @@
                         <div class="col-sm-6">
                             <h1 class="m-0 text-dark">@yield('pageName')</h1>
                         </div><!-- /.col -->
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active">@yield('title')</li>
                             </ol>
-                        </div><!-- /.col -->
+                        </div><!-- /.col --> --}}
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
@@ -218,7 +222,7 @@
         <footer class="main-footer">
             <!-- To the right -->
             <div class="float-right d-none d-sm-inline">
-                Anything you want
+                Official website PPM AL-JAUHAR
             </div>
             <!-- Default to the left -->
             <strong>Copyright © 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.

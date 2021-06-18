@@ -198,18 +198,6 @@
                 />
                 <has-error :form="form" field="password"></has-error>
               </div>
-
-              <!-- <b-form-group label="Assign Permissions">
-                <b-form-checkbox
-                  v-for="option in permissions"
-                  v-model="form.permissions"
-                  :key="option.name"
-                  :value="option.name"
-                  name="flavour-3a"
-                >
-                  {{ option.name }}
-                </b-form-checkbox>
-              </b-form-group> -->
             </div>
             <div class="modal-footer justify-content-between">
               <button
@@ -331,7 +319,11 @@ export default {
       this.editMode = true;
       this.form.reset();
       this.form.fill(user);
-      this.form.role = user.roles[0].id;
+      if (user.roles[0].id == "undefined") {
+        this.form.role = 3;
+      } else {
+        this.form.role = user.roles[0].id;
+      }
       this.form.permissions = user.userPermissions;
       $("#createUser").modal("show");
     },
