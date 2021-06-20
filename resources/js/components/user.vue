@@ -9,7 +9,11 @@
         <div class="card-tools">
           <ul class="nav nav-pills ml-auto">
             <li class="nav-item mr-1">
-              <button class="btn btn-sm btn-primary" @click="createMode">
+              <button
+                class="btn btn-sm btn-primary"
+                v-show="idRole != 3"
+                @click="createMode"
+              >
                 <i class="fas fa-plus-circle"></i> Add New
               </button>
             </li>
@@ -46,7 +50,6 @@
               <th>Role</th>
               <th>Email</th>
               <th>Action</th>
-              <th>Date Posted</th>
             </tr>
           </thead>
           <tbody>
@@ -59,15 +62,20 @@
                 <button class="btn btn-sm btn-info" @click="viewUser(user)">
                   <i class="fa fa-eye"></i> View
                 </button>
-                <button class="btn btn-sm btn-warning" @click="editUser(user)">
+                <button
+                  class="btn btn-sm btn-warning"
+                  v-show="idRole != 3"
+                  @click="editUser(user)"
+                >
                   <i class="fa fa-edit"></i> Edit
                 </button>
-                <button class="btn btn-sm btn-danger" @click="deleteUser(user)">
+                <button
+                  class="btn btn-sm btn-danger"
+                  v-show="idRole != 3"
+                  @click="deleteUser(user)"
+                >
                   <i class="fa fa-trash"></i> Delete
                 </button>
-              </td>
-              <td>
-                {{ user.created_at | date }}
               </td>
             </tr>
           </tbody>
@@ -249,6 +257,7 @@ export default {
       users: [],
       roles: [],
       permissions: [],
+      idRole: "",
       form: new Form({
         id: "",
         name: "",
@@ -298,10 +307,7 @@ export default {
             axios
               .delete("/delete/user/" + user.id)
               .then(() => {
-                toast.fire({
-                  icon: "success",
-                  title: user.name + " has been deleted sucessfully",
-                });
+                this.$toastr.s("user create succefully", "Created");
                 Fire.$emit("loadUser");
               })
               .catch(() => {
@@ -334,6 +340,8 @@ export default {
         .then((response) => {
           this.loading = false;
           this.users = response.data.users;
+          this.idRole = response.data.idRole;
+          console.log(this.idRole);
         })
         .catch(() => {
           this.loading = false;

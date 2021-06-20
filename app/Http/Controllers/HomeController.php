@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumni;
+use App\Models\Artikel;
+use App\Models\Berita;
+use App\Models\PendaftaranSantri;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +28,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $jumlah_santri = count(User::get());
+        $jumlah_alumni = count(Alumni::get());
+        $jumlah_registrasi = count(PendaftaranSantri::get());
+        $jumlah_artikel = count(Artikel::get());
+        return view('home', compact("jumlah_santri", "jumlah_alumni", "jumlah_registrasi", "jumlah_artikel"));
     }
 }

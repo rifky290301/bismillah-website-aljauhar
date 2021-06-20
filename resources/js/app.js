@@ -9,6 +9,7 @@ Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 
+
 import VueToastr from "vue-toastr";
 Vue.use(VueToastr, {
     defaultTimeout: 3000,
@@ -17,11 +18,11 @@ Vue.use(VueToastr, {
     defaultProgressBarValue: 0,
 });
 
-import moment from 'moment';
+// import moment from 'moment';
 
-Vue.filter("date", function(created){
-    return moment(created).format('MMMM Do YYYY, h:mm:ss a'); 
-});
+// Vue.filter("date", function (created) {
+//     return moment(created).format('MMMM Do YYYY, h:mm:ss a');
+// });
 
 
 
@@ -34,8 +35,8 @@ const Toast = Swal.mixin({
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
 });
 
@@ -45,10 +46,29 @@ import { Form, HasError, AlertError } from 'vform'
 
 window.Form = Form;
 
+
+
+// Require Froala Editor js file.
+require('froala-editor/js/froala_editor.pkgd.min.js')
+
+// Require Froala Editor css files.
+require('froala-editor/css/froala_editor.pkgd.min.css')
+require('froala-editor/css/froala_style.min.css')
+
+// Import and use Vue Froala lib.
+
+import VueFroala from 'vue-froala-wysiwyg'
+Vue.use(VueFroala)
+
+
+
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
 require('./component');
+
+
+
 
 const app = new Vue({
     el: '#app'

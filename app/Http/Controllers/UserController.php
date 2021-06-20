@@ -20,6 +20,14 @@ class UserController extends Controller
     public function getAll()
     {
         $users = User::latest()->get();
+        if (auth()->user()->hasRole("Super admin")) {
+            $idRole = 1;
+        } elseif (auth()->user()->hasRole("BPH")) {
+            $idRole = 2;
+        } else {
+            $idRole = 3;
+        }
+
         $users->transform(function ($user) {
             $user->role = $user->getRoleNames()->first();
             $user->userPermissions = $user->getPermissionNames();
@@ -27,26 +35,11 @@ class UserController extends Controller
         });
 
         return response()->json([
-            'users' => $users
+            'users' => $users,
+            'idRole' => $idRole,
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -75,35 +68,6 @@ class UserController extends Controller
         return response()->json("User Created", 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -149,18 +113,6 @@ class UserController extends Controller
         return response()->json('ok', 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-
 
     /////////////////////// User defined Method
 
@@ -176,11 +128,14 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
+            'no_kamar' => 'required',
+            'status' => 'required',
+            'instansi' => 'required',
+            'alamat' => 'required',
+            'tahun_masuk' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id
         ]);
-
         $user->update($request->all());
-
         return redirect()->back()->with('success', 'Profile Successfully Updated');
     }
 

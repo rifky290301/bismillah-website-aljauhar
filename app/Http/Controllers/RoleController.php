@@ -18,7 +18,7 @@ class RoleController extends Controller
     }
     public function index()
     {
-        $roles= $this->role::all();
+        $roles = $this->role::all();
         return view('role.index', ['roles' => $roles]);
     }
 
@@ -49,15 +49,21 @@ class RoleController extends Controller
             'name' => $request->name
         ]);
 
-        if($request->has("permissions")){
+        if ($request->has("permissions")) {
             $role->givePermissionTo($request->permissions);
         }
 
         return response()->json("Role Created", 200);
     }
 
-    public function getAll(){
-        $roles = $this->role->all();
+    public function getAll()
+    {
+        if (auth()->user()->hasRole('Super admin')) {
+            $roles = $this->role->all();
+        } elseif (auth()->user()->hasRole('BPH')) {
+            $roles = $this->role->all();
+            // $roles = $this->role->where("id", "=", "1");
+        }
         return response()->json([
             'roles' => $roles
         ], 200);
@@ -82,7 +88,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd($id);
     }
 
     /**

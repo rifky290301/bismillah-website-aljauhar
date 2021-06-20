@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Berita extends Model
 {
     use HasFactory;
+
+
+    protected $fillable = [
+        'judul',
+        'isi',
+        'dokumentasi',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

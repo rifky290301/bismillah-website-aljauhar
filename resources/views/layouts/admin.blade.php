@@ -12,6 +12,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+
+
+    {{-- <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script> --}}
     
 
     <!-- Fonts -->
@@ -70,7 +73,7 @@
             </a>
 
             <!-- Sidebar -->
-            <div class="sidebar">
+            <div class="sidebar overflow-hidden">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
@@ -102,52 +105,61 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 @can('create role')
-                                    <li class="nav-item ml-3">
-                                        <a href="{{ route('role.index') }}" class="nav-link {{ request()->is('role') ? 'active' : ''}}">
-                                            <i class="fas fa-bomb nav-icon"></i>
-                                            <p>Roles</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item ml-3">
-                                        <a href="{{ route('permission.index') }}" class="nav-link {{ request()->is('permission') ? 'active' : ''}}">
-                                            <i class="fas fa-bomb nav-icon"></i>
-                                            <p>Permissions</p>
-                                        </a>
-                                    </li>
+                                <li class="nav-item ml-3">
+                                    <a href="{{ route('role.index') }}" class="nav-link {{ request()->is('role') ? 'active' : ''}}">
+                                        <i class="fas fa-bomb nav-icon"></i>
+                                        <p>Roles</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item ml-3">
+                                    <a href="{{ route('permission.index') }}" class="nav-link {{ request()->is('permission') ? 'active' : ''}}">
+                                        <i class="fas fa-bomb nav-icon"></i>
+                                        <p>Permissions</p>
+                                    </a>
+                                </li>
                                 @endcan
+                                <li class="nav-item ml-3">
+                                    <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user') ? 'active' : ''}}">
+                                        <i class="fas fa-users-cog nav-icon"></i>
+                                        <p>Santri Aktif</p>
+                                    </a>
+                                </li>
                                 @can('create user')
-                                    <li class="nav-item ml-3">
-                                        <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user') ? 'active' : ''}}">
-                                            <i class="fas fa-users-cog nav-icon"></i>
-                                            <p>Users</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item ml-3">
-                                        <a href="/alumni" class="nav-link {{ request()->is('alumni') ? 'active' : ''}}">
-                                            <i class="fas fa-users nav-icon"></i>
-                                            <p>Alumni</p>
-                                        </a>
-                                    </li>
+                                <li class="nav-item ml-3">
+                                    <a href="/alumni" class="nav-link {{ request()->is('alumni') ? 'active' : ''}}">
+                                        <i class="fas fa-users nav-icon"></i>
+                                        <p>Alumni</p>
+                                    </a>
+                                </li>
                                 @endcan
+                                <li class="nav-item ml-3">
+                                    <a href="{{route("pendaftaran.santri")}}" class="nav-link {{ request()->is('pendaftaran-santri') ? 'active' : ''}}">
+                                        <i class="fas fa-user-plus"></i>
+                                        <p>Pendaftaran Santri</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
+                        @can("membuat artikel")
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{ request()->is('artikel') ? 'active' : ''}}">
+                            <a href="{{route("artikel.index")}}" class="nav-link {{ request()->is('artikel') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-paste"></i>
                                 <p>
                                     Artikel
                                 </p>
                             </a>
                         </li>
-
+                        @endcan
+                        @can('membuat berita')
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{ request()->is('berita') ? 'active' : ''}}">
+                            <a href="{{route('berita.index')}}" class="nav-link {{ request()->is('berita') ? 'active' : ''}}">
                                 <i class="fas fa-newspaper nav-icon"></i>
                                 <p>
                                     Berita
                                 </p>
                             </a>
                         </li>
+                        @endcan
 
                         <li class="nav-item">
                             <a href="{{ route('userGetPassword') }}" class="nav-link {{ request()->is('/password/change') ? 'active' : ''}}">

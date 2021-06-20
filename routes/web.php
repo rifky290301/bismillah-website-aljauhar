@@ -37,10 +37,34 @@ Route::group(['middleware' => ['auth', 'permission:create user']], function () {
     Route::get('/alumni/search', 'AlumniController@search');
 });
 
+Route::group(['middleware' => ['auth', 'permission:membuat berita']], function () {
+    Route::get('/berita', 'BeritaController@index')->name('berita.index');
+    Route::post("/berita", "BeritaController@store");
+    Route::get("/getAllBerita", "BeritaController@getAll");
+    // Route::put("/berita/{id}", "BeritaController@update");
+    // Route::delete("/berita/{id}", "BeritaController@delete");
+    // Route::get('/berita/search', 'BeritaController@search');
+});
 
-Route::group(['middleware' => ['auth', 'role_or_permission:admin|create role|create permission']], function () {
+Route::group(['middleware' => ['auth', 'permission:membuat artikel']], function () {
+    Route::get('/artikel', 'ArtikelController@index')->name('artikel.index');
+    Route::post('/artikel', 'ArtikelController@store');
+    Route::get("/getAllArtikel", "ArtikelController@getAll");
+    Route::delete("/artikel/{id}", "ArtikelController@delete");
+    Route::put("/artikel/{id}", "ArtikelController@update");
+});
+
+
+Route::group(['middleware' => ['auth', 'permission:create role']], function () {
     Route::resource('role', 'RoleController');
 });
+
+
+Route::group(['middleware' => ['auth', 'permission:melihat pendaftar']], function () {
+    Route::get("pendaftaran-santri", "PendaftaranSantriController@index")->name("pendaftaran.santri");
+    Route::get("/getAllPendaftar", "PendaftaranSantriController@getAll");
+});
+Route::post('/pendaftaran-santri', 'PendaftaranSantriController@store')->name("pendaftaran-santri.store");
 
 
 
@@ -57,7 +81,6 @@ Route::get('/getAllPermission', 'PermissionController@getAllPermissions');
 Route::post("/postRole", "RoleController@store");
 
 Route::get("/getAllUsers", "UserController@getAll");
-// Route::get("/getAllAlumni", "AlumniController@getAll");
 
 Route::get("/getAllRoles", "RoleController@getAll");
 Route::get("/getAllPermissions", "PermissionController@getAll");
@@ -69,7 +92,4 @@ Route::delete('/delete/user/{id}', 'UserController@delete');
 Route::get('/search/user', 'UserController@search');
 
 
-//! crud alumni
 Route::get("/getAllAlumni", "AlumniController@getAll");
-
-// Route::get("/getAllAlumni", "AlumniController@getAll");

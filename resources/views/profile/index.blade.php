@@ -13,7 +13,7 @@ Profile
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img style="width: 200px;" class="profile-user-img img-fluid img-circle" src="{{ asset('img/avatar.jpg') }}" alt="{{ auth()->user()->name . ' Photo' }}">
+                            <img style="width: 200px;" class="profile-user-img img-fluid img-circle" src="{{ asset('img/logo_aljauhar.jpg') }}" alt="{{ auth()->user()->name . ' Photo' }}">
 
 
                         </div>
@@ -27,7 +27,7 @@ Profile
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="card">
+                <div class="card card-primary card-outline">
                     <div class="card-header">
                         <h4>Edit Profile</h4>
                     </div>
@@ -41,7 +41,7 @@ Profile
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="name">Name</label>
-                                                <input type="text" name="name"  id="name" class="form-control @error('email') is-invalid @enderror" value="{{ auth()->user()->name }}" required placeholder="Name">
+                                                <input type="text" name="name"  id="name" class="form-control @error('name') is-invalid @enderror" value="{{ auth()->user()->name }}" required placeholder="Name">
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -68,6 +68,57 @@ Profile
                                                     </span>
                                                 @enderror
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="no_kamar">Nomor Kamar</label>
+                                                <input type="text" name="no_kamar" id="no_kamar" class="form-control @error('no_kamar') is-invalid @enderror" placeholder="Nomor Kamar" value="{{ auth()->user()->no_kamar }}" required>
+                                                @error('no_kamar')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="status">Status (kuliah/sekolah/kerja)</label>
+                                                <input type="text" name="status" id="status" class="form-control @error('status') is-invalid @enderror" placeholder="Status" value="{{ auth()->user()->status }}" required>
+                                                @error('status')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="instansi">Instansi</label>
+                                                <input type="text" name="instansi" id="instansi" class="form-control @error('instansi') is-invalid @enderror" placeholder="Instansi" value="{{ auth()->user()->instansi }}" required>
+                                                @error('instansi')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="alamat">Alamat Rumah</label>
+                                                <input type="text" name="alamat" id="alamat" class="form-control @error('alamat') is-invalid @enderror" placeholder="Alamat" value="{{ auth()->user()->alamat }}" required>
+                                                @error('alamat')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="tahun_masuk">Tahun masuk</label>
+                                                <input type="date" name="tahun_masuk" id="tahun_masuk" class="form-control @error('tahun_masuk') is-invalid @enderror" placeholder="Tahun Masuk" value="{{ auth()->user()->tahun_masuk }}" required>
+                                                @error('tahun_masuk')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+
 
 
                                         </div>

@@ -18,7 +18,7 @@ Roles
                     <th>ID</th>
                     <th>Role</th>
                     <th>Permission</th>
-                    <th>Date Posted</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,11 +31,11 @@ Roles
                                 <button class="btn btn-warning" role="button"><i class="fas fa-shield-alt"></i> {{ $permission->name }}</button>
                             @endforeach
                         </td>
-                        <td><span class="tag tag-success">{{ $role->created_at }}</span></td>
-                        {{--  <td>
-                            <a href="{{ route('role.show', $role->id ) }}" class="btn btn-info">Change Permission</a>
-                            <a href="{{ route('role.destroy',$role->id ) }}" class="btn btn-danger">Delete</a>
-                        </td>  --}}
+                        <td>
+                            <a href="role/{{$role->id}}/edit" class="text-white btn btn-sm btn-warning">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
