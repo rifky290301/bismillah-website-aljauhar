@@ -27,9 +27,15 @@
               Kamar
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-              <a class="dropdown-item" href="#">1</a>
-              <a class="dropdown-item" href="#">2</a>
-              <a class="dropdown-item" href="#">3</a>
+              <button
+                class="dropdown-item"
+                v-for="item in kamar"
+                :key="item.index"
+                name="table_search"
+                @click="searchKamar(item.index)"
+              >
+                {{ item.index }}
+              </button>
             </div>
           </div>
         </div>
@@ -42,18 +48,24 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Tahun Keluar
+              Tahun Masuk
             </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">2001</a>
-              <a class="dropdown-item" href="#">2010</a>
-              <a class="dropdown-item" href="#">2013</a>
+              <button
+                class="dropdown-item"
+                v-for="item in tahunMasuk"
+                :key="item.index"
+                name="table_search"
+                @click="searchTahun(item.index)"
+              >
+                {{ item.index }}
+              </button>
             </div>
           </div>
         </div>
         <div class="float-right mr-2">
           <ul class="nav nav-pills ml-auto">
-            <li class="nav-item">
+            <li class="nav-item mr-2">
               <template v-if="loading">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -414,6 +426,8 @@ export default {
       roles: [],
       permissions: [],
       idRole: "",
+      kamar: {},
+      tahunMasuk: {},
       form: new Form({
         id: "",
         nama: "",
@@ -448,6 +462,40 @@ export default {
     createMode() {
       this.editMode = false;
       $("#createUser").modal("show");
+    },
+
+    searchKamar(nomor) {
+      this.loading = true;
+      axios
+        .get("/alumni-kamar/search?s=" + nomor)
+        .then((response) => {
+          this.loading = false;
+          this.users = response.data.users;
+        })
+        .catch(() => {
+          this.loading = false;
+          toast.fire({
+            icon: "error",
+            title: "search failed",
+          });
+        });
+    },
+
+    searchTahun(nomor) {
+      this.loading = true;
+      axios
+        .get("/alumni-tahun/search?s=" + nomor)
+        .then((response) => {
+          this.loading = false;
+          this.users = response.data.users;
+        })
+        .catch(() => {
+          this.loading = false;
+          toast.fire({
+            icon: "error",
+            title: "search failed",
+          });
+        });
     },
 
     deleteUser(user) {
@@ -494,6 +542,8 @@ export default {
           this.loading = false;
           this.users = response.data.users;
           this.idRole = response.data.idRole;
+          this.kamar = response.data.kamar;
+          this.tahunMasuk = response.data.tahun_masuk;
         })
         .catch(() => {
           this.loading = false;

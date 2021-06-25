@@ -69,7 +69,7 @@
           </div>
           <div class="card-body">
             <label> Isi </label>
-            <p>{{ artikel.isi }}</p>
+            <p v-html="artikel.isi"></p>
           </div>
           <div class="card-footer">
             <div class="d-inline">{{ artikel.created_by }}</div>

@@ -27,9 +27,15 @@
               Kamar
             </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">1</a>
-              <a class="dropdown-item" href="#">2</a>
-              <a class="dropdown-item" href="#">3</a>
+              <button
+                class="dropdown-item"
+                v-for="item in kamar"
+                :key="item.index"
+                name="table_search"
+                @click="searchKamar(item.index)"
+              >
+                {{ item.index }}
+              </button>
             </div>
           </div>
         </div>
@@ -100,7 +106,7 @@
                   name="table_search"
                   v-model="searchWord"
                   class="form-control"
-                  placeholder="Search by name, email"
+                  placeholder="Cari berdasarkan nama"
                   @keypress="search"
                   @keyup="search"
                   autofocus
@@ -125,19 +131,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in users" :key="user.id">
-              <td>{{ index }}</td>
+            <tr v-for="(user, index) in pageOfItems" :key="user.id">
+              <td>{{ index + 1 }}</td>
               <td>{{ user.name }}</td>
               <td>{{ user.role }}</td>
               <td>{{ user.no_kamar }}</td>
               <td>{{ user.no_telepon }}</td>
               <td>{{ user.email }}</td>
               <td>
-                <button class="btn btn-sm btn-info" @click="viewUser(user)">
+                <button
+                  class="btn btn-sm btn-info text-white"
+                  @click="viewUser(user)"
+                >
                   <i class="fa fa-eye"></i> View
                 </button>
                 <button
-                  class="btn btn-sm btn-warning"
+                  class="btn btn-sm btn-warning text-white"
                   v-show="idRole != 3"
                   @click="editUser(user)"
                 >
@@ -152,16 +161,16 @@
                 </button>
               </td>
             </tr>
-            <center class="pb-0 pt-1">
-              <jw-pagination
-                :pageSize="10"
-                :items="users"
-                @changePage="onChangePage"
-                :labels="customLabels"
-              ></jw-pagination>
-            </center>
           </tbody>
         </table>
+        <center class="pb-0 pt-1">
+          <jw-pagination
+            :pageSize="10"
+            :items="users"
+            @changePage="onChangePage"
+            :labels="customLabels"
+          ></jw-pagination>
+        </center>
       </div>
 
       <!-- <loading :loading="loading"></loading> -->
@@ -354,6 +363,7 @@ export default {
       users: [],
       roles: [],
       permissions: [],
+      kamar: {},
       idRole: "",
       form: new Form({
         id: "",
@@ -371,6 +381,22 @@ export default {
       this.loading = true;
       axios
         .get("/search/user?s=" + this.searchWord)
+        .then((response) => {
+          this.loading = false;
+          this.users = response.data.users;
+        })
+        .catch(() => {
+          this.loading = false;
+          toast.fire({
+            icon: "error",
+            title: "search failed",
+          });
+        });
+    },
+    searchKamar(nomor) {
+      this.loading = true;
+      axios
+        .get("/search-kamar/user?s=" + nomor)
         .then((response) => {
           this.loading = false;
           this.users = response.data.users;
@@ -438,6 +464,7 @@ export default {
           this.loading = false;
           this.users = response.data.users;
           this.idRole = response.data.idRole;
+          this.kamar = response.data.kamar;
         })
         .catch(() => {
           this.loading = false;

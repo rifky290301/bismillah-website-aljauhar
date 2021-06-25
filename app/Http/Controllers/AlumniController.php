@@ -20,6 +20,32 @@ class AlumniController extends Controller
 
     public function getAll()
     {
+        $users = Alumni::latest()->get();
+        $kamar = [];
+        $tahunMasuk = [];
+
+        foreach ($users as $user) {
+            array_push($kamar, $user["no_kamar"]);
+            array_push($tahunMasuk, $user["tahun_masuk"]);
+        }
+
+
+        $kamar = array_unique($kamar);
+        $tahunMasuk = array_unique($tahunMasuk);
+
+        $kamar_ukniq = [];
+        $tahun_ukniq = [];
+
+        foreach ($kamar as $no) {
+            $tes["index"] = $no;
+            array_push($kamar_ukniq, $tes);
+        }
+
+        foreach ($tahunMasuk as $no) {
+            $temp["index"] = $no;
+            array_push($tahun_ukniq, $temp);
+        }
+
         if (auth()->user()->hasRole("Super admin")) {
             $idRole = 1;
         } elseif (auth()->user()->hasRole("BPH")) {
@@ -27,10 +53,11 @@ class AlumniController extends Controller
         } else {
             $idRole = 3;
         }
-        $users = Alumni::latest()->get();
         return response()->json([
             'users' => $users,
-            'idRole' => $idRole
+            'idRole' => $idRole,
+            'kamar' => $kamar_ukniq,
+            'tahun_masuk' => $tahun_ukniq
         ], 200);
     }
 
@@ -39,7 +66,7 @@ class AlumniController extends Controller
     {
         $this->validate($request, [
             'nama' => 'required',
-            'tahun_masuk' => 'required',
+            'tahun_masuk' => 'required|number',
         ]);
 
         $alumni = new Alumni();
@@ -92,6 +119,30 @@ class AlumniController extends Controller
         $searchWord = $request->get('s');
         $alumni = Alumni::where(function ($query) use ($searchWord) {
             $query->where('nama', 'LIKE', "%$searchWord%");
+        })->latest()->get();
+
+        return response()->json([
+            'users' => $alumni
+        ], 200);
+    }
+
+    public function searchKamar(Request $request)
+    {
+        $searchWord = $request->get('s');
+        $alumni = Alumni::where(function ($query) use ($searchWord) {
+            $query->where('no_kamar', '=', $searchWord);
+        })->latest()->get();
+
+        return response()->json([
+            'users' => $alumni
+        ], 200);
+    }
+
+    public function searchTahun(Request $request)
+    {
+        $searchWord = $request->get('s');
+        $alumni = Alumni::where(function ($query) use ($searchWord) {
+            $query->where('tahun_masuk', '=', $searchWord);
         })->latest()->get();
 
         return response()->json([

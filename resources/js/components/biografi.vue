@@ -71,7 +71,7 @@
           </div>
           <div class="card-body">
             <label> Biografi </label>
-            <p>{{ biografi.biografi }}</p>
+            <p v-html="biografi.biografi"></p>
           </div>
           <div class="card-footer">
             <div class="d-inline">{{ biografi.created_by }}</div>

@@ -21,10 +21,24 @@ class UserController extends Controller
     public function getAll()
     {
         // filter tidak dapat menampilkan super admin
-        $santri = User::with('roles')->get();
-        $users = $santri->reject(function ($user, $key) {
-            return $user->hasRole('Super admin');
-        });
+        $users = User::with('roles')->get();
+        // $users = $santri->reject(function ($user, $key) {
+        //     return $user->hasRole('Super admin');
+        // });
+
+        $kamar = [];
+
+        foreach ($users as $no_kamar) {
+            array_push($kamar, $no_kamar["no_kamar"]);
+        }
+
+        $kamar = array_unique($kamar);
+
+        $kamar_ukniq = [];
+        foreach ($kamar as $no) {
+            $tes["index"] = $no;
+            array_push($kamar_ukniq, $tes);
+        }
 
         if (auth()->user()->hasRole("Super admin")) {
             $idRole = 1;
@@ -43,6 +57,7 @@ class UserController extends Controller
         return response()->json([
             'users' => $users,
             'idRole' => $idRole,
+            'kamar' => $kamar_ukniq,
         ], 200);
     }
 
@@ -124,7 +139,6 @@ class UserController extends Controller
     }
 
 
-    /////////////////////// User defined Method
 
 
     public function profile()
@@ -197,6 +211,24 @@ class UserController extends Controller
         $users = User::where(function ($query) use ($searchWord) {
             $query->where('name', 'LIKE', "%$searchWord%")
                 ->orWhere('email', 'LIKE', "%$searchWord%");
+        })->latest()->get();
+
+        $users->transform(function ($user) {
+            $user->role = $user->getRoleNames()->first();
+            $user->userPermissions = $user->getPermissionNames();
+            return $user;
+        });
+
+        return response()->json([
+            'users' => $users
+        ], 200);
+    }
+
+    public function searchKamar(Request $request)
+    {
+        $searchWord = $request->get('s');
+        $users = User::where(function ($query) use ($searchWord) {
+            $query->where('no_kamar', '=', $searchWord);
         })->latest()->get();
 
         $users->transform(function ($user) {

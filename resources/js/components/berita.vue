@@ -68,7 +68,7 @@
           </div>
           <div class="card-body">
             <label> Isi </label>
-            <p>{{ berita.isi }}</p>
+            <p v-html="berita.isi"></p>
           </div>
           <div class="card-footer">
             <div class="d-inline">{{ berita.created_by }}</div>

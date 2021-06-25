@@ -16,6 +16,7 @@ class BiografiController extends Controller
     public function getAll()
     {
         $biografis = Biografi::latest()->get();
+        // $htmlTag = [];
         for ($i = 0; $i < count($biografis); $i++) {
             $biografis[$i]["created_by"] =  User::findOrFail($biografis[$i]["user_id"])->name;
         }

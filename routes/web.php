@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/alumni', 'AlumniController@index')->name('alumni.index');
 Route::get('/alumni/search', 'AlumniController@search');
+Route::get('/alumni-kamar/search', 'AlumniController@searchKamar');
+Route::get('/alumni-tahun/search', 'AlumniController@searchTahun');
 Route::group(['middleware' => ['auth', 'permission:create user']], function () {
     Route::post("/alumni", "AlumniController@store");
     Route::put("/alumni/{id}", "AlumniController@update");
@@ -105,6 +107,7 @@ Route::post('/account/create', 'UserController@store');
 Route::put('/account/update/{id}', 'UserController@update');
 Route::delete('/delete/user/{id}', 'UserController@delete');
 Route::get('/search/user', 'UserController@search');
+Route::get('/search-kamar/user', 'UserController@searchKamar');
 
 
 Route::get("/getAllAlumni", "AlumniController@getAll");
