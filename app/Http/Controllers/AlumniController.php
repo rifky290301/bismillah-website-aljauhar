@@ -20,10 +20,17 @@ class AlumniController extends Controller
 
     public function getAll()
     {
-        // dd("tes");
+        if (auth()->user()->hasRole("Super admin")) {
+            $idRole = 1;
+        } elseif (auth()->user()->hasRole("BPH")) {
+            $idRole = 2;
+        } else {
+            $idRole = 3;
+        }
         $users = Alumni::latest()->get();
         return response()->json([
-            'users' => $users
+            'users' => $users,
+            'idRole' => $idRole
         ], 200);
     }
 
@@ -42,6 +49,9 @@ class AlumniController extends Controller
         $alumni->tahun_keluar = $request->tahun_keluar;
         $alumni->no_hp = $request->no_hp;
         $alumni->no_kamar = $request->no_kamar;
+        $alumni->pekerjaan = $request->pekerjaan;
+        $alumni->status = $request->status;
+        $alumni->motto = $request->motto;
 
         $alumni->save();
 

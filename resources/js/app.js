@@ -18,12 +18,6 @@ Vue.use(VueToastr, {
     defaultProgressBarValue: 0,
 });
 
-// import moment from 'moment';
-
-// Vue.filter("date", function (created) {
-//     return moment(created).format('MMMM Do YYYY, h:mm:ss a');
-// });
-
 
 
 import Swal from 'sweetalert2'
@@ -41,12 +35,14 @@ const Toast = Swal.mixin({
 });
 
 window.toast = Toast;
-
 import { Form, HasError, AlertError } from 'vform'
+
 
 window.Form = Form;
 
 
+import JwPagination from 'jw-vue-pagination';
+Vue.component('jw-pagination', JwPagination);
 
 // Require Froala Editor js file.
 require('froala-editor/js/froala_editor.pkgd.min.js')

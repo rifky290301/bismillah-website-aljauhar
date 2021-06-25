@@ -13,16 +13,13 @@ Profile
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img style="width: 200px;" class="profile-user-img img-fluid img-circle" src="{{ asset('img/logo_aljauhar.jpg') }}" alt="{{ auth()->user()->name . ' Photo' }}">
-
-
+                            <img style="width: 200px;" class="profile-user-img img-fluid img-circle" src="{{ asset("upload/profil/".$photo) }}" alt="{{ auth()->user()->name . ' Photo' }}">
                         </div>
 
                         <h3 class="profile-username text-center" style="text-transform: uppercase">{{ auth()->user()->name }} </h3>
                         {{--  <p class="text-muted text-center">{{ auth()->user()->role }}</p>  --}}
                         <p class="text-muted text-center">{{ auth()->user()->email }}</p>
                         <p class="text-muted text-center">{{ auth()->user()->phone }}</p>
-
                     </div>
                 </div>
             </div>
@@ -35,7 +32,7 @@ Profile
                         <div>
 
                             <div>
-                                <form class="form-horizontal" method="POST" action="{{ route('user.postProfile') }}">
+                                <form class="form-horizontal" method="POST" action="{{ route('user.postProfile') }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-12">
@@ -118,8 +115,12 @@ Profile
                                                     </span>
                                                 @enderror
                                             </div>
-
-
+                                            <div class="form-group">
+                                                <div class="custom-file">
+                                                    <input name="photo" type="file" class="custom-file-input" id="customFile">
+                                                    <label class="custom-file-label" for="customFile">Pilih Gambar update profile</label>
+                                                </div>
+                                            </div>
 
                                         </div>
                                         <div class="col-12">

@@ -33,12 +33,12 @@
                         <div class="card-header">
                             <h3 class="card-title">Registrasi santri baru</h3>
                         </div>
-                        <form method="POST" action="{{route("pendaftaran-santri.store")}}">
+                        <form method="POST" action="{{route("pendaftaran-santri.store")}}" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="nama_lengkap">Nama lengkap</label>
-                                    <input type="text" name="nama_lengkap"  id="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ old('nama_lengkap') }}" required placeholder="Nama Lengkap">
+                                    <input type="text" name="nama_lengkap"  id="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ old('nama_lengkap') }}" placeholder="Nama Lengkap">
                                     @error('nama_lengkap')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -210,7 +210,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="pas_foto">Pas Foto </label>
+                                    <label for="pas_foto">Pas_foto Foto </label>
                                     <input type="file" name="pas_foto"  id="pas_foto" >
                                 </div>
                                 

@@ -121,21 +121,28 @@
                                 <li class="nav-item ml-3">
                                     <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user') ? 'active' : ''}}">
                                         <i class="fas fa-users-cog nav-icon"></i>
-                                        <p>Santri Aktif</p>
+                                        <p>Santri</p>
                                     </a>
                                 </li>
-                                @can('create user')
                                 <li class="nav-item ml-3">
                                     <a href="/alumni" class="nav-link {{ request()->is('alumni') ? 'active' : ''}}">
                                         <i class="fas fa-users nav-icon"></i>
                                         <p>Alumni</p>
                                     </a>
                                 </li>
-                                @endcan
+                                @can('melihat pendaftar')
                                 <li class="nav-item ml-3">
                                     <a href="{{route("pendaftaran.santri")}}" class="nav-link {{ request()->is('pendaftaran-santri') ? 'active' : ''}}">
-                                        <i class="fas fa-user-plus"></i>
+                                        <i class="fas fa-user-plus nav-icon"></i>
                                         <p>Pendaftaran Santri</p>
+                                    </a>
+                                </li>
+                                @endcan
+                                <li class="nav-item ml-3">
+                                    <a href="{{route("biografi")}}" class="nav-link {{ request()->is('biografi') ? 'active' : ''}}">
+                                        {{-- <i class="fas fa-user-plus"></i> --}}
+                                        <i class="fas fa-address-card nav-icon"></i>
+                                        <p>Biografi</p>
                                     </a>
                                 </li>
                             </ul>
@@ -233,11 +240,11 @@
         <!-- Main Footer -->
         <footer class="main-footer">
             <!-- To the right -->
-            <div class="float-right d-none d-sm-inline">
+            {{-- <div class="float-right d-none d-sm-inline">
                 Official website PPM AL-JAUHAR
-            </div>
+            </div> --}}
             <!-- Default to the left -->
-            <strong>Copyright © 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+            Official website PPM AL-JAUHAR
         </footer>
         <div id="sidebar-overlay"></div>
     </div>

@@ -4,33 +4,125 @@
       <div class="card-header ui-sortable-handle" style="cursor: move">
         <h3 class="card-title">
           <i class="fas fa-users mr-1"></i>
-          Alumni
+          Data Alumni
         </h3>
-        <div class="card-tools">
+        <div class="float-right mr-2">
+          <button
+            class="btn btn-sm btn-primary"
+            v-show="idRole != 3"
+            @click="createMode"
+          >
+            <i class="fas fa-plus-circle"></i> Add New
+          </button>
+        </div>
+        <div class="float-right mr-2">
+          <div class="btn-group">
+            <button
+              class="btn btn-secondary btn-sm dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Kamar
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item" href="#">1</a>
+              <a class="dropdown-item" href="#">2</a>
+              <a class="dropdown-item" href="#">3</a>
+            </div>
+          </div>
+        </div>
+        <div class="float-right mr-2">
+          <div class="btn-group">
+            <button
+              class="btn btn-secondary btn-sm dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Tahun Keluar
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">2001</a>
+              <a class="dropdown-item" href="#">2010</a>
+              <a class="dropdown-item" href="#">2013</a>
+            </div>
+          </div>
+        </div>
+        <div class="float-right mr-2">
           <ul class="nav nav-pills ml-auto">
-            <li class="nav-item mr-1">
-              <button class="btn btn-sm btn-primary" @click="createMode">
-                <i class="fas fa-plus-circle"></i> Add New
-              </button>
+            <li class="nav-item">
+              <template v-if="loading">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  style="
+                    margin: auto;
+                    background: none;
+                    display: block;
+                    shape-rendering: auto;
+                  "
+                  width="30px"
+                  height="30px"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="xMidYMid"
+                >
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="32"
+                    stroke-width="8"
+                    stroke="#4b79dc"
+                    stroke-dasharray="50.26548245743669 50.26548245743669"
+                    fill="none"
+                    stroke-linecap="round"
+                  >
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      dur="1s"
+                      repeatCount="indefinite"
+                      keyTimes="0;1"
+                      values="0 50 50;360 50 50"
+                    ></animateTransform>
+                  </circle>
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="23"
+                    stroke-width="8"
+                    stroke="#6ac2f8"
+                    stroke-dasharray="36.12831551628262 36.12831551628262"
+                    stroke-dashoffset="36.12831551628262"
+                    fill="none"
+                    stroke-linecap="round"
+                  >
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      dur="1s"
+                      repeatCount="indefinite"
+                      keyTimes="0;1"
+                      values="0 50 50;-360 50 50"
+                    ></animateTransform>
+                  </circle>
+                </svg>
+              </template>
             </li>
             <li class="nav-item">
-              <div class="input-group mt-0 input-group-sm" style="width: 350px">
+              <div class="input-group input-group-sm" style="width: 350px">
                 <input
                   type="text"
                   name="table_search"
                   v-model="searchWord"
-                  class="form-control float-right"
+                  class="form-control"
                   placeholder="Search by name, email"
                   @keypress="search"
                   @keyup="search"
                   autofocus
                 />
-
-                <div class="input-group-append">
-                  <button type="submit" class="btn btn-default" @click="search">
-                    <i class="fas fa-search"></i>
-                  </button>
-                </div>
               </div>
             </li>
           </ul>
@@ -51,7 +143,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in users" :key="user.id">
+            <tr v-for="(user, index) in pageOfItems" :key="user.id">
+              <!-- <tr v-for="(number, item) in users | filterBy nama in 'nama' | limitBy count offset" :key="user.id"> -->
               <td>{{ index + 1 }}</td>
               <td>{{ user.nama }}</td>
               <td>{{ user.tahun_masuk }}</td>
@@ -67,11 +160,16 @@
                 </button>
                 <button
                   class="text-white btn btn-sm btn-warning"
+                  v-show="idRole != 3"
                   @click="editUser(user)"
                 >
                   <i class="fa fa-edit"></i> Edit
                 </button>
-                <button class="btn btn-sm btn-danger" @click="deleteUser(user)">
+                <button
+                  v-show="idRole != 3"
+                  class="btn btn-sm btn-danger"
+                  @click="deleteUser(user)"
+                >
                   <i class="fa fa-trash"></i> Delete
                 </button>
               </td>
@@ -79,7 +177,15 @@
           </tbody>
         </table>
       </div>
-      <loading :loading="loading"></loading>
+      <center class="card-footer pb-0 pt-1">
+        <jw-pagination
+          :pageSize="10"
+          :items="users"
+          @changePage="onChangePage"
+          :labels="customLabels"
+        ></jw-pagination>
+      </center>
+      <!-- <loading :loading="loading"></loading> -->
     </div>
 
     <div
@@ -93,17 +199,20 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <p><b>Nama:</b> {{ user.nama }}</p>
-                <p><b>Tahun Masuk:</b> {{ user.tahun_masuk }}</p>
-                <p><b>Tahun Keluar:</b> {{ user.tahun_keluar }}</p>
-                <p><b>Nomor HP:</b> {{ user.no_hp }}</p>
-                <p><b>Nomor Kamar:</b> {{ user.no_kamar }}</p>
+            <div class="row p-2">
+              <div class="col-md-12 alignMe">
+                <li><b>Nama</b> {{ user.nama }}</li>
+                <li><b>Tahun Masuk</b> {{ user.tahun_masuk }}</li>
+                <li><b>Tahun Keluar</b> {{ user.tahun_keluar }}</li>
+                <li><b>Nomor HP</b> {{ user.no_hp }}</li>
+                <li><b>Nomor Kamar</b> {{ user.no_kamar }}</li>
+                <li><b>Pekerjaan</b> {{ user.no_kamar }}</li>
+                <li><b>Status</b> {{ user.status }}</li>
+                <li><b>Motto</b> {{ user.motto }}</li>
               </div>
 
-              <div class="col-md-6">
-                <img :src="img" class="img-circle" />
+              <div class="">
+                <!-- <img :src="img" class="img-thumbnail" /> -->
               </div>
             </div>
           </div>
@@ -204,6 +313,46 @@
                 />
                 <has-error :form="form" field="no_kamar"></has-error>
               </div>
+              <div class="form-group">
+                <label> Pekerjaan </label>
+                <input
+                  v-model="form.pekerjaan"
+                  type="text"
+                  name="pekerjaan"
+                  placeholder="Pekerjaan"
+                  class="form-control"
+                  :class="{ 'is-invaild': form.errors.has('pekerjaan') }"
+                />
+                <has-error :form="form" field="pekerjaan"></has-error>
+              </div>
+              <div class="form-group">
+                <label> Status </label>
+                <div class="input-group mb-3">
+                  <select
+                    id="inputGroupSelect02"
+                    class="custom-select"
+                    v-model="form.status"
+                    type="text"
+                    name="status"
+                  >
+                    <option selected>Choose...</option>
+                    <option value="Sudah menikah">Sudah menikah</option>
+                    <option value="Belum menikah">Belum menikah</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label> Motto </label>
+                <input
+                  v-model="form.motto"
+                  type="text"
+                  name="motto"
+                  placeholder="Motto"
+                  class="form-control"
+                  :class="{ 'is-invaild': form.errors.has('motto') }"
+                />
+                <has-error :form="form" field="motto"></has-error>
+              </div>
             </div>
             <div class="modal-footer justify-content-between">
               <button
@@ -223,7 +372,7 @@
                 v-show="!editMode"
                 class="btn btn-lg btn-primary"
               >
-                Save User
+                Save
               </button>
               <button
                 type="submit"
@@ -242,19 +391,29 @@
 </template>
 
 <script>
+const customLabels = {
+  first: "<<",
+  last: ">>",
+  previous: "<",
+  next: ">",
+};
+
 export default {
   data() {
     return {
+      customLabels,
+      pageOfItems: [],
       action: "",
       searchWord: "",
       loading: false,
       editMode: false,
       load: true,
-      img: "http://localhost:8000/img/avatar.jpg",
+      img: "/img/logo.png",
       user: {},
       users: [],
       roles: [],
       permissions: [],
+      idRole: "",
       form: new Form({
         id: "",
         nama: "",
@@ -262,6 +421,10 @@ export default {
         tahun_keluar: "",
         no_hp: "",
         no_kamar: "",
+        pekerjaan: "",
+        status: "",
+        motto: "",
+        photo: "",
       }),
     };
   },
@@ -330,6 +493,7 @@ export default {
         .then((response) => {
           this.loading = false;
           this.users = response.data.users;
+          this.idRole = response.data.idRole;
         })
         .catch(() => {
           this.loading = false;
@@ -376,6 +540,9 @@ export default {
           this.load = true;
           this.$toastr.e("Cannot update user information, try again", "Error");
         });
+    },
+    onChangePage(pageOfItems) {
+      this.pageOfItems = pageOfItems;
     },
   },
   created() {

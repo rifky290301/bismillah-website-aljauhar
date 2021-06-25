@@ -25,8 +25,10 @@
               </div>
               <div class="form-group">
                 <label> Isi </label>
-                <textarea
+                <froala
                   id=""
+                  :tag="'textarea'"
+                  :config="config"
                   cols="30"
                   rows="10"
                   v-model="form.isi"
@@ -36,7 +38,7 @@
                   class="form-control"
                   :class="{ 'is-invaild': form.errors.has('isi') }"
                 >
-                </textarea>
+                </froala>
                 <has-error :form="form" field="isi"></has-error>
               </div>
               <button
@@ -59,7 +61,7 @@
       </div>
     </div>
     <div class="row d-flex">
-      <div class="col-md-6" v-for="artikel in artikels" :key="artikel.id">
+      <div class="col-md-6" v-for="artikel in pageOfItems" :key="artikel.id">
         <div class="card card-secondary">
           <div class="card-header">
             <label> Judul </label>
@@ -89,22 +91,47 @@
         </div>
       </div>
     </div>
+    <center class="pb-0 pt-1">
+      <jw-pagination
+        :pageSize="4"
+        :items="artikels"
+        @changePage="onChangePage"
+        :labels="customLabels"
+      ></jw-pagination>
+    </center>
   </div>
 </template>
 
 <script>
+const customLabels = {
+  first: "<<",
+  last: ">>",
+  previous: "<",
+  next: ">",
+};
 export default {
   data() {
     return {
+      customLabels,
+      pageOfItems: [],
       artikel: {},
       artikels: [],
       loading: false,
       editMode: false,
+      isi: "",
       form: new Form({
         id: "",
         judul: "",
         isi: "",
       }),
+      config: {
+        placeholder: "Edit Me",
+        events: {
+          "froalaEditor.focus": function (e, editor) {
+            console.log(editor.selection.get());
+          },
+        },
+      },
     };
   },
   methods: {
@@ -160,7 +187,6 @@ export default {
         .then((response) => {
           this.loading = false;
           this.artikels = response.data.artikels;
-          console.log(this.artikels);
         })
         .catch(() => {
           this.loading = false;
@@ -192,6 +218,9 @@ export default {
               });
           }
         });
+    },
+    onChangePage(pageOfItems) {
+      this.pageOfItems = pageOfItems;
     },
   },
   created() {

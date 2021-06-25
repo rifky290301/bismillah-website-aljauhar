@@ -6,35 +6,105 @@
           <i class="fas fa-users mr-1"></i>
           Users
         </h3>
-        <div class="card-tools">
+        <div class="float-right mr-2">
+          <button
+            class="btn btn-sm btn-primary"
+            v-show="idRole != 3"
+            @click="createMode"
+          >
+            <i class="fas fa-plus-circle"></i> Add New
+          </button>
+        </div>
+        <div class="float-right mr-2">
+          <div class="btn-group">
+            <button
+              class="btn btn-secondary btn-sm dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Kamar
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">1</a>
+              <a class="dropdown-item" href="#">2</a>
+              <a class="dropdown-item" href="#">3</a>
+            </div>
+          </div>
+        </div>
+        <div class="float-right mr-2">
           <ul class="nav nav-pills ml-auto">
-            <li class="nav-item mr-1">
-              <button
-                class="btn btn-sm btn-primary"
-                v-show="idRole != 3"
-                @click="createMode"
-              >
-                <i class="fas fa-plus-circle"></i> Add New
-              </button>
+            <li class="nav-item mr-2">
+              <template v-if="loading">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  style="
+                    margin: auto;
+                    background: none;
+                    display: block;
+                    shape-rendering: auto;
+                  "
+                  width="30px"
+                  height="30px"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="xMidYMid"
+                >
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="32"
+                    stroke-width="8"
+                    stroke="#4b79dc"
+                    stroke-dasharray="50.26548245743669 50.26548245743669"
+                    fill="none"
+                    stroke-linecap="round"
+                  >
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      dur="1s"
+                      repeatCount="indefinite"
+                      keyTimes="0;1"
+                      values="0 50 50;360 50 50"
+                    ></animateTransform>
+                  </circle>
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="23"
+                    stroke-width="8"
+                    stroke="#6ac2f8"
+                    stroke-dasharray="36.12831551628262 36.12831551628262"
+                    stroke-dashoffset="36.12831551628262"
+                    fill="none"
+                    stroke-linecap="round"
+                  >
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      dur="1s"
+                      repeatCount="indefinite"
+                      keyTimes="0;1"
+                      values="0 50 50;-360 50 50"
+                    ></animateTransform>
+                  </circle>
+                </svg>
+              </template>
             </li>
             <li class="nav-item">
-              <div class="input-group mt-0 input-group-sm" style="width: 350px">
+              <div class="input-group input-group-sm" style="width: 350px">
                 <input
                   type="text"
                   name="table_search"
                   v-model="searchWord"
-                  class="form-control float-right"
+                  class="form-control"
                   placeholder="Search by name, email"
                   @keypress="search"
                   @keyup="search"
                   autofocus
                 />
-
-                <div class="input-group-append">
-                  <button type="submit" class="btn btn-default" @click="search">
-                    <i class="fas fa-search"></i>
-                  </button>
-                </div>
               </div>
             </li>
           </ul>
@@ -48,15 +118,19 @@
               <th>#</th>
               <th>Name</th>
               <th>Role</th>
+              <th>Kamar</th>
+              <th>Nomor HP</th>
               <th>Email</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(user, index) in users" :key="user.id">
-              <td>{{ index + 1 }}</td>
+              <td>{{ index }}</td>
               <td>{{ user.name }}</td>
               <td>{{ user.role }}</td>
+              <td>{{ user.no_kamar }}</td>
+              <td>{{ user.no_telepon }}</td>
               <td>{{ user.email }}</td>
               <td>
                 <button class="btn btn-sm btn-info" @click="viewUser(user)">
@@ -78,10 +152,19 @@
                 </button>
               </td>
             </tr>
+            <center class="pb-0 pt-1">
+              <jw-pagination
+                :pageSize="10"
+                :items="users"
+                @changePage="onChangePage"
+                :labels="customLabels"
+              ></jw-pagination>
+            </center>
           </tbody>
         </table>
       </div>
-      <loading :loading="loading"></loading>
+
+      <!-- <loading :loading="loading"></loading> -->
     </div>
 
     <div
@@ -95,16 +178,22 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <p><b>Name:</b> {{ user.name }}</p>
-                <p><b>Email:</b> {{ user.email }}</p>
-                <p><b>Last Updated:</b> {{ user.updated_at | date }}</p>
-                <p><b>Date Posted:</b> {{ user.created_at | date }}</p>
-              </div>
+            <div class="row p-2">
+              <ul class="col-md-12 alignMe">
+                <li><b>Nama</b> {{ user.name }}</li>
+                <li><b>Email</b> {{ user.email }}</li>
+                <li><b>Nomer HP</b> {{ user.phone }}</li>
+                <li><b>Nomer Kamar</b> {{ user.no_kamar }}</li>
+                <li><b>Status</b> {{ user.status }}</li>
+                <li><b>Instansi</b> {{ user.instansi }}</li>
+                <li><b>Alamat</b> {{ user.alamat }}</li>
+                <li><b>Tahun masuk</b> {{ user.tahun_masuk }}</li>
+                <!-- <p><b>Last Updated:</b> {{ user.updated_at }}</p>
+                <p><b>Date Posted:</b> {{ user.created_at }}</p> -->
+              </ul>
 
-              <div class="col-md-6">
-                <img :src="img" class="img-circle" />
+              <div class="">
+                <img :src="img" class="img-circle img-thumbnail" />
               </div>
             </div>
           </div>
@@ -183,7 +272,7 @@
                 <has-error :form="form" field="phone"></has-error>
               </div>
 
-              <div class="form-group">
+              <div class="form-group" v-show="idRole == 1">
                 <label> Choose Role </label>
                 <b-form-select
                   v-model="form.role"
@@ -215,10 +304,10 @@
               >
                 Close
               </button>
-              <b-button variant="primary" v-if="!load" class="btn-lg" disabled>
+              <!-- <b-button variant="primary" v-if="!load" class="btn-lg" disabled>
                 <b-spinner small type="grow"></b-spinner>
                 {{ action }}
-              </b-button>
+              </b-button> -->
               <button
                 type="submit"
                 v-if="load"
@@ -244,15 +333,23 @@
 </template>
 
 <script>
+const customLabels = {
+  first: "<<",
+  last: ">>",
+  previous: "<",
+  next: ">",
+};
 export default {
   data() {
     return {
+      customLabels,
+      pageOfItems: [],
       action: "",
       searchWord: "",
       loading: false,
       editMode: false,
       load: true,
-      img: "http://localhost:8000/img/avatar.jpg",
+      img: "/img/avatar.jpg",
       user: {},
       users: [],
       roles: [],
@@ -341,7 +438,6 @@ export default {
           this.loading = false;
           this.users = response.data.users;
           this.idRole = response.data.idRole;
-          console.log(this.idRole);
         })
         .catch(() => {
           this.loading = false;
@@ -350,7 +446,7 @@ export default {
     },
     viewUser(user) {
       $("#viewUser").modal("show");
-      this.img = "http://localhost:8000/img/" + user.photo;
+      // this.img = "http://localhost:8000/img/" + user.photo;
       this.user = user;
     },
     getRoles() {
@@ -398,6 +494,10 @@ export default {
           this.load = true;
           this.$toastr.e("Cannot update user information, try again", "Error");
         });
+    },
+    onChangePage(pageOfItems) {
+      // update page of items
+      this.pageOfItems = pageOfItems;
     },
   },
   created() {

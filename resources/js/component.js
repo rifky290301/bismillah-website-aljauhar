@@ -14,4 +14,6 @@ Vue.component('pendaftaran-santri', require('./components/pendaftaran-santri.vue
 
 Vue.component('profile', require('./components/profile.vue').default);
 
+Vue.component('biografi', require('./components/biografi.vue').default);
+
 Vue.component('tes', require('./components/tes.vue').default);

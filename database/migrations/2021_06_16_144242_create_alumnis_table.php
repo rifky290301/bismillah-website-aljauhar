@@ -20,6 +20,10 @@ class CreateAlumnisTable extends Migration
             $table->string('tahun_keluar')->nullable();
             $table->string('no_hp')->nullable();
             $table->string('no_kamar')->nullable();
+            $table->string('pekerjaan')->nullable();
+            $table->string('status')->nullable();
+            $table->string('motto')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

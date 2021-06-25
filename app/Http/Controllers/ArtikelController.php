@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
-use App\Http\Resources\ArtikelResource;
 
 class ArtikelController extends Controller
 {
@@ -22,7 +21,6 @@ class ArtikelController extends Controller
             $id = auth()->user()->id;
             $artikels = Artikel::where('user_id', "=", $id)->latest()->get();
         }
-
         for ($i = 0; $i < count($artikels); $i++) {
             $artikels[$i]["created_by"] =  User::findOrFail($artikels[$i]["user_id"])->name;
         }
@@ -59,7 +57,7 @@ class ArtikelController extends Controller
 
         $artikel = Artikel::findOrFail($id);
 
-        $artikel->user_id = auth()->user()->id;
+        // $artikel->user_id = auth()->user()->id;
         $artikel->judul = $request->judul;
         $artikel->isi = $request->isi;
         $artikel->save();

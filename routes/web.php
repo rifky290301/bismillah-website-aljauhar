@@ -29,20 +29,22 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
+Route::get('/alumni', 'AlumniController@index')->name('alumni.index');
+Route::get('/alumni/search', 'AlumniController@search');
 Route::group(['middleware' => ['auth', 'permission:create user']], function () {
-    Route::get('/alumni', 'AlumniController@index')->name('alumni.index');
     Route::post("/alumni", "AlumniController@store");
     Route::put("/alumni/{id}", "AlumniController@update");
     Route::delete("/alumni/{id}", "AlumniController@delete");
-    Route::get('/alumni/search', 'AlumniController@search');
 });
 
 Route::group(['middleware' => ['auth', 'permission:membuat berita']], function () {
     Route::get('/berita', 'BeritaController@index')->name('berita.index');
     Route::post("/berita", "BeritaController@store");
     Route::get("/getAllBerita", "BeritaController@getAll");
-    // Route::put("/berita/{id}", "BeritaController@update");
-    // Route::delete("/berita/{id}", "BeritaController@delete");
+    Route::put("/berita/{id}", "BeritaController@update");
+    Route::delete("/berita/{id}", "BeritaController@delete");
+    Route::get("/berita/edit/{id}", "BeritaController@edit");
+    Route::post("/berita/show/{id}", "BeritaController@update2")->name("show.beriita");
     // Route::get('/berita/search', 'BeritaController@search');
 });
 
@@ -60,12 +62,25 @@ Route::group(['middleware' => ['auth', 'permission:create role']], function () {
 });
 
 
+Route::post("/pendaftaran-santri", "PendaftaranSantriController@store")->name("pendaftaran-santri.store");
 Route::group(['middleware' => ['auth', 'permission:melihat pendaftar']], function () {
-    Route::get("pendaftaran-santri", "PendaftaranSantriController@index")->name("pendaftaran.santri");
+    Route::get("/pendaftaran-santri", "PendaftaranSantriController@index")->name("pendaftaran.santri");
     Route::get("/getAllPendaftar", "PendaftaranSantriController@getAll");
+    Route::delete("/pendaftar/{id}", "PendaftaranSantriController@delete");
 });
-Route::post('/pendaftaran-santri', 'PendaftaranSantriController@store')->name("pendaftaran-santri.store");
 
+Route::group(['middleware' => ['auth', 'permission:membuat biografi']], function () {
+    Route::get("pendaftaran-santri", "PendaftaranSantriController@index")->name("pendaftaran.santri");
+});
+
+
+Route::get('/biografi', 'BiografiController@index')->name("biografi");
+Route::get("/getAllBiografi", "BiografiController@getAll");
+Route::group(['middleware' => ['auth', 'permission:membuat biografi']], function () {
+    Route::post('/biografi', 'BiografiController@store');
+    Route::delete("/biografi/{id}", "BiografiController@delete");
+    Route::put("/biografi/{id}", "BiografiController@update");
+});
 
 
 

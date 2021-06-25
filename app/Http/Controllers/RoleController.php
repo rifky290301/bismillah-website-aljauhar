@@ -60,10 +60,8 @@ class RoleController extends Controller
     {
         if (auth()->user()->hasRole('Super admin')) {
             $roles = $this->role->all();
-        } elseif (auth()->user()->hasRole('BPH')) {
-            $roles = $this->role->all();
-            // $roles = $this->role->where("id", "=", "1");
         }
+
         return response()->json([
             'roles' => $roles
         ], 200);

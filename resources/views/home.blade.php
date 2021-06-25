@@ -35,6 +35,7 @@ Home
         </div>
     </div>
     <!-- ./col -->
+    @can('melihat pendaftar')
     <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-warning">
@@ -48,6 +49,7 @@ Home
             <a href="{{route("pendaftaran.santri")}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
+    @endcan
     <!-- ./col -->
     <div class="col-lg-3 col-6">
         <!-- small box -->

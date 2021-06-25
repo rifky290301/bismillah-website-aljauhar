@@ -68827,3 +68827,21 @@ body {
   border-radius: 10px;
 }
 
+.alignMe b {
+  display: inline-block;
+  width: 50%;
+  position: relative;
+  padding-right: 10px;
+  /* Ensures colon does not overlay the text */
+}
+
+.alignMe b::after {
+  content: ":";
+  position: absolute;
+  right: 10px;
+}
+
+li {
+  text-decoration: none !important;
+}
+

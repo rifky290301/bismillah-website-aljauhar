@@ -73,10 +73,16 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+        Permission::create([
+            'name' => 'membuat biografi',
+            'guard_name' => 'web',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
 
-        $roleSuper->givePermissionTo(['create user', 'create permission', 'create role', 'membuat berita', 'membuat artikel', 'melihat pendaftar']);
+        $roleSuper->givePermissionTo(['create user', 'create permission', 'create role', 'membuat berita', 'membuat artikel', 'melihat pendaftar', 'membuat biografi']);
 
-        $roleBPH->givePermissionTo(['create user', 'membuat berita', 'membuat artikel', 'melihat pendaftar']);
+        $roleBPH->givePermissionTo(['create user', 'membuat berita', 'membuat artikel', 'melihat pendaftar', 'membuat biografi']);
 
         $roleSantri->givePermissionTo('membuat artikel');
 

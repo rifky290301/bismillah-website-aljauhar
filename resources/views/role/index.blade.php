@@ -32,7 +32,7 @@ Roles
                             @endforeach
                         </td>
                         <td>
-                            <a href="role/{{$role->id}}/edit" class="text-white btn btn-sm btn-warning">
+                            <a href="role/{{$role->id}}/edit" class="btn btn-sm btn-warning">
                                 <i class="fa fa-edit"></i> Edit
                             </a>
                         </td>

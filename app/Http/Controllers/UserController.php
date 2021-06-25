@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -19,7 +20,12 @@ class UserController extends Controller
 
     public function getAll()
     {
-        $users = User::latest()->get();
+        // filter tidak dapat menampilkan super admin
+        $santri = User::with('roles')->get();
+        $users = $santri->reject(function ($user, $key) {
+            return $user->hasRole('Super admin');
+        });
+
         if (auth()->user()->hasRole("Super admin")) {
             $idRole = 1;
         } elseif (auth()->user()->hasRole("BPH")) {
@@ -57,7 +63,11 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
 
-        $user->assignRole($request->role);
+        if ($request->role != null) {
+            $user->assignRole($request->role);
+        } else {
+            $user->assignRole('Santri');
+        }
 
         if ($request->has('permissions')) {
             $user->givePermissionTo($request->permissions);
@@ -119,12 +129,14 @@ class UserController extends Controller
 
     public function profile()
     {
-        return view("profile.index");
+        $photo = auth()->user()->photo;
+        return view("profile.index", compact("photo"));
     }
 
     public function postProfile(Request $request)
     {
-        $user = auth()->user();
+        // dd($request->file('photo'));
+        $user = auth()->user()->id;
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
@@ -133,9 +145,19 @@ class UserController extends Controller
             'instansi' => 'required',
             'alamat' => 'required',
             'tahun_masuk' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id
+            'email' => 'required|email|unique:users,email,' . $user
         ]);
-        $user->update($request->all());
+
+        $updateGambar = User::findOrFail($user);
+        $date = date('H-i-s');
+        $random = \Str::random(5);
+
+        if ($request->file('photo')) {
+            $request->file('photo')->move('upload/profil', $date . $random . $request->file('photo')->getClientOriginalName());
+            $updateGambar->photo = $date . $random . $request->file('photo')->getClientOriginalName();
+        }
+
+        $updateGambar->save();
         return redirect()->back()->with('success', 'Profile Successfully Updated');
     }
 

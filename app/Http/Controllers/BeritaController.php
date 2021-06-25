@@ -26,7 +26,6 @@ class BeritaController extends Controller
         ], 200);
     }
 
-
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -34,14 +33,61 @@ class BeritaController extends Controller
             'isi' => 'required',
         ]);
 
-        $berita = new Berita();
+        $artikel = new Berita();
 
-        $berita->user_id = auth()->user()->id;
-        $berita->judul = $request->judul;
-        $berita->isi = $request->isi;
+        $artikel->user_id = auth()->user()->id;
+        $artikel->judul = $request->judul;
+        $artikel->isi = $request->isi;
 
-        $berita->save();
+        $artikel->save();
 
-        return response()->json("Berita berhasil dibuat", 200);
+        return response()->json("Artikel berhasil dibuat", 200);
+    }
+
+    public function edit($id)
+    {
+        $berita = Berita::findOrFail($id);
+        return view('berita.show', compact('berita'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'judul' => 'required|string',
+            'isi' => 'required',
+        ]);
+
+        $artikel = Berita::findOrFail($id);
+
+        $artikel->user_id = auth()->user()->id;
+        $artikel->judul = $request->judul;
+        $artikel->isi = $request->isi;
+        $artikel->save();
+
+        return response()->json("Artikel berhasil diubah", 200);
+    }
+
+    public function delete($id)
+    {
+        $artikel = Berita::findOrFail($id);
+        $artikel->delete();
+        return response()->json('ok', 200);
+    }
+
+    public function update2(Request $request, $id)
+    {
+
+        $updateBerita = Berita::findOrFail($id);
+        $date = date('H-i-s');
+        $random = \Str::random(5);
+
+        if ($request->file('gambar_berita')) {
+            $request->file('gambar_berita')->move('upload/berita', $date . $random . $request->file('gambar_berita')->getClientOriginalName());
+            $updateBerita->dokumentasi = $date . $random . $request->file('gambar_berita')->getClientOriginalName();
+        }
+
+        $updateBerita->save();
+
+        return back();
     }
 }

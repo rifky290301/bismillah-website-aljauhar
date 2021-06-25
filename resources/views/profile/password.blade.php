@@ -6,7 +6,7 @@ Password
 
 @section('content')
 <section class="content">
-    <div class="card">
+    <div class=" card card-primary card-outline">
         <div class="card-header">
             <h4>Edit Profile</h4>
         </div>

@@ -4,8 +4,8 @@
       <div class="col-md-8">
         <div class="card" :class="!editMode ? 'card-primary' : 'card-success'">
           <div class="card-header">
-            <h3 class="card-title" v-if="!editMode">Membuat Bertia</h3>
-            <h3 class="card-title" v-if="editMode">Edit Bertia</h3>
+            <h3 class="card-title" v-if="!editMode">Membuat Berita</h3>
+            <h3 class="card-title" v-if="editMode">Edit Berita</h3>
           </div>
 
           <form @submit.prevent="!editMode ? createBerita() : updateBerita()">
@@ -24,22 +24,21 @@
               </div>
               <div class="form-group">
                 <label> Isi </label>
-                <textarea
+                <froala
                   id=""
+                  :tag="'textarea'"
+                  :config="config"
                   cols="30"
                   rows="10"
                   v-model="form.isi"
                   type="text"
                   name="isi"
-                  placeholder="Masukkan isi berita"
+                  placeholder="Masukkan isi artikel"
                   class="form-control"
                   :class="{ 'is-invaild': form.errors.has('isi') }"
                 >
-                </textarea>
+                </froala>
                 <has-error :form="form" field="isi"></has-error>
-              </div>
-              <div class="form-group">
-                <input type="file" name="dokumentasi" @change="upload" />
               </div>
               <button
                 type="submit"
@@ -61,7 +60,7 @@
       </div>
     </div>
     <div class="row d-flex">
-      <div class="col-md-6" v-for="berita in beritas" :key="berita.id">
+      <div class="col-md-6" v-for="berita in pageOfItems" :key="berita.id">
         <div class="card card-secondary">
           <div class="card-header">
             <label> Judul </label>
@@ -71,7 +70,6 @@
             <label> Isi </label>
             <p>{{ berita.isi }}</p>
           </div>
-
           <div class="card-footer">
             <div class="d-inline">{{ berita.created_by }}</div>
             <div class="d-inline float-right">
@@ -83,62 +81,89 @@
               </button>
               <button
                 class="btn btn-sm btn-danger text-white"
-                @click="deleteArtikel(berita)"
+                @click="deleteBerita(berita)"
               >
                 <i class="fa fa-trash"></i> Delete
               </button>
+              <!-- <a class="btn btn-sm btn-secondary text-white" :href="'berita/edit/' + berita.id"> -->
+              <a
+                :href="'berita/edit/' + berita.id"
+                class="btn btn-sm btn-secondary text-white"
+              >
+                <i class="fa fa-image"></i>
+                <span v-if="!berita.dokumentasi">Tambah Gambar</span>
+                <span v-else>Lihat Berita</span>
+              </a>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <center class="pb-0 pt-1">
+      <jw-pagination
+        :pageSize="4"
+        :items="beritas"
+        @changePage="onChangePage"
+        :labels="customLabels"
+      ></jw-pagination>
+    </center>
   </div>
 </template>
 
 <script>
+const customLabels = {
+  first: "<<",
+  last: ">>",
+  previous: "<",
+  next: ">",
+};
 export default {
   data() {
     return {
+      customLabels,
+      pageOfItems: [],
       berita: {},
       beritas: [],
       loading: false,
       editMode: false,
-      dokumentasi: null,
+
       form: new Form({
         id: "",
         judul: "",
         isi: "",
-        dokumentasi: "",
       }),
+
+      config: {
+        placeholder: "Edit Me",
+        events: {
+          "froalaEditor.focus": function (e, editor) {
+            console.log(editor.selection.get());
+          },
+        },
+      },
     };
   },
   methods: {
-    upload(e) {
-      let files = e.target.files[0];
-      this.dokumentasi = files;
-    },
-
     createMode() {
       this.editMode = false;
       this.form.reset();
     },
 
     createBerita() {
-      this.form.append("dokumentasi", this.dokumentasi);
-      console.log(this.form);
-      // this.load = false;
-      // this.form
-      //   .post("/berita")
-      //   .then((response) => {
-      //     this.load = true;
-      //     this.$toastr.s("Berita berhasil dibuat", "Created");
-      //     Fire.$emit("loadUser");
-      //     this.form.reset();
-      //   })
-      //   .catch(() => {
-      //     this.load = true;
-      //     this.$toastr.e("Gagal membuat berita, coba lagi", "Error");
-      //   });
+      this.load = false;
+      this.form
+        .post("/berita")
+        .then((response) => {
+          this.load = true;
+          this.$toastr.s("Berita berhasil dibuat", "Created");
+          Fire.$emit("loadUser");
+          $("#createUser").modal("hide");
+          this.form.reset();
+        })
+        .catch(() => {
+          this.load = true;
+          this.$toastr.e("gagal membuat berita, coba lagi", "Error");
+        });
     },
 
     editBerita(berita) {
@@ -152,13 +177,13 @@ export default {
         .put("/berita/" + this.form.id)
         .then((response) => {
           this.load = true;
-          this.$toastr.s("user information updated succefully", "Created");
+          this.$toastr.s("Berita berhasil diubah", "Created");
           Fire.$emit("loadUser");
           this.form.reset();
         })
         .catch(() => {
           this.load = true;
-          this.$toastr.e("Cannot update user information, try again", "Error");
+          this.$toastr.e("Tidak dapat mengupdate, coba lagi", "Error");
         });
       this.editMode = false;
     },
@@ -180,7 +205,7 @@ export default {
     deleteBerita(berita) {
       swal
         .fire({
-          title: "Are you sure?",
+          title: "apakah kamu yakin?",
           text: berita.judul + "akan dihapus secara permanen!",
           icon: "warning",
           showCancelButton: true,
@@ -202,7 +227,11 @@ export default {
           }
         });
     },
+    onChangePage(pageOfItems) {
+      this.pageOfItems = pageOfItems;
+    },
   },
+
   created() {
     this.getBerita();
     Fire.$on("loadUser", () => {
