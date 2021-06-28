@@ -19,7 +19,7 @@ Password
                             <div class="col-md-12">
 
                                 <div class="form-group">
-                                    <label for="newpassword">Enter New Password</label>
+                                    <label for="newpassword">Masukkan Password Baru</label>
                                     <input type="password" name="newpassword"  id="newpassword" class="form-control @error('newpassword') is-invalid @enderror" value="" required placeholder="New Password">
                                     @error('newpassword')
                                         <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@ Password
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="newpassword_confirmation">Confirm New Password</label>
+                                    <label for="newpassword_confirmation">Konfirmasi Password Baru</label>
                                     <input type="password" name="newpassword_confirmation"  id="newpassword_confirmation" class="form-control @error('newpassword_confirmation') is-invalid @enderror" value="" required placeholder="Confirm Password">
                                     @error('newpassword_confirmation')
                                         <span class="invalid-feedback" role="alert">
@@ -40,7 +40,7 @@ Password
                             </div>
                             <div class="col-12">
                                 <div class="form-group button">
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-lock"></i> Change Password</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-lock"></i> Ubah Password</button>
                                     {{--  <a role="button" href="admin/index.html" class="bizwheel-btn theme-2">Login</a>  --}}
                                 </div>
                             </div>

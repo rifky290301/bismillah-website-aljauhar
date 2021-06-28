@@ -169,7 +169,7 @@ export default {
         .put("/artikel/" + this.form.id)
         .then((response) => {
           this.load = true;
-          this.$toastr.s("Artikel berhasil diubah", "Created");
+          this.$toastr.s("Artikel berhasil diubah", "Updated");
           Fire.$emit("loadUser");
           this.form.reset();
         })

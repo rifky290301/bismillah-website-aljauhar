@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class AlumniController extends Controller
 {
+    private $photo = "";
     /**
      * Display a listing of the resource.
      *
@@ -64,10 +65,11 @@ class AlumniController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'nama' => 'required',
-            'tahun_masuk' => 'required|number',
-        ]);
+        // $this->validate($request, [
+        //     'nama' => 'required',
+        //     'tahun_masuk' => 'required|number',
+        //     'photo' => 'required|string|max:191|min:1',
+        // ]);
 
         $alumni = new Alumni();
 
@@ -79,6 +81,10 @@ class AlumniController extends Controller
         $alumni->pekerjaan = $request->pekerjaan;
         $alumni->status = $request->status;
         $alumni->motto = $request->motto;
+        if ($this->photo) {
+            $alumni->photo = $this->photo;
+            // $this->photo = "";
+        }
 
         $alumni->save();
 
@@ -99,6 +105,9 @@ class AlumniController extends Controller
         $alumni->tahun_keluar = $request->tahun_keluar;
         $alumni->no_hp = $request->no_hp;
         $alumni->no_kamar = $request->no_kamar;
+        if ($request->photo != null) {
+            $alumni->photo = $request->photo;
+        }
 
 
         $alumni->save();
@@ -148,5 +157,16 @@ class AlumniController extends Controller
         return response()->json([
             'users' => $alumni
         ], 200);
+    }
+
+    public function upload(Request $request, $id)
+    {
+        $date = date('H-i-s');
+        $random = \Str::random(5);
+        $alumni = Alumni::findOrFail($id);
+        $request->file('photo')->move('upload/alumni', $date . $random . $request->file('photo')->getClientOriginalName());
+        $alumni->photo = $date . $random . $request->file('photo')->getClientOriginalName();
+        // return $name;
+        $alumni->save();
     }
 }

@@ -164,26 +164,88 @@
               <td>{{ user.no_hp }}</td>
               <td>{{ user.no_kamar }}</td>
               <td>
-                <button
-                  class="text-white btn btn-sm btn-info"
-                  @click="viewUser(user)"
+                <div class="">
+                  <button
+                    class="text-white btn btn-sm btn-warning"
+                    v-show="idRole != 3"
+                    @click="editUser(user)"
+                  >
+                    <i class="fa fa-edit"></i> Edit
+                  </button>
+                  <button
+                    v-show="idRole != 3"
+                    class="btn btn-sm btn-danger"
+                    @click="deleteUser(user)"
+                  >
+                    <i class="fa fa-trash"></i> Delete
+                  </button>
+                </div>
+                <div class="mt-1">
+                  <button
+                    class="text-white btn btn-sm btn-info"
+                    @click="viewUser(user)"
+                  >
+                    <i class="fa fa-eye"></i> View
+                  </button>
+                  <button
+                    v-show="!user.photo"
+                    class="btn btn-sm btn-success"
+                    @click="upPhoto(user)"
+                  >
+                    <i class="fa fa-image"></i> Photo
+                  </button>
+                </div>
+              </td>
+              <td>
+                <!-- Modal -->
+                <div
+                  class="modal fade"
+                  id="uploadImg"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="viewUserModalLabel"
+                  aria-hidden="true"
                 >
-                  <i class="fa fa-eye"></i> View
-                </button>
-                <button
-                  class="text-white btn btn-sm btn-warning"
-                  v-show="idRole != 3"
-                  @click="editUser(user)"
-                >
-                  <i class="fa fa-edit"></i> Edit
-                </button>
-                <button
-                  v-show="idRole != 3"
-                  class="btn btn-sm btn-danger"
-                  @click="deleteUser(user)"
-                >
-                  <i class="fa fa-trash"></i> Delete
-                </button>
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                          Upload Foto Alumni
+                        </h5>
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <template>
+                          <Upload
+                            multiple
+                            type="drag"
+                            :action="/photo-alumni/ + idUser"
+                            :headers="{ 'x-csrf-token': token }"
+                            name="photo"
+                            v-model="form.photo"
+                          >
+                            <div style="padding: 20px 0">
+                              <Icon
+                                type="ios-cloud-upload"
+                                size="52"
+                                style="color: #3399ff"
+                              ></Icon>
+                              <p>Click or drag files here to upload</p>
+                            </div>
+                          </Upload>
+                        </template>
+                      </div>
+                      <div class="modal-footer"></div>
+                    </div>
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -224,7 +286,7 @@
               </div>
 
               <div class="">
-                <!-- <img :src="img" class="img-thumbnail" /> -->
+                <img :src="img" class="img-thumbnail" />
               </div>
             </div>
           </div>
@@ -365,6 +427,28 @@
                 />
                 <has-error :form="form" field="motto"></has-error>
               </div>
+              <div class="form-group">
+                <label> Foto Alumni </label>
+                <template>
+                  <Upload
+                    multiple
+                    type="drag"
+                    action="/photo-alumni"
+                    :headers="{ 'x-csrf-token': token }"
+                    name="photo"
+                    v-model="form.photo"
+                  >
+                    <div style="padding: 20px 0">
+                      <Icon
+                        type="ios-cloud-upload"
+                        size="52"
+                        style="color: #3399ff"
+                      ></Icon>
+                      <p>Click or drag files here to upload</p>
+                    </div>
+                  </Upload>
+                </template>
+              </div>
             </div>
             <div class="modal-footer justify-content-between">
               <button
@@ -420,7 +504,7 @@ export default {
       loading: false,
       editMode: false,
       load: true,
-      img: "/img/logo.png",
+      img: "",
       user: {},
       users: [],
       roles: [],
@@ -428,6 +512,8 @@ export default {
       idRole: "",
       kamar: {},
       tahunMasuk: {},
+      token: "",
+      idUser: "",
       form: new Form({
         id: "",
         nama: "",
@@ -460,6 +546,8 @@ export default {
         });
     },
     createMode() {
+      this.token = window.Laravel.csrfToken;
+      // console.log(this.token);
       this.editMode = false;
       $("#createUser").modal("show");
     },
@@ -552,7 +640,7 @@ export default {
     },
     viewUser(user) {
       $("#viewUser").modal("show");
-      this.img = "http://localhost:8000/img/" + user.photo;
+      this.img = "http://localhost:8000/" + "upload/alumni/" + user.photo;
       this.user = user;
     },
 
@@ -581,7 +669,7 @@ export default {
         .put("/alumni/" + this.form.id)
         .then((response) => {
           this.load = true;
-          this.$toastr.s("Data berhasil di update", "Update");
+          this.$toastr.s("Data berhasil di update", "Updated");
           Fire.$emit("loadUser");
           $("#createUser").modal("hide");
           this.form.reset();
@@ -593,6 +681,12 @@ export default {
     },
     onChangePage(pageOfItems) {
       this.pageOfItems = pageOfItems;
+    },
+
+    upPhoto(user) {
+      $("#uploadImg").modal("show");
+      this.idUser = user.id;
+      this.token = window.Laravel.csrfToken;
     },
   },
   created() {

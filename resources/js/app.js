@@ -56,6 +56,9 @@ require('froala-editor/css/froala_style.min.css')
 import VueFroala from 'vue-froala-wysiwyg'
 Vue.use(VueFroala)
 
+import ViewDesign from 'view-design'
+import 'view-design/dist/styles/iview.css';
+Vue.use(ViewDesign)
 
 
 Vue.component(HasError.name, HasError)

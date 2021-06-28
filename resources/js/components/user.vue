@@ -358,7 +358,7 @@ export default {
       loading: false,
       editMode: false,
       load: true,
-      img: "/img/avatar.jpg",
+      img: "",
       user: {},
       users: [],
       roles: [],
@@ -473,7 +473,7 @@ export default {
     },
     viewUser(user) {
       $("#viewUser").modal("show");
-      // this.img = "http://localhost:8000/img/" + user.photo;
+      this.img = "http://localhost:8000/" + "upload/profil/" + user.photo;
       this.user = user;
     },
     getRoles() {

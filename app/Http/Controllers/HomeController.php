@@ -32,6 +32,7 @@ class HomeController extends Controller
         $jumlah_alumni = count(Alumni::get());
         $jumlah_registrasi = count(PendaftaranSantri::get());
         $jumlah_artikel = count(Artikel::get());
-        return view('home', compact("jumlah_santri", "jumlah_alumni", "jumlah_registrasi", "jumlah_artikel"));
+        $jumlah_berita = count(Berita::get());
+        return view('home', compact("jumlah_santri", "jumlah_berita", "jumlah_alumni", "jumlah_registrasi", "jumlah_artikel"));
     }
 }

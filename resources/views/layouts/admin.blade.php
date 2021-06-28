@@ -23,6 +23,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script>
+        (function () {
+            window.Laravel={
+                csrfToken: '{{ csrf_token() }}'
+            };
+          })();
+    </script>
 </head>
 <body class="sidebar-mini" style="height: auto;">
     <div class="wrapper" id="app">
@@ -77,7 +85,7 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('img/avatar.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset("upload/profil/".auth()->user()->photo) }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="{{route("user.profile")}}" class="d-block">{{ auth()->user()->name }}</a>
@@ -169,10 +177,10 @@
                         @endcan
 
                         <li class="nav-item">
-                            <a href="{{ route('userGetPassword') }}" class="nav-link {{ request()->is('/password/change') ? 'active' : ''}}">
+                            <a href="{{ route('userGetPassword') }}" class="nav-link {{ request()->is('password/change') ? 'active' : ''}}">
                                 <i class="fas fa-lock nav-icon"></i>
                                 <p>
-                                    Change Password
+                                    Ganti Password
                                 </p>
                             </a>
                         </li>

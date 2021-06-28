@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth', 'permission:create user']], function () {
     Route::post("/alumni", "AlumniController@store");
     Route::put("/alumni/{id}", "AlumniController@update");
     Route::delete("/alumni/{id}", "AlumniController@delete");
+    Route::post("/photo-alumni/{id}", "AlumniController@upload");
 });
 
 Route::group(['middleware' => ['auth', 'permission:membuat berita']], function () {
