@@ -188,7 +188,7 @@
                     <i class="fa fa-eye"></i> View
                   </button>
                   <button
-                    v-show="!user.photo"
+                    v-show="!user.photo && idRole != 3"
                     class="btn btn-sm btn-success"
                     @click="upPhoto(user)"
                   >
