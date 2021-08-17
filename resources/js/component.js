@@ -17,3 +17,5 @@ Vue.component('profile', require('./components/profile.vue').default);
 Vue.component('biografi', require('./components/biografi.vue').default);
 
 Vue.component('tes', require('./components/tes.vue').default);
+
+Vue.component('santri', require('./components/santri.vue').default);

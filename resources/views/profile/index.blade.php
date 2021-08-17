@@ -13,7 +13,11 @@ Profile
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img style="width: 200px;" class="profile-user-img img-fluid img-circle" src="{{ asset("upload/profil/".$photo) }}" alt="{{ auth()->user()->name . ' Photo' }}">
+                            @if (auth()->user()->photo == 'avatar.jpg' && auth()->user()->photo )
+                                <img src="{{ asset("img/user.svg") }}" style="width: 200px;" class=" img-fluid rounded" alt="User Image">
+                            @else
+                                <img src="{{ asset("upload/profil/".auth()->user()->photo) }}" style="width: 200px;" class=" img-fluid rounded" alt="User Image">
+                            @endif
                         </div>
 
                         <h3 class="profile-username text-center" style="text-transform: uppercase">{{ auth()->user()->name }} </h3>

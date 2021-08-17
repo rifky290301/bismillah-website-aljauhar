@@ -12,7 +12,7 @@
             v-show="idRole != 3"
             @click="createMode"
           >
-            <i class="fas fa-plus-circle"></i> Add New
+            <i class="fas fa-plus-circle"></i> Tambah data
           </button>
         </div>
         <div class="float-right mr-2">
@@ -24,17 +24,20 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Kamar
+              Show
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-              <button
-                class="dropdown-item"
-                v-for="item in kamar"
-                :key="item.index"
-                name="table_search"
-                @click="searchKamar(item.index)"
-              >
-                {{ item.index }}
+              <button class="dropdown-item" @click="dataPerHalaman(5)">
+                5
+              </button>
+              <button class="dropdown-item" @click="dataPerHalaman(10)">
+                10
+              </button>
+              <button class="dropdown-item" @click="dataPerHalaman(20)">
+                20
+              </button>
+              <button class="dropdown-item" @click="dataPerHalaman(50)">
+                50
               </button>
             </div>
           </div>
@@ -48,9 +51,40 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Tahun Masuk
+              Kamar
             </button>
-            <div class="dropdown-menu">
+            <div
+              style="overflow-y: auto; max-height: 50vh"
+              class="dropdown-menu dropdown-menu-right"
+            >
+              <button
+                class="dropdown-item"
+                v-for="n in 25"
+                :key="n"
+                name="table_search"
+                @click="searchKamar(n)"
+              >
+                {{ n }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="float-right mr-2">
+          <div class="btn-group">
+            <button
+              class="btn btn-secondary btn-sm dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Masuk
+            </button>
+            <div
+              class="dropdown-menu"
+              style="overflow-y: auto; max-height: 50vh"
+            >
               <button
                 class="dropdown-item"
                 v-for="item in tahunMasuk"
@@ -124,15 +158,13 @@
               </template>
             </li>
             <li class="nav-item">
-              <div class="input-group input-group-sm" style="width: 350px">
+              <div class="input-group input-group-sm">
                 <input
                   type="text"
                   name="table_search"
-                  v-model="searchWord"
+                  v-model="filters.title.value"
                   class="form-control"
-                  placeholder="Search by name, email"
-                  @keypress="search"
-                  @keyup="search"
+                  placeholder="Search"
                   autofocus
                 />
               </div>
@@ -142,126 +174,133 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body table-responsive p-0">
-        <table class="table">
-          <thead>
+        <v-table
+          :data="users"
+          :filters="filters"
+          :currentPage.sync="currentPage"
+          :pageSize="dataPerPage"
+          :hideSortIcons="false"
+          @totalPagesChanged="totalPages = $event"
+          class="table"
+        >
+          <thead slot="head">
             <tr>
               <th>#</th>
-              <th>Nama</th>
-              <th>Tahun Masuk</th>
-              <th>Tahun Keluar</th>
-              <th>Nomor HP</th>
-              <th>Nomor Kamar</th>
+              <th>Profil</th>
+              <v-th sortKey="nama" defaultSort="asc">Nama</v-th>
+              <v-th sortKey="tahun_masuk">Masuk</v-th>
+              <v-th sortKey="tahun_keluar">Keluar</v-th>
+              <v-th sortKey="no_hp">Nomor HP</v-th>
+              <v-th sortKey="no_kamar">Kamar</v-th>
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="(user, index) in pageOfItems" :key="user.id">
+          <tbody slot="body" slot-scope="{ displayData }">
+            <tr v-for="(user, index) in displayData" :key="user.id">
               <!-- <tr v-for="(number, item) in users | filterBy nama in 'nama' | limitBy count offset" :key="user.id"> -->
               <td>{{ index + 1 }}</td>
+              <td>
+                <img
+                  :src="'upload/alumni/' + user.photo"
+                  style="height: 30px"
+                />
+              </td>
               <td>{{ user.nama }}</td>
               <td>{{ user.tahun_masuk }}</td>
               <td>{{ user.tahun_keluar }}</td>
               <td>{{ user.no_hp }}</td>
               <td>{{ user.no_kamar }}</td>
               <td>
-                <div class="">
+                <div style="width: 9rem" class="">
                   <button
                     class="text-white btn btn-sm btn-warning"
                     v-show="idRole != 3"
                     @click="editUser(user)"
                   >
-                    <i class="fa fa-edit"></i> Edit
+                    <i class="fa fa-edit"></i>
                   </button>
                   <button
                     v-show="idRole != 3"
                     class="btn btn-sm btn-danger"
                     @click="deleteUser(user)"
                   >
-                    <i class="fa fa-trash"></i> Delete
+                    <i class="fa fa-trash"></i>
                   </button>
-                </div>
-                <div class="mt-1">
                   <button
                     class="text-white btn btn-sm btn-info"
                     @click="viewUser(user)"
                   >
-                    <i class="fa fa-eye"></i> View
+                    <i class="fa fa-eye"></i>
                   </button>
                   <button
-                    v-show="!user.photo && idRole != 3"
+                    v-show="idRole != 3"
                     class="btn btn-sm btn-success"
                     @click="upPhoto(user)"
                   >
-                    <i class="fa fa-image"></i> Photo
+                    <i class="fa fa-image"></i>
                   </button>
-                </div>
-              </td>
-              <td>
-                <!-- Modal -->
-                <div
-                  class="modal fade"
-                  id="uploadImg"
-                  tabindex="-1"
-                  role="dialog"
-                  aria-labelledby="viewUserModalLabel"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                          Upload Foto Alumni
-                        </h5>
-                        <button
-                          type="button"
-                          class="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <template>
-                          <Upload
-                            multiple
-                            type="drag"
-                            :action="/photo-alumni/ + idUser"
-                            :headers="{ 'x-csrf-token': token }"
-                            name="photo"
-                            v-model="form.photo"
-                          >
-                            <div style="padding: 20px 0">
-                              <Icon
-                                type="ios-cloud-upload"
-                                size="52"
-                                style="color: #3399ff"
-                              ></Icon>
-                              <p>Click or drag files here to upload</p>
-                            </div>
-                          </Upload>
-                        </template>
-                      </div>
-                      <div class="modal-footer"></div>
-                    </div>
-                  </div>
                 </div>
               </td>
             </tr>
           </tbody>
-        </table>
+        </v-table>
+        <center class="d-flex justify-content-center mb-2">
+          <smart-pagination
+            :currentPage.sync="currentPage"
+            :totalPages="totalPages"
+          />
+        </center>
       </div>
-      <center class="card-footer pb-0 pt-1">
-        <jw-pagination
-          :pageSize="10"
-          :items="users"
-          @changePage="onChangePage"
-          :labels="customLabels"
-        ></jw-pagination>
-      </center>
-      <!-- <loading :loading="loading"></loading> -->
     </div>
-
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="uploadImg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="viewUserModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Upload Foto Alumni
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <template>
+              <Upload
+                multiple
+                type="drag"
+                :action="/photo-alumni/ + idUser"
+                :headers="{ 'x-csrf-token': token }"
+                name="photo"
+                v-model="form.photo"
+              >
+                <div style="padding: 20px 0">
+                  <Icon
+                    type="ios-cloud-upload"
+                    size="52"
+                    style="color: #3399ff"
+                  ></Icon>
+                  <p>Click or drag files here to upload</p>
+                </div>
+              </Upload>
+            </template>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
     <div
       class="modal fade"
       id="viewUser"
@@ -280,7 +319,7 @@
                 <li><b>Tahun Keluar</b> {{ user.tahun_keluar }}</li>
                 <li><b>Nomor HP</b> {{ user.no_hp }}</li>
                 <li><b>Nomor Kamar</b> {{ user.no_kamar }}</li>
-                <li><b>Pekerjaan</b> {{ user.no_kamar }}</li>
+                <li><b>Pekerjaan</b> {{ user.pekerjaan }}</li>
                 <li><b>Status</b> {{ user.status }}</li>
                 <li><b>Motto</b> {{ user.motto }}</li>
               </div>
@@ -313,7 +352,7 @@
               Tambahkan Data Alumni
             </h5>
             <h5 class="modal-title" id="createUserModalLabel" v-show="editMode">
-              Edit User
+              Edit Data Almuni
             </h5>
             <button
               type="button"
@@ -379,7 +418,7 @@
                 <label> Nomor Kamar </label>
                 <input
                   v-model="form.no_kamar"
-                  type="text"
+                  type="number"
                   name="no_kamar"
                   placeholder="Nomor Kamar"
                   class="form-control"
@@ -427,56 +466,29 @@
                 />
                 <has-error :form="form" field="motto"></has-error>
               </div>
-              <div class="form-group">
-                <label> Foto Alumni </label>
-                <template>
-                  <Upload
-                    multiple
-                    type="drag"
-                    action="/photo-alumni"
-                    :headers="{ 'x-csrf-token': token }"
-                    name="photo"
-                    v-model="form.photo"
-                  >
-                    <div style="padding: 20px 0">
-                      <Icon
-                        type="ios-cloud-upload"
-                        size="52"
-                        style="color: #3399ff"
-                      ></Icon>
-                      <p>Click or drag files here to upload</p>
-                    </div>
-                  </Upload>
-                </template>
-              </div>
             </div>
-            <div class="modal-footer justify-content-between">
+            <div class="d-flex justify-content-between">
               <button
                 type="button"
                 class="btn btn-lg btn-danger"
                 data-dismiss="modal"
               >
-                Close
+                batal
               </button>
-              <b-button variant="primary" v-if="!load" class="btn-lg" disabled>
-                <b-spinner small type="grow"></b-spinner>
-                {{ action }}
-              </b-button>
+
               <button
                 type="submit"
-                v-if="load"
                 v-show="!editMode"
                 class="btn btn-lg btn-primary"
               >
-                Save
+                Simpan
               </button>
               <button
                 type="submit"
-                v-if="load"
                 v-show="editMode"
                 class="btn btn-lg btn-success"
               >
-                Update User
+                Ubah
               </button>
             </div>
           </form>
@@ -487,30 +499,24 @@
 </template>
 
 <script>
-const customLabels = {
-  first: "<<",
-  last: ">>",
-  previous: "<",
-  next: ">",
-};
-
 export default {
   data() {
     return {
-      customLabels,
+      // smart table
+      dataPerPage: 10,
+      currentPage: 1,
+      totalPages: 0,
+      // smart table
       pageOfItems: [],
-      action: "",
       searchWord: "",
       loading: false,
       editMode: false,
-      load: true,
       img: "",
       user: {},
       users: [],
       roles: [],
       permissions: [],
       idRole: "",
-      kamar: {},
       tahunMasuk: {},
       token: "",
       idUser: "",
@@ -526,30 +532,33 @@ export default {
         motto: "",
         photo: "",
       }),
+      filters: {
+        title: {
+          value: "",
+          keys: [
+            "nomor",
+            "nama",
+            "tahun_masuk",
+            "no_hp",
+            "no_kamar",
+            "pekerjaan",
+            "status",
+            "motto",
+          ],
+        },
+      },
     };
   },
   methods: {
-    search() {
-      this.loading = true;
-      axios
-        .get("/alumni/search?s=" + this.searchWord)
-        .then((response) => {
-          this.loading = false;
-          this.users = response.data.users;
-        })
-        .catch(() => {
-          this.loading = false;
-          toast.fire({
-            icon: "error",
-            title: "search failed",
-          });
-        });
+    dataPerHalaman(input) {
+      this.dataPerPage = input;
     },
+
     createMode() {
       this.token = window.Laravel.csrfToken;
-      // console.log(this.token);
       this.editMode = false;
       $("#createUser").modal("show");
+      this.form.reset();
     },
 
     searchKamar(nomor) {
@@ -589,20 +598,20 @@ export default {
     deleteUser(user) {
       swal
         .fire({
-          title: "Are you sure?",
+          title: "Apakah kamu yakin?",
           text: user.nama + " akan dihapus!",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "delete",
+          confirmButtonText: "Hapus",
         })
         .then((result) => {
           if (result.value) {
             axios
               .delete("/alumni/" + user.id)
               .then(() => {
-                this.$toastr.s("Data berhasil dihapus", "Delete");
+                this.$toastr.s("Data Alumni berhasil dihapus", "Delete");
                 Fire.$emit("loadUser");
               })
               .catch(() => {
@@ -630,7 +639,6 @@ export default {
           this.loading = false;
           this.users = response.data.users;
           this.idRole = response.data.idRole;
-          this.kamar = response.data.kamar;
           this.tahunMasuk = response.data.tahun_masuk;
         })
         .catch(() => {
@@ -640,42 +648,39 @@ export default {
     },
     viewUser(user) {
       $("#viewUser").modal("show");
-      this.img = "http://localhost:8000/" + "upload/alumni/" + user.photo;
+      if (user.photo == null) {
+        this.img = baseUrl + "/img/default-image.png";
+      } else {
+        this.img = baseUrl + "/upload/alumni/" + user.photo;
+      }
       this.user = user;
+      console.log(this.img);
     },
 
     createUser() {
-      this.action = "Menambahkan data ...";
-      this.load = false;
       this.form
         .post("/alumni")
         .then((response) => {
-          this.load = true;
           this.$toastr.s("Data berhasil ditambahkan", "Created");
           Fire.$emit("loadUser");
           $("#createUser").modal("hide");
           this.form.reset();
         })
         .catch(() => {
-          this.load = true;
           this.$toastr.e("Cannot create user, try again", "Error");
         });
     },
 
     updateUser() {
-      this.action = "Update data ...";
-      this.load = false;
       this.form
         .put("/alumni/" + this.form.id)
         .then((response) => {
-          this.load = true;
           this.$toastr.s("Data berhasil di update", "Updated");
           Fire.$emit("loadUser");
           $("#createUser").modal("hide");
           this.form.reset();
         })
         .catch(() => {
-          this.load = true;
           this.$toastr.e("Cannot update user information, try again", "Error");
         });
     },

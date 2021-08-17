@@ -1,8 +1,11 @@
 <template>
   <div class="">
     <div class="row">
-      <div class="col-md-8">
-        <div class="card" :class="!editMode ? 'card-primary' : 'card-success'">
+      <div class="col-md-12">
+        <div
+          class="card card-outline"
+          :class="!editMode ? 'card-primary' : 'card-success'"
+        >
           <div class="card-header">
             <h3 class="card-title" v-if="!editMode">Membuat Berita</h3>
             <h3 class="card-title" v-if="editMode">Edit Berita</h3>
@@ -24,20 +27,7 @@
               </div>
               <div class="form-group">
                 <label> Isi </label>
-                <froala
-                  id=""
-                  :tag="'textarea'"
-                  :config="config"
-                  cols="30"
-                  rows="10"
-                  v-model="form.isi"
-                  type="text"
-                  name="isi"
-                  placeholder="Masukkan isi artikel"
-                  class="form-control"
-                  :class="{ 'is-invaild': form.errors.has('isi') }"
-                >
-                </froala>
+                <ckeditor v-model="form.isi" value="Tulis biografi"></ckeditor>
                 <has-error :form="form" field="isi"></has-error>
               </div>
               <button
@@ -45,100 +35,104 @@
                 v-show="!editMode"
                 class="btn btn-lg btn-primary"
               >
-                Save
+                Simpan
               </button>
               <button
                 type="submit"
                 v-show="editMode"
                 class="btn btn-lg btn-success"
               >
-                Update
+                Ubah
               </button>
             </div>
           </form>
         </div>
       </div>
     </div>
-    <div class="row d-flex">
-      <div class="col-md-6" v-for="berita in pageOfItems" :key="berita.id">
-        <div class="card card-secondary">
-          <div class="card-header">
-            <label> Judul </label>
-            <p>{{ berita.judul }}</p>
-          </div>
-          <div class="card-body">
-            <label> Isi </label>
-            <p v-html="berita.isi"></p>
-          </div>
-          <div class="card-footer">
-            <div class="d-inline">{{ berita.created_by }}</div>
-            <div class="d-inline float-right">
-              <button
-                class="btn btn-sm btn-warning text-white"
-                @click="editBerita(berita)"
-              >
-                <i class="fa fa-edit"></i> Edit
-              </button>
-              <button
-                class="btn btn-sm btn-danger text-white"
-                @click="deleteBerita(berita)"
-              >
-                <i class="fa fa-trash"></i> Delete
-              </button>
-              <!-- <a class="btn btn-sm btn-secondary text-white" :href="'berita/edit/' + berita.id"> -->
-              <a
-                :href="'berita/edit/' + berita.id"
-                class="btn btn-sm btn-secondary text-white"
-              >
-                <i class="fa fa-image"></i>
-                <span v-if="!berita.dokumentasi">Tambah Gambar</span>
-                <span v-else>Lihat Berita</span>
-              </a>
-            </div>
-          </div>
+
+    <div class="card">
+      <div class="container-fluid">
+        <div class="card-body table-responsive p-0">
+          <v-table
+            :data="beritas"
+            :filters="filters"
+            :currentPage.sync="currentPage"
+            :pageSize="dataPerPage"
+            :hideSortIcons="false"
+            @totalPagesChanged="totalPages = $event"
+            class="table"
+          >
+            <thead slot="head">
+              <tr>
+                <th>#</th>
+                <v-th sortKey="judul">Judul</v-th>
+                <th>Artikel</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody slot="body" slot-scope="{ displayData }">
+              <tr v-for="(row, index) in displayData" :key="row.id">
+                <td>{{ index + 1 }}</td>
+
+                <td>{{ row.judul }}</td>
+                <td v-html="row.isi"></td>
+
+                <td>
+                  <div style="width: 9rem" class="">
+                    <button
+                      class="text-white btn btn-sm btn-warning"
+                      @click="editBerita(row)"
+                    >
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger"
+                      @click="deleteBerita(row)"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+          <center class="d-flex justify-content-center mb-2">
+            <smart-pagination
+              :currentPage.sync="currentPage"
+              :totalPages="totalPages"
+            />
+          </center>
         </div>
       </div>
     </div>
-    <center class="pb-0 pt-1">
-      <jw-pagination
-        :pageSize="4"
-        :items="beritas"
-        @changePage="onChangePage"
-        :labels="customLabels"
-      ></jw-pagination>
-    </center>
   </div>
 </template>
 
 <script>
-const customLabels = {
-  first: "<<",
-  last: ">>",
-  previous: "<",
-  next: ">",
-};
 export default {
   data() {
     return {
-      customLabels,
+      // smart table
+      dataPerPage: 10,
+      currentPage: 1,
+      totalPages: 0,
+      // smart table
       pageOfItems: [],
       berita: {},
       beritas: [],
       loading: false,
       editMode: false,
+      gambarBerita: "",
 
       form: new Form({
         id: "",
         judul: "",
         isi: "",
       }),
-
-      config: {
-        placeholder: "Edit Me",
-        events: {
-          "froalaEditor.focus": function (e, editor) {
-            console.log(editor.selection.get());
-          },
+      filters: {
+        title: {
+          value: "",
+          keys: ["judul"],
         },
       },
     };
@@ -150,7 +144,6 @@ export default {
     },
 
     createBerita() {
-      this.load = false;
       this.form
         .post("/berita")
         .then((response) => {
@@ -182,7 +175,6 @@ export default {
           this.form.reset();
         })
         .catch(() => {
-          this.load = true;
           this.$toastr.e("Tidak dapat mengupdate, coba lagi", "Error");
         });
       this.editMode = false;

@@ -16,17 +16,15 @@ class ArtikelController extends Controller
     public function getAll()
     {
         if (auth()->user()->hasRole('Super admin') || auth()->user()->hasRole('BPH')) {
-            $artikels = Artikel::latest()->get();
+            $idRole = 3;
+            $artikels = Artikel::with("user")->latest()->get();
         } else {
             $id = auth()->user()->id;
-            $artikels = Artikel::where('user_id', "=", $id)->latest()->get();
+            $artikels = Artikel::where('user_id', "=", $id)->with("user")->latest()->get();
         }
-        for ($i = 0; $i < count($artikels); $i++) {
-            $artikels[$i]["created_by"] =  User::findOrFail($artikels[$i]["user_id"])->name;
-        }
-
         return response()->json([
-            'artikels' => $artikels
+            'artikels' => $artikels,
+            'idRole' => $idRole
         ], 200);
     }
 

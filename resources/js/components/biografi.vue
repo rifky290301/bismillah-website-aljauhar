@@ -1,14 +1,16 @@
 <template>
   <div class="">
     <div class="row">
-      <div class="col-md-8">
-        <div class="card" :class="!editMode ? 'card-primary' : 'card-success'">
+      <div class="col-md-12">
+        <div
+          class="card card-outline"
+          :class="!editMode ? 'card-primary' : 'card-success'"
+        >
           <div class="card-header">
             <h3 class="card-title" v-if="!editMode">Membuat Biografi</h3>
             <h3 class="card-title" v-if="editMode">Edit Biografi</h3>
           </div>
 
-          <!-- <form @submit.prevent="createArtikel()"> -->
           <form
             @submit.prevent="!editMode ? createBiografi() : updateBiografi()"
           >
@@ -27,20 +29,12 @@
               </div>
               <div class="form-group">
                 <label> Biografi </label>
-                <froala
-                  id=""
-                  :tag="'textarea'"
-                  :config="config"
-                  cols="30"
-                  rows="10"
+
+                <ckeditor
                   v-model="form.biografi"
-                  type="text"
-                  name="isi"
-                  placeholder="Masukkan isi biografi"
-                  class="form-control"
-                  :class="{ 'is-invaild': form.errors.has('biografi') }"
-                >
-                </froala>
+                  value="Tulis biografi"
+                  aria-placeholder="Tulis biografi"
+                ></ckeditor>
                 <has-error :form="form" field="biografi"></has-error>
               </div>
               <button
@@ -48,73 +42,90 @@
                 v-show="!editMode"
                 class="btn btn-lg btn-primary"
               >
-                Save
+                Simpan
               </button>
               <button
                 type="submit"
                 v-show="editMode"
                 class="btn btn-lg btn-success"
               >
-                Update
+                Ubah
               </button>
             </div>
           </form>
         </div>
       </div>
     </div>
-    <div class="row d-flex">
-      <div class="col-md-6" v-for="biografi in pageOfItems" :key="biografi.id">
-        <div class="card card-secondary">
-          <div class="card-header">
-            <label> Nama </label>
-            <p>{{ biografi.nama }}</p>
-          </div>
-          <div class="card-body">
-            <label> Biografi </label>
-            <p v-html="biografi.biografi"></p>
-          </div>
-          <div class="card-footer">
-            <div class="d-inline">{{ biografi.created_by }}</div>
-            <div class="d-inline float-right">
-              <button
-                class="btn btn-sm btn-warning text-white"
-                @click="editBiografi(biografi)"
-              >
-                <i class="fa fa-edit"></i> Edit
-              </button>
-              <button
-                class="btn btn-sm btn-danger text-white"
-                @click="deleteBiografi(biografi)"
-              >
-                <i class="fa fa-trash"></i> Delete
-              </button>
-            </div>
-          </div>
+
+    <div class="card">
+      <div class="container-fluid">
+        <div class="card-body table-responsive p-0">
+          <v-table
+            :data="biografis"
+            :filters="filters"
+            :currentPage.sync="currentPage"
+            :pageSize="dataPerPage"
+            :hideSortIcons="false"
+            @totalPagesChanged="totalPages = $event"
+            class="table"
+          >
+            <thead slot="head">
+              <tr>
+                <th>#</th>
+                <v-th sortKey="nama">Nama</v-th>
+                <th>Biografi</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody slot="body" slot-scope="{ displayData }">
+              <tr v-for="(row, index) in displayData" :key="row.id">
+                <td>{{ index + 1 }}</td>
+
+                <td>{{ row.nama }}</td>
+                <td v-html="row.biografi"></td>
+
+                <td>
+                  <div style="width: 9rem" class="">
+                    <button
+                      class="text-white btn btn-sm btn-warning"
+                      v-show="idRole != 3"
+                      @click="editBiografi(row)"
+                    >
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button
+                      v-show="idRole != 3"
+                      class="btn btn-sm btn-danger"
+                      @click="deleteBiografi(row)"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+          <center class="d-flex justify-content-center mb-2">
+            <smart-pagination
+              :currentPage.sync="currentPage"
+              :totalPages="totalPages"
+            />
+          </center>
         </div>
       </div>
     </div>
-    <center class="pb-0 pt-1">
-      <jw-pagination
-        :pageSize="4"
-        :items="biografis"
-        @changePage="onChangePage"
-        :labels="customLabels"
-      ></jw-pagination>
-    </center>
   </div>
 </template>
 
 <script>
-const customLabels = {
-  first: "<<",
-  last: ">>",
-  previous: "<",
-  next: ">",
-};
 export default {
   data() {
     return {
-      customLabels,
+      // smart table
+      dataPerPage: 5,
+      currentPage: 1,
+      totalPages: 0,
+      // smart table
       pageOfItems: [],
       biografi: {},
       biografis: [],
@@ -126,12 +137,10 @@ export default {
         nama: "",
         biografi: "",
       }),
-      config: {
-        placeholder: "Edit Me",
-        events: {
-          "froalaEditor.focus": function (e, editor) {
-            console.log(editor.selection.get());
-          },
+      filters: {
+        title: {
+          value: "",
+          keys: ["nama"],
         },
       },
     };
@@ -143,8 +152,6 @@ export default {
     },
 
     createBiografi() {
-      this.action = "Creating user ...";
-      this.load = false;
       this.form
         .post("/biografi")
         .then((response) => {
@@ -156,6 +163,7 @@ export default {
           this.load = true;
           this.$toastr.e("Cannot create user, try again", "Error");
         });
+      this.getBiografi();
     },
 
     editBiografi(biografi) {

@@ -1,8 +1,11 @@
 <template>
   <div class="">
     <div class="row">
-      <div class="col-md-8">
-        <div class="card" :class="!editMode ? 'card-primary' : 'card-success'">
+      <div class="col-md-12">
+        <div
+          class="card card-outline"
+          :class="!editMode ? 'card-primary' : 'card-success'"
+        >
           <div class="card-header">
             <h3 class="card-title" v-if="!editMode">Membuat artikel</h3>
             <h3 class="card-title" v-if="editMode">Edit Artikel</h3>
@@ -25,20 +28,8 @@
               </div>
               <div class="form-group">
                 <label> Isi </label>
-                <froala
-                  id=""
-                  :tag="'textarea'"
-                  :config="config"
-                  cols="30"
-                  rows="10"
-                  v-model="form.isi"
-                  type="text"
-                  name="isi"
-                  placeholder="Masukkan isi artikel"
-                  class="form-control"
-                  :class="{ 'is-invaild': form.errors.has('isi') }"
-                >
-                </froala>
+
+                <ckeditor v-model="form.isi" value="Tulis biografi"></ckeditor>
                 <has-error :form="form" field="isi"></has-error>
               </div>
               <button
@@ -46,90 +37,106 @@
                 v-show="!editMode"
                 class="btn btn-lg btn-primary"
               >
-                Save
+                Simpan
               </button>
               <button
                 type="submit"
                 v-show="editMode"
                 class="btn btn-lg btn-success"
               >
-                Update
+                Ubah
               </button>
             </div>
           </form>
         </div>
       </div>
     </div>
-    <div class="row d-flex">
-      <div class="col-md-6" v-for="artikel in pageOfItems" :key="artikel.id">
-        <div class="card card-secondary">
-          <div class="card-header">
-            <label> Judul </label>
-            <p>{{ artikel.judul }}</p>
-          </div>
-          <div class="card-body">
-            <label> Isi </label>
-            <p v-html="artikel.isi"></p>
-          </div>
-          <div class="card-footer">
-            <div class="d-inline">{{ artikel.created_by }}</div>
-            <div class="d-inline float-right">
-              <button
-                class="btn btn-sm btn-warning text-white"
-                @click="editArtikel(artikel)"
-              >
-                <i class="fa fa-edit"></i> Edit
-              </button>
-              <button
-                class="btn btn-sm btn-danger text-white"
-                @click="deleteArtikel(artikel)"
-              >
-                <i class="fa fa-trash"></i> Delete
-              </button>
-            </div>
-          </div>
+
+    <div class="card">
+      <div class="container-fluid">
+        <div class="card-body table-responsive p-0">
+          <v-table
+            :data="artikels"
+            :filters="filters"
+            :currentPage.sync="currentPage"
+            :pageSize="dataPerPage"
+            :hideSortIcons="false"
+            @totalPagesChanged="totalPages = $event"
+            class="table"
+          >
+            <thead slot="head">
+              <tr>
+                <th>#</th>
+                <v-th sortKey="nama">Judul</v-th>
+                <th>Artikel</th>
+                <th v-show="idRole == 3">Dibuat</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody slot="body" slot-scope="{ displayData }">
+              <tr v-for="(row, index) in displayData" :key="row.id">
+                <td>{{ index + 1 }}</td>
+
+                <td>{{ row.judul }}</td>
+                <td v-html="row.isi"></td>
+                <td v-show="idRole == 3">{{ row.user.name }}</td>
+
+                <td>
+                  <div style="width: 9rem" class="">
+                    <button
+                      class="text-white btn btn-sm btn-warning"
+                      @click="editArtikel(row)"
+                    >
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger"
+                      @click="deleteArtikel(row)"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+          <center class="d-flex justify-content-center mb-2">
+            <smart-pagination
+              :currentPage.sync="currentPage"
+              :totalPages="totalPages"
+            />
+          </center>
         </div>
       </div>
     </div>
-    <center class="pb-0 pt-1">
-      <jw-pagination
-        :pageSize="4"
-        :items="artikels"
-        @changePage="onChangePage"
-        :labels="customLabels"
-      ></jw-pagination>
-    </center>
   </div>
 </template>
 
 <script>
-const customLabels = {
-  first: "<<",
-  last: ">>",
-  previous: "<",
-  next: ">",
-};
 export default {
   data() {
     return {
-      customLabels,
+      // smart table
+      dataPerPage: 10,
+      currentPage: 1,
+      totalPages: 0,
+      // smart table
       pageOfItems: [],
       artikel: {},
       artikels: [],
       loading: false,
       editMode: false,
+      idRole: "",
       isi: "",
       form: new Form({
         id: "",
         judul: "",
         isi: "",
       }),
-      config: {
-        placeholder: "Edit Me",
-        events: {
-          "froalaEditor.focus": function (e, editor) {
-            console.log(editor.selection.get());
-          },
+      filters: {
+        title: {
+          value: "",
+          keys: ["judul"],
         },
       },
     };
@@ -141,8 +148,6 @@ export default {
     },
 
     createArtikel() {
-      this.action = "Creating user ...";
-      this.load = false;
       this.form
         .post("/artikel")
         .then((response) => {
@@ -181,12 +186,12 @@ export default {
     },
 
     getArtikel() {
-      this.loading = true;
       axios
         .get("/getAllArtikel")
         .then((response) => {
           this.loading = false;
           this.artikels = response.data.artikels;
+          this.idRole = response.data.idRole;
         })
         .catch(() => {
           this.loading = false;

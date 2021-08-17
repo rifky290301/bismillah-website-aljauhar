@@ -12,8 +12,35 @@
             v-show="idRole != 3"
             @click="createMode"
           >
-            <i class="fas fa-plus-circle"></i> Add New
+            <i class="fas fa-plus-circle"></i> Tambah data
           </button>
+        </div>
+        <div class="float-right mr-2">
+          <div class="btn-group">
+            <button
+              class="btn btn-secondary btn-sm dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Show
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+              <button class="dropdown-item" @click="dataPerHalaman(5)">
+                5
+              </button>
+              <button class="dropdown-item" @click="dataPerHalaman(10)">
+                10
+              </button>
+              <button class="dropdown-item" @click="dataPerHalaman(20)">
+                20
+              </button>
+              <button class="dropdown-item" @click="dataPerHalaman(50)">
+                50
+              </button>
+            </div>
+          </div>
         </div>
         <div class="float-right mr-2">
           <div class="btn-group">
@@ -26,15 +53,18 @@
             >
               Kamar
             </button>
-            <div class="dropdown-menu">
+            <div
+              style="overflow-y: auto; max-height: 50vh"
+              class="dropdown-menu dropdown-menu-right"
+            >
               <button
                 class="dropdown-item"
-                v-for="item in kamar"
-                :key="item.index"
+                v-for="n in 25"
+                :key="n"
                 name="table_search"
-                @click="searchKamar(item.index)"
+                @click="searchKamar(n)"
               >
-                {{ item.index }}
+                {{ n }}
               </button>
             </div>
           </div>
@@ -100,15 +130,13 @@
               </template>
             </li>
             <li class="nav-item">
-              <div class="input-group input-group-sm" style="width: 350px">
+              <div class="input-group input-group-sm">
                 <input
                   type="text"
                   name="table_search"
-                  v-model="searchWord"
+                  v-model="filters.title.value"
                   class="form-control"
-                  placeholder="Cari berdasarkan nama"
-                  @keypress="search"
-                  @keyup="search"
+                  placeholder="Search"
                   autofocus
                 />
               </div>
@@ -117,59 +145,72 @@
         </div>
       </div>
       <!-- /.card-header -->
-      <div class="card-body table-responsive p-0">
-        <table class="table">
-          <thead>
+      <div class="table-responsive-md">
+        <v-table
+          :data="users"
+          :filters="filters"
+          :currentPage.sync="currentPage"
+          :pageSize="dataPerPage"
+          :hideSortIcons="false"
+          @totalPagesChanged="totalPages = $event"
+          class="table"
+        >
+          <thead slot="head">
             <tr>
               <th>#</th>
-              <th>Name</th>
-              <th>Role</th>
-              <th>Kamar</th>
-              <th>Nomor HP</th>
-              <th>Email</th>
+              <th>Profil</th>
+              <v-th sortKey="name">Name</v-th>
+              <v-th defaultSort="asc" sortKey="no_kamar">Kamar</v-th>
+              <v-th sortKey="no_telepon">Nomor HP</v-th>
+              <v-th sortKey="email">Email</v-th>
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="(user, index) in pageOfItems" :key="user.id">
+          <tbody slot="body" slot-scope="{ displayData }">
+            <tr v-for="(user, index) in displayData" :key="user.id">
               <td>{{ index + 1 }}</td>
+              <td>
+                <img
+                  :src="'upload/profil/' + user.photo"
+                  style="height: 30px"
+                />
+              </td>
               <td>{{ user.name }}</td>
-              <td>{{ user.role }}</td>
               <td>{{ user.no_kamar }}</td>
               <td>{{ user.no_telepon }}</td>
               <td>{{ user.email }}</td>
               <td>
-                <button
-                  class="btn btn-sm btn-info text-white"
-                  @click="viewUser(user)"
-                >
-                  <i class="fa fa-eye"></i> View
-                </button>
-                <button
-                  class="btn btn-sm btn-warning text-white"
-                  v-show="idRole != 3"
-                  @click="editUser(user)"
-                >
-                  <i class="fa fa-edit"></i> Edit
-                </button>
-                <button
-                  class="btn btn-sm btn-danger"
-                  v-show="idRole != 3"
-                  @click="deleteUser(user)"
-                >
-                  <i class="fa fa-trash"></i> Delete
-                </button>
+                <div style="width: 8rem" class="">
+                  <button
+                    class="btn btn-sm btn-info text-white"
+                    @click="viewUser(user)"
+                  >
+                    <i class="fa fa-eye"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-warning text-white"
+                    v-show="idRole != 3"
+                    @click="editUser(user)"
+                  >
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    v-show="idRole != 3"
+                    @click="deleteUser(user)"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
-        </table>
-        <center class="pb-0 pt-1">
-          <jw-pagination
-            :pageSize="10"
-            :items="users"
-            @changePage="onChangePage"
-            :labels="customLabels"
-          ></jw-pagination>
+        </v-table>
+        <center class="d-flex justify-content-center mb-2">
+          <smart-pagination
+            :currentPage.sync="currentPage"
+            :totalPages="totalPages"
+          />
         </center>
       </div>
 
@@ -305,33 +346,28 @@
                 <has-error :form="form" field="password"></has-error>
               </div>
             </div>
-            <div class="modal-footer justify-content-between">
+            <div class="d-flex justify-content-between">
               <button
                 type="button"
                 class="btn btn-lg btn-danger"
                 data-dismiss="modal"
               >
-                Close
+                Batal
               </button>
-              <!-- <b-button variant="primary" v-if="!load" class="btn-lg" disabled>
-                <b-spinner small type="grow"></b-spinner>
-                {{ action }}
-              </b-button> -->
+
               <button
                 type="submit"
-                v-if="load"
                 v-show="!editMode"
                 class="btn btn-lg btn-primary"
               >
-                Save User
+                Simpan
               </button>
               <button
                 type="submit"
-                v-if="load"
                 v-show="editMode"
                 class="btn btn-lg btn-success"
               >
-                Update User
+                Ubah
               </button>
             </div>
           </form>
@@ -342,28 +378,24 @@
 </template>
 
 <script>
-const customLabels = {
-  first: "<<",
-  last: ">>",
-  previous: "<",
-  next: ">",
-};
 export default {
   data() {
     return {
-      customLabels,
+      // smart table
+      dataPerPage: 10,
+      currentPage: 1,
+      totalPages: 0,
+      // smart table
       pageOfItems: [],
-      action: "",
       searchWord: "",
       loading: false,
       editMode: false,
-      load: true,
       img: "",
       user: {},
       users: [],
       roles: [],
       permissions: [],
-      kamar: {},
+      // kamar: {},
       idRole: "",
       form: new Form({
         id: "",
@@ -374,25 +406,19 @@ export default {
         permissions: [],
         role: 3,
       }),
+      filters: {
+        title: {
+          value: "",
+          keys: ["nomor", "name", "phone", "password", "email"],
+        },
+      },
     };
   },
   methods: {
-    search() {
-      this.loading = true;
-      axios
-        .get("/search/user?s=" + this.searchWord)
-        .then((response) => {
-          this.loading = false;
-          this.users = response.data.users;
-        })
-        .catch(() => {
-          this.loading = false;
-          toast.fire({
-            icon: "error",
-            title: "search failed",
-          });
-        });
+    dataPerHalaman(input) {
+      this.dataPerPage = input;
     },
+
     searchKamar(nomor) {
       this.loading = true;
       axios
@@ -412,25 +438,26 @@ export default {
     createMode() {
       this.editMode = false;
       $("#createUser").modal("show");
+      this.form.reset();
     },
 
     deleteUser(user) {
       swal
         .fire({
-          title: "Are you sure?",
-          text: user.name + " will be deleted permanently!",
+          title: "Apakah kamu yakin ?",
+          text: user.name + " akan dihapus !",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, delete it!",
+          confirmButtonText: "Hapus",
         })
         .then((result) => {
           if (result.value) {
             axios
               .delete("/delete/user/" + user.id)
               .then(() => {
-                this.$toastr.s("user create succefully", "Created");
+                this.$toastr.s("user berhasil dihapus", "Deleted");
                 Fire.$emit("loadUser");
               })
               .catch(() => {
@@ -464,7 +491,7 @@ export default {
           this.loading = false;
           this.users = response.data.users;
           this.idRole = response.data.idRole;
-          this.kamar = response.data.kamar;
+          // this.kamar = response.data.kamar;
         })
         .catch(() => {
           this.loading = false;
@@ -473,7 +500,7 @@ export default {
     },
     viewUser(user) {
       $("#viewUser").modal("show");
-      this.img = "http://localhost:8000/" + "upload/profil/" + user.photo;
+      this.img = baseUrl + "/upload/profil/" + user.photo;
       this.user = user;
     },
     getRoles() {
@@ -488,37 +515,29 @@ export default {
     },
 
     createUser() {
-      this.action = "Creating user ...";
-      this.load = false;
       this.form
         .post("/account/create")
         .then((response) => {
-          this.load = true;
-          this.$toastr.s("user create succefully", "Created");
+          this.$toastr.s("User berhasil ditambahkan", "Created");
           Fire.$emit("loadUser");
           $("#createUser").modal("hide");
           this.form.reset();
         })
         .catch(() => {
-          this.load = true;
-          this.$toastr.e("Cannot create user, try again", "Error");
+          this.$toastr.e("User gagal ditambahkan, coba lagi", "Error");
         });
     },
 
     updateUser() {
-      this.action = "Update user ...";
-      this.load = false;
       this.form
         .put("/account/update/" + this.form.id)
         .then((response) => {
-          this.load = true;
-          this.$toastr.s("user information updated succefully", "Created");
+          this.$toastr.s("Data beerhasil di ubah", "Updated");
           Fire.$emit("loadUser");
           $("#createUser").modal("hide");
           this.form.reset();
         })
         .catch(() => {
-          this.load = true;
           this.$toastr.e("Cannot update user information, try again", "Error");
         });
     },

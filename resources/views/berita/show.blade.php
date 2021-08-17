@@ -5,7 +5,7 @@ Berita
 
 @section('content')
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12">
     <form method="POST" action="/berita/show/{{$berita->id}}" enctype="multipart/form-data">
       @csrf
       <div class="card card-primary">
@@ -16,7 +16,9 @@ Berita
           @isset($berita->dokumentasi)
             <img src="{{asset("upload/berita/$berita->dokumentasi")}}" class="img-fluid" alt="Responsive image">
           @endisset
-          {!! $berita->isi !!}
+            <div class="">
+              {!! $berita->isi !!}
+            </div>
           @if(!isset($berita->dokumentasi))
             <div class="form-group">
               <label for="gambar_berita">Pilih gambar erita</label><br>

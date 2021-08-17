@@ -37,8 +37,20 @@ Route::group(['middleware' => ['auth', 'permission:create user']], function () {
     Route::post("/alumni", "AlumniController@store");
     Route::put("/alumni/{id}", "AlumniController@update");
     Route::delete("/alumni/{id}", "AlumniController@delete");
-    Route::post("/photo-alumni/{id}", "AlumniController@upload");
+    Route::post("/photo-alumni/{id}", "AlumniController@upload");    
+    
+    
+    // !delete santri
+    Route::delete("/santri/{id}", "SantriController@delete");
 });
+
+// !SANTRI AKTIF SEKARANG
+Route::post("/photo-santri/{id}", "SantriController@upload");    
+Route::get('/santri', 'SantriController@index')->name('santri.index');
+Route::post('/santri', 'SantriController@store');
+Route::get('/getAllsantri', 'SantriController@getAll');
+Route::put("/santri/{id}", "SantriController@update");
+
 
 Route::group(['middleware' => ['auth', 'permission:membuat berita']], function () {
     Route::get('/berita', 'BeritaController@index')->name('berita.index');
@@ -72,14 +84,14 @@ Route::group(['middleware' => ['auth', 'permission:melihat pendaftar']], functio
     Route::delete("/pendaftar/{id}", "PendaftaranSantriController@delete");
 });
 
-Route::group(['middleware' => ['auth', 'permission:membuat biografi']], function () {
-    Route::get("pendaftaran-santri", "PendaftaranSantriController@index")->name("pendaftaran.santri");
-});
+// Route::group(['middleware' => ['auth', 'permission:membuat biografi']], function () {
+//     Route::get("pendaftaran-santri", "PendaftaranSantriController@index")->name("pendaftaran.santri");
+// });
 
 
-Route::get('/biografi', 'BiografiController@index')->name("biografi");
 Route::get("/getAllBiografi", "BiografiController@getAll");
 Route::group(['middleware' => ['auth', 'permission:membuat biografi']], function () {
+    Route::get('/biografi', 'BiografiController@index')->name("biografi");
     Route::post('/biografi', 'BiografiController@store');
     Route::delete("/biografi/{id}", "BiografiController@delete");
     Route::put("/biografi/{id}", "BiografiController@update");

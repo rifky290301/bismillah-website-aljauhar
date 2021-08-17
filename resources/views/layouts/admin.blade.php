@@ -130,16 +130,24 @@
                                     </a>
                                 </li>
                                 @endcan
+                                @can('melihat pendaftar')
                                 <li class="nav-item ml-3">
                                     <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user') ? 'active' : ''}}">
                                         <i class="fas fa-users-cog nav-icon"></i>
-                                        <p>Santri</p>
+                                        <p>User aktif</p>
                                     </a>
                                 </li>
+                                @endcan
                                 <li class="nav-item ml-3">
                                     <a href="/alumni" class="nav-link {{ request()->is('alumni') ? 'active' : ''}}">
                                         <i class="fas fa-users nav-icon"></i>
                                         <p>Alumni</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item ml-3">
+                                    <a href="/santri" class="nav-link {{ request()->is('santri') ? 'active' : ''}}">
+                                        <i class="fas fa-user nav-icon"></i>
+                                        <p>Santri</p>
                                     </a>
                                 </li>
                                 @can('melihat pendaftar')
@@ -150,15 +158,17 @@
                                     </a>
                                 </li>
                                 @endcan
-                                <li class="nav-item ml-3">
-                                    <a href="{{route("biografi")}}" class="nav-link {{ request()->is('biografi') ? 'active' : ''}}">
-                                        {{-- <i class="fas fa-user-plus"></i> --}}
-                                        <i class="fas fa-address-card nav-icon"></i>
-                                        <p>Biografi</p>
-                                    </a>
-                                </li>
                             </ul>
                         </li>
+                        @can('membuat biografi')
+                        <li class="nav-item">
+                            <a href="{{route("biografi")}}" class="nav-link {{ request()->is('biografi') ? 'active' : ''}}">
+                                {{-- <i class="fas fa-user-plus"></i> --}}
+                                <i class="fas fa-address-card nav-icon"></i>
+                                <p>Biografi</p>
+                            </a>
+                        </li>
+                        @endcan
                         @can("membuat artikel")
                         <li class="nav-item">
                             <a href="{{route("artikel.index")}}" class="nav-link {{ request()->is('artikel') ? 'active' : ''}}">

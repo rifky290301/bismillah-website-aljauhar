@@ -20,25 +20,9 @@ class UserController extends Controller
 
     public function getAll()
     {
+        $hanyaSantri = User::whereHas("roles", function($q){ $q->where("name", "Santri"); })->get();
         // filter tidak dapat menampilkan super admin
-        $users = User::with('roles')->get();
-        // $users = $santri->reject(function ($user, $key) {
-        //     return $user->hasRole('Super admin');
-        // });
-
-        $kamar = [];
-
-        foreach ($users as $no_kamar) {
-            array_push($kamar, $no_kamar["no_kamar"]);
-        }
-
-        $kamar = array_unique($kamar);
-
-        $kamar_ukniq = [];
-        foreach ($kamar as $no) {
-            $tes["index"] = $no;
-            array_push($kamar_ukniq, $tes);
-        }
+        // $users = User::with('roles')->get();
 
         if (auth()->user()->hasRole("Super admin")) {
             $idRole = 1;
@@ -48,16 +32,16 @@ class UserController extends Controller
             $idRole = 3;
         }
 
-        $users->transform(function ($user) {
+        $hanyaSantri->transform(function ($user) {
             $user->role = $user->getRoleNames()->first();
             $user->userPermissions = $user->getPermissionNames();
             return $user;
         });
 
         return response()->json([
-            'users' => $users,
+            'users' => $hanyaSantri,
             'idRole' => $idRole,
-            'kamar' => $kamar_ukniq,
+            // 'kamar' => $kamar_ukniq,
         ], 200);
     }
 
@@ -113,13 +97,11 @@ class UserController extends Controller
             $user->password = bcrypt($request->password);
         }
 
-
         if ($request->has('role')) {
             $userRole = $user->getRoleNames();
             foreach ($userRole as $role) {
                 $user->removeRole($role);
             }
-
             $user->assignRole($request->role);
         }
 
@@ -128,13 +110,9 @@ class UserController extends Controller
             foreach ($userPermissions as $permssion) {
                 $user->revokePermissionTo($permssion);
             }
-
             $user->givePermissionTo($request->permissions);
         }
-
-
         $user->save();
-
         return response()->json('ok', 200);
     }
 
@@ -162,16 +140,26 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user
         ]);
 
-        $updateGambar = User::findOrFail($user);
+        $updateProfile = User::findOrFail($user);
         $date = date('H-i-s');
         $random = \Str::random(5);
 
         if ($request->file('photo')) {
             $request->file('photo')->move('upload/profil', $date . $random . $request->file('photo')->getClientOriginalName());
-            $updateGambar->photo = $date . $random . $request->file('photo')->getClientOriginalName();
+            $updateProfile->photo = $date . $random . $request->file('photo')->getClientOriginalName();
         }
 
-        $updateGambar->save();
+        $updateProfile->name = $request->name;
+        $updateProfile->phone = $request->phone;
+        $updateProfile->no_kamar = $request->no_kamar;
+        $updateProfile->status = $request->status;
+        $updateProfile->instansi = $request->instansi;
+        $updateProfile->alamat = $request->alamat;
+        $updateProfile->tahun_masuk = $request->tahun_masuk;
+        $updateProfile->email = $request->email;
+
+
+        $updateProfile->save();
         return redirect()->back()->with('success', 'Profile Successfully Updated');
     }
 
@@ -186,22 +174,17 @@ class UserController extends Controller
         $this->validate($request, [
             'newpassword' => 'required|min:6|max:30|confirmed'
         ]);
-
         $user = auth()->user();
-
         $user->update([
             'password' => bcrypt($request->newpassword)
         ]);
-
         return redirect()->back()->with('success', 'Password has been Changed Successfully');
     }
 
     public function delete($id)
     {
         $user = User::findOrFail($id);
-
         $user->delete();
-
         return response()->json('ok', 200);
     }
 

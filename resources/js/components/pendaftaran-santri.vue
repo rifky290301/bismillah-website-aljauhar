@@ -76,7 +76,6 @@
               <th>Status</th>
               <th>Nomor HP</th>
               <th>Action</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -87,14 +86,20 @@
               <td>{{ user.status }}</td>
               <td>{{ user.no_telepon }}</td>
               <td>
-                <button class="btn btn-sm btn-info" @click="viewUser(user)">
-                  <i class="fa fa-eye"></i> View
+                <button
+                  class="text-white btn btn-sm btn-info"
+                  @click="viewUser(user)"
+                >
+                  <i class="fa fa-eye"></i>
                 </button>
-                <button class="btn btn-sm btn-danger" @click="deleteUser(user)">
-                  <i class="fa fa-trash"></i> Delete
+                <button
+                  v-show="idRole != 3"
+                  class="btn btn-sm btn-danger"
+                  @click="deleteUser(user)"
+                >
+                  <i class="fa fa-trash"></i>
                 </button>
               </td>
-              <td></td>
             </tr>
           </tbody>
         </table>
@@ -207,7 +212,7 @@ export default {
         .get("/getAllPendaftar")
         .then((response) => {
           this.pendaftar = response.data.pendaftaranSantri;
-          console.log(this.pendaftar);
+          // console.log(this.pendaftar);
         })
         .catch(() => {
           this.$toastr.e("Cannot load users", "Error");
@@ -215,9 +220,17 @@ export default {
     },
     viewUser(user) {
       $("#viewUser").modal("show");
-      this.img_foto = "http://localhost:8000/upload/pendaftar/" + user.pas_foto;
-      this.img_bukti =
-        "http://localhost:8000/upload/pembayaran/" + user.bukti_pembayaran;
+      if (user.pas_foto == null) {
+        this.img_foto = baseUrl + "/img/default-image.png";
+      } else {
+        this.img_foto = baseUrl + "/upload/pendaftar/" + user.pas_foto;
+      }
+      if (user.bukti_pembayaran == null) {
+        this.img_bukti = baseUrl + "/img/default-image.png";
+      } else {
+        this.img_bukti =
+          baseUrl + "/upload/pembayaran/" + user.bukti_pembayaran;
+      }
       this.user = user;
     },
   },
