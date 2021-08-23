@@ -61,6 +61,21 @@ Profile
                                             </div>
 
                                             <div class="form-group">
+                                                <label for="status">Status</label>
+                                                {{-- <input type="text" name="status" id="status" class="form-control @error('status') is-invalid @enderror" placeholder="Status" value="{{ auth()->user()->status }}" required> --}}
+                                                <select name="status" class="custom-select">
+                                                    <option selected >Choose...</option>
+                                                    <option value="santri" {{"santri" == auth()->user()->status  ? 'selected' : ''}}>Santri</option>
+                                                    <option value="alumni" {{"alumni" == auth()->user()->status  ? 'selected' : ''}}>Alumni</option>
+                                                </select>
+                                                @error('status')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+
+                                            {{-- <div class="form-group">
                                                 <label for="phone">Phone Number</label>
                                                 <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Phone Number" value="{{ auth()->user()->phone }}" required>
                                                 @error('phone')
@@ -79,17 +94,7 @@ Profile
                                                     </span>
                                                 @enderror
                                             </div>
-                                            
-                                            <div class="form-group">
-                                                <label for="status">Status (kuliah/sekolah/kerja)</label>
-                                                <input type="text" name="status" id="status" class="form-control @error('status') is-invalid @enderror" placeholder="Status" value="{{ auth()->user()->status }}" required>
-                                                @error('status')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            
+   
                                             <div class="form-group">
                                                 <label for="instansi">Instansi</label>
                                                 <input type="text" name="instansi" id="instansi" class="form-control @error('instansi') is-invalid @enderror" placeholder="Instansi" value="{{ auth()->user()->instansi }}" required>
@@ -118,7 +123,7 @@ Profile
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group">
                                                 <div class="custom-file">
                                                     <input name="photo" type="file" class="custom-file-input" id="customFile">

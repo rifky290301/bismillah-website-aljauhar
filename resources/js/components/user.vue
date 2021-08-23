@@ -42,7 +42,7 @@
             </div>
           </div>
         </div>
-        <div class="float-right mr-2">
+        <!-- <div class="float-right mr-2">
           <div class="btn-group">
             <button
               class="btn btn-secondary btn-sm dropdown-toggle"
@@ -68,7 +68,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="float-right mr-2">
           <ul class="nav nav-pills ml-auto">
             <li class="nav-item mr-2">
@@ -160,8 +160,7 @@
               <th>#</th>
               <th>Profil</th>
               <v-th sortKey="name">Name</v-th>
-              <v-th defaultSort="asc" sortKey="no_kamar">Kamar</v-th>
-              <v-th sortKey="no_telepon">Nomor HP</v-th>
+              <v-th v-show="idRole == 1" sortKey="role">Role</v-th>
               <v-th sortKey="email">Email</v-th>
               <th>Action</th>
             </tr>
@@ -176,17 +175,16 @@
                 />
               </td>
               <td>{{ user.name }}</td>
-              <td>{{ user.no_kamar }}</td>
-              <td>{{ user.no_telepon }}</td>
+              <td v-show="idRole == 1">{{ user.role }}</td>
               <td>{{ user.email }}</td>
               <td>
                 <div style="width: 8rem" class="">
-                  <button
+                  <!-- <button
                     class="btn btn-sm btn-info text-white"
                     @click="viewUser(user)"
                   >
                     <i class="fa fa-eye"></i>
-                  </button>
+                  </button> -->
                   <button
                     class="btn btn-sm btn-warning text-white"
                     v-show="idRole != 3"
@@ -267,7 +265,7 @@
               id="createUserModalLabel"
               v-show="!editMode"
             >
-              Create User
+              Tambah Data User
             </h5>
             <h5 class="modal-title" id="createUserModalLabel" v-show="editMode">
               Edit User
@@ -309,27 +307,20 @@
                 <has-error :form="form" field="email"></has-error>
               </div>
 
-              <div class="form-group">
-                <label> Phone Number </label>
-                <input
-                  v-model="form.phone"
-                  type="text"
-                  name="phone"
-                  placeholder="Phone Number"
-                  class="form-control"
-                  :class="{ 'is-invaild': form.errors.has('phone') }"
-                />
-                <has-error :form="form" field="phone"></has-error>
-              </div>
-
               <div class="form-group" v-show="idRole == 1">
                 <label> Choose Role </label>
-                <b-form-select
+                <select
+                  id="inputGroupSelect02"
+                  class="custom-select"
                   v-model="form.role"
-                  :options="roles"
-                  text-field="name"
-                  value-field="id"
-                ></b-form-select>
+                  type="text"
+                  name="status"
+                >
+                  <option selected>Choose...</option>
+                  <option value="Super admin">Super admin</option>
+                  <option value="BPH">BPH</option>
+                  <option value="Santri">Santri</option>
+                </select>
                 <has-error :form="form" field="role"></has-error>
               </div>
 
@@ -345,30 +336,30 @@
                 />
                 <has-error :form="form" field="password"></has-error>
               </div>
-            </div>
-            <div class="d-flex justify-content-between">
-              <button
-                type="button"
-                class="btn btn-lg btn-danger"
-                data-dismiss="modal"
-              >
-                Batal
-              </button>
+              <div class="d-flex justify-content-between">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-danger"
+                  data-dismiss="modal"
+                >
+                  Batal
+                </button>
 
-              <button
-                type="submit"
-                v-show="!editMode"
-                class="btn btn-lg btn-primary"
-              >
-                Simpan
-              </button>
-              <button
-                type="submit"
-                v-show="editMode"
-                class="btn btn-lg btn-success"
-              >
-                Ubah
-              </button>
+                <button
+                  type="submit"
+                  v-show="!editMode"
+                  class="btn btn-lg btn-primary"
+                >
+                  Simpan
+                </button>
+                <button
+                  type="submit"
+                  v-show="editMode"
+                  class="btn btn-lg btn-success"
+                >
+                  Ubah
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -400,16 +391,15 @@ export default {
       form: new Form({
         id: "",
         name: "",
-        phone: "",
         password: "",
         email: "",
-        permissions: [],
+        // permissions: [],
         role: 3,
       }),
       filters: {
         title: {
           value: "",
-          keys: ["nomor", "name", "phone", "password", "email"],
+          keys: ["nomor", "name", "email"],
         },
       },
     };

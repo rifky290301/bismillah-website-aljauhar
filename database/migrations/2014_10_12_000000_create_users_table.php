@@ -19,13 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('phone')->nullable();
-            $table->string('no_kamar')->nullable();
-            $table->string('status')->nullable();
-            $table->string('instansi')->nullable();
-            $table->text('alamat')->nullable();
-            $table->date('tahun_masuk')->nullable();
-            $table->string('photo')->default('avatar.jpg');
+            $table->enum('status', ['santri', 'alumni'])->nullable();
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

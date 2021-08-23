@@ -20,15 +20,17 @@ class UserController extends Controller
 
     public function getAll()
     {
-        $hanyaSantri = User::whereHas("roles", function($q){ $q->where("name", "Santri"); })->get();
         // filter tidak dapat menampilkan super admin
         // $users = User::with('roles')->get();
-
+        
         if (auth()->user()->hasRole("Super admin")) {
+            $hanyaSantri = User::latest()->get();
             $idRole = 1;
         } elseif (auth()->user()->hasRole("BPH")) {
+            $hanyaSantri = User::whereHas("roles", function($q){ $q->where("name", "Santri"); })->get();
             $idRole = 2;
         } else {
+            $hanyaSantri = User::whereHas("roles", function($q){ $q->where("name", "Santri"); })->get();
             $idRole = 3;
         }
 
@@ -49,17 +51,15 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'phone' => 'required',
+            // 'phone' => 'required',
             'password' => 'required|min:6',
             'role' => 'required',
             'email' => 'required|email|unique:users'
         ]);
-
         $user = new User();
-
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->phone = $request->phone;
+        // $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
 
         if ($request->role != null) {
@@ -81,7 +81,7 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'phone' => 'required',
+            // 'phone' => 'required',
             'password' => 'nullable|alpha_num|min:6',
             'role' => 'required',
             'email' => 'required|email|unique:users,email,' . $id
@@ -90,7 +90,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $user->name = $request->name;
-        $user->phone = $request->phone;
+        // $user->phone = $request->phone;
         $user->email = $request->email;
 
         if ($request->has('password')) {
@@ -116,9 +116,6 @@ class UserController extends Controller
         return response()->json('ok', 200);
     }
 
-
-
-
     public function profile()
     {
         $photo = auth()->user()->photo;
@@ -131,13 +128,13 @@ class UserController extends Controller
         $user = auth()->user()->id;
         $this->validate($request, [
             'name' => 'required',
-            'phone' => 'required',
-            'no_kamar' => 'required',
             'status' => 'required',
-            'instansi' => 'required',
-            'alamat' => 'required',
-            'tahun_masuk' => 'required',
             'email' => 'required|email|unique:users,email,' . $user
+            // 'phone' => 'required',
+            // 'no_kamar' => 'required',
+            // 'instansi' => 'required',
+            // 'alamat' => 'required',
+            // 'tahun_masuk' => 'required',
         ]);
 
         $updateProfile = User::findOrFail($user);
@@ -150,13 +147,13 @@ class UserController extends Controller
         }
 
         $updateProfile->name = $request->name;
-        $updateProfile->phone = $request->phone;
-        $updateProfile->no_kamar = $request->no_kamar;
-        $updateProfile->status = $request->status;
-        $updateProfile->instansi = $request->instansi;
-        $updateProfile->alamat = $request->alamat;
-        $updateProfile->tahun_masuk = $request->tahun_masuk;
         $updateProfile->email = $request->email;
+        $updateProfile->status = $request->status;
+        // $updateProfile->phone = $request->phone;
+        // $updateProfile->no_kamar = $request->no_kamar;
+        // $updateProfile->instansi = $request->instansi;
+        // $updateProfile->alamat = $request->alamat;
+        // $updateProfile->tahun_masuk = $request->tahun_masuk;
 
 
         $updateProfile->save();

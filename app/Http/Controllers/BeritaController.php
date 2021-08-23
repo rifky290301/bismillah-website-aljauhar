@@ -59,9 +59,9 @@ class BeritaController extends Controller
 
         $artikel = Berita::findOrFail($id);
 
-        $artikel->user_id = auth()->user()->id;
         $artikel->judul = $request->judul;
         $artikel->isi = $request->isi;
+        $artikel->publish = $request->publish;
         $artikel->save();
 
         return response()->json("Artikel berhasil diubah", 200);

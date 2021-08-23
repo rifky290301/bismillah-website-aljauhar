@@ -95,6 +95,16 @@
                     >
                       <i class="fa fa-trash"></i>
                     </button>
+                    <button
+                      class="btn btn-sm btn-primary"
+                      @click="publisArtikel(row)"
+                    >
+                      <i v-if="row.publish == false" class="fa fa-star"></i>
+                      <i
+                        v-if="row.publish == true"
+                        class="fa fa-star text-warning"
+                      ></i>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -132,6 +142,7 @@ export default {
         id: "",
         judul: "",
         isi: "",
+        publish: "",
       }),
       filters: {
         title: {
@@ -224,6 +235,23 @@ export default {
           }
         });
     },
+
+    publisArtikel(row) {
+      this.form.judul = row.judul;
+      this.form.isi = row.isi;
+      this.form.publish = !row.publish;
+      this.form
+        .put("/artikel/" + row.id)
+        .then((response) => {
+          this.$toastr.s("Artikel telah di publish", "Updated");
+          Fire.$emit("loadUser");
+          this.form.reset();
+        })
+        .catch(() => {
+          this.$toastr.e("Tidak dapat mempublish, coba lagi", "Error");
+        });
+    },
+
     onChangePage(pageOfItems) {
       this.pageOfItems = pageOfItems;
     },

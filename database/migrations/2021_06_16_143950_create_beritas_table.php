@@ -19,6 +19,7 @@ class CreateBeritasTable extends Migration
             $table->string('judul');
             $table->text('isi');
             $table->string('dokumentasi')->nullable();
+            $table->boolean('publish')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

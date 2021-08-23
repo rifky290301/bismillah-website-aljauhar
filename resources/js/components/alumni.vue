@@ -466,30 +466,30 @@
                 />
                 <has-error :form="form" field="motto"></has-error>
               </div>
-            </div>
-            <div class="d-flex justify-content-between">
-              <button
-                type="button"
-                class="btn btn-lg btn-danger"
-                data-dismiss="modal"
-              >
-                batal
-              </button>
+              <div class="d-flex justify-content-between">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-danger"
+                  data-dismiss="modal"
+                >
+                  batal
+                </button>
 
-              <button
-                type="submit"
-                v-show="!editMode"
-                class="btn btn-lg btn-primary"
-              >
-                Simpan
-              </button>
-              <button
-                type="submit"
-                v-show="editMode"
-                class="btn btn-lg btn-success"
-              >
-                Ubah
-              </button>
+                <button
+                  type="submit"
+                  v-show="!editMode"
+                  class="btn btn-lg btn-primary"
+                >
+                  Simpan
+                </button>
+                <button
+                  type="submit"
+                  v-show="editMode"
+                  class="btn btn-lg btn-success"
+                >
+                  Ubah
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -654,7 +654,6 @@ export default {
         this.img = baseUrl + "/upload/alumni/" + user.photo;
       }
       this.user = user;
-      console.log(this.img);
     },
 
     createUser() {

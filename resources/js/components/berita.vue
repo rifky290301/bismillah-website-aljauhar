@@ -65,8 +65,9 @@
             <thead slot="head">
               <tr>
                 <th>#</th>
+                <th>Gambar</th>
                 <v-th sortKey="judul">Judul</v-th>
-                <th>Artikel</th>
+                <th>Berita</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -74,9 +75,14 @@
               <tr v-for="(row, index) in displayData" :key="row.id">
                 <td>{{ index + 1 }}</td>
 
+                <td>
+                  <img
+                    :src="'upload/berita/' + row.dokumentasi"
+                    style="height: 8rem"
+                  />
+                </td>
                 <td>{{ row.judul }}</td>
                 <td v-html="row.isi"></td>
-
                 <td>
                   <div style="width: 9rem" class="">
                     <button
@@ -90,6 +96,22 @@
                       @click="deleteBerita(row)"
                     >
                       <i class="fa fa-trash"></i>
+                    </button>
+                    <a
+                      class="btn btn-sm text-white btn-info"
+                      :href="'berita/edit/' + row.id"
+                    >
+                      <i class="fa fa-eye"></i>
+                    </a>
+                    <button
+                      class="btn btn-sm btn-primary"
+                      @click="publisBerita(row)"
+                    >
+                      <i v-if="row.publish == false" class="fa fa-star"></i>
+                      <i
+                        v-if="row.publish == true"
+                        class="fa fa-star text-warning"
+                      ></i>
                     </button>
                   </div>
                 </td>
@@ -128,11 +150,12 @@ export default {
         id: "",
         judul: "",
         isi: "",
+        publish: "",
       }),
       filters: {
         title: {
           value: "",
-          keys: ["judul"],
+          keys: ["judul", "isi"],
         },
       },
     };
@@ -169,8 +192,7 @@ export default {
       this.form
         .put("/berita/" + this.form.id)
         .then((response) => {
-          this.load = true;
-          this.$toastr.s("Berita berhasil diubah", "Created");
+          this.$toastr.s("Berita berhasil diubah", "Updated");
           Fire.$emit("loadUser");
           this.form.reset();
         })
@@ -197,8 +219,8 @@ export default {
     deleteBerita(berita) {
       swal
         .fire({
-          title: "apakah kamu yakin?",
-          text: berita.judul + "akan dihapus secara permanen!",
+          title: "Apakah kamu yakin?",
+          text: berita.judul + "akan dihapus!",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
@@ -210,7 +232,7 @@ export default {
             axios
               .delete("/berita/" + berita.id)
               .then(() => {
-                this.$toastr.s("Berita berhasil dibuat", "Created");
+                this.$toastr.s("Berita berhasil dibuat", "Deleted");
                 Fire.$emit("loadUser");
               })
               .catch(() => {
@@ -219,6 +241,23 @@ export default {
           }
         });
     },
+
+    publisBerita(row) {
+      this.form.judul = row.judul;
+      this.form.isi = row.isi;
+      this.form.publish = !row.publish;
+      this.form
+        .put("/berita/" + row.id)
+        .then((response) => {
+          this.$toastr.s("Berita berhasil di publish", "Updated");
+          Fire.$emit("loadUser");
+          this.form.reset();
+        })
+        .catch(() => {
+          this.$toastr.e("Tidak dapat di publish, coba lagi", "Error");
+        });
+    },
+
     onChangePage(pageOfItems) {
       this.pageOfItems = pageOfItems;
     },
