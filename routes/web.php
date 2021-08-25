@@ -37,9 +37,9 @@ Route::group(['middleware' => ['auth', 'permission:create user']], function () {
     Route::post("/alumni", "AlumniController@store");
     Route::put("/alumni/{id}", "AlumniController@update");
     Route::delete("/alumni/{id}", "AlumniController@delete");
-    Route::post("/photo-alumni/{id}", "AlumniController@upload");    
-    
-    
+    Route::post("/photo-alumni/{id}", "AlumniController@upload");
+
+
     // !delete santri
     Route::delete("/santri/{id}", "SantriController@delete");
 });
@@ -95,6 +95,12 @@ Route::group(['middleware' => ['auth', 'permission:membuat biografi']], function
     Route::post('/biografi', 'BiografiController@store');
     Route::delete("/biografi/{id}", "BiografiController@delete");
     Route::put("/biografi/{id}", "BiografiController@update");
+
+    //! TESTIMONI
+    Route::get('/testimoni', 'TestimoniController@index')->name("testimoni.index");
+    Route::post('/testimoni', 'TestimoniController@store');
+    Route::delete("/testimoni/{id}", "TestimoniController@delete");
+    Route::put("/testimoni/{id}", "TestimoniController@update");
 });
 
 

@@ -182,9 +182,19 @@
                         @can('membuat berita')
                         <li class="nav-item">
                             <a href="{{route('berita.index')}}" class="nav-link {{ request()->is('berita') ? 'active' : ''}}">
-                                <i class="fas fa-newspaper nav-icon"></i>
+                                <i class="nav-icon fas fa-newspaper nav-icon"></i>
                                 <p>
                                     Berita
+                                </p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('membuat berita')
+                        <li class="nav-item">
+                            <a href="{{route('testimoni.index')}}" class="nav-link {{ request()->is('testimoni') ? 'active' : ''}}">
+                                <i class="nav-icon fas fa-comment-dots"></i>
+                                <p>
+                                    Testimoni
                                 </p>
                             </a>
                         </li>

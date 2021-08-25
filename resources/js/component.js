@@ -20,4 +20,6 @@ Vue.component('tes', require('./components/tes.vue').default);
 
 Vue.component('santri', require('./components/santri.vue').default);
 
+Vue.component('testimoni', require('./components/testimoni.vue').default);
+
 // Vue.component('dashboard', require('./components/dashboard.vue').default);

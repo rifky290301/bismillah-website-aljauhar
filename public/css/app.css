@@ -68846,3 +68846,16 @@ li {
   border-color: #e3342f !important;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b5b5bd;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
