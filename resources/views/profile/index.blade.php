@@ -9,7 +9,6 @@ Profile
     <div class="">
         <div class="row">
             <div class="col-md-3">
-
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
@@ -62,9 +61,8 @@ Profile
 
                                             <div class="form-group">
                                                 <label for="status">Status</label>
-                                                {{-- <input type="text" name="status" id="status" class="form-control @error('status') is-invalid @enderror" placeholder="Status" value="{{ auth()->user()->status }}" required> --}}
                                                 <select name="status" class="custom-select">
-                                                    <option selected >Choose...</option>
+                                                    <option selected disabled>Choose...</option>
                                                     <option value="santri" {{"santri" == auth()->user()->status  ? 'selected' : ''}}>Santri</option>
                                                     <option value="alumni" {{"alumni" == auth()->user()->status  ? 'selected' : ''}}>Alumni</option>
                                                 </select>

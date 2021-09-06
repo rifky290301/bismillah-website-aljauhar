@@ -28,4 +28,47 @@ class TestimoniController extends Controller
 
         return response()->json("Testimoni berhasil dibuat", 200);
     }
+
+    public function getAll()
+    {
+        $testimoni = Testimoni::latest()->get();
+        return response()->json([
+            'testimoni' => $testimoni
+        ], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'nama' => 'required|string',
+            'testimoni' => 'required',
+        ]);
+
+        $testimoni = Testimoni::findOrFail($id);
+
+        $testimoni->nama = $request->nama;
+        $testimoni->testimoni = $request->testimoni;
+        $testimoni->publish = $request->publish;
+        $testimoni->save();
+
+        return response()->json("Testimoni berhasil diubah", 200);
+    }
+
+    public function delete($id)
+    {
+        $testimoni = Testimoni::findOrFail($id);
+        $testimoni->delete();
+        return response()->json('ok', 200);
+    }
+
+    public function upload(Request $request, $id)
+    {
+        $date = date('H-i-s');
+        $random = \Str::random(5);
+        $testimoni = Testimoni::findOrFail($id);
+        $request->file('photo')->move('upload/testimoni', $date . $random . $request->file('photo')->getClientOriginalName());
+        $testimoni->photo = $date . $random . $request->file('photo')->getClientOriginalName();
+        // return $name;
+        $testimoni->save();
+    }
 }

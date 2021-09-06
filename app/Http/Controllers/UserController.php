@@ -124,38 +124,26 @@ class UserController extends Controller
 
     public function postProfile(Request $request)
     {
-        // dd($request->file('photo'));
         $user = auth()->user()->id;
         $this->validate($request, [
             'name' => 'required',
             'status' => 'required',
             'email' => 'required|email|unique:users,email,' . $user
-            // 'phone' => 'required',
-            // 'no_kamar' => 'required',
-            // 'instansi' => 'required',
-            // 'alamat' => 'required',
-            // 'tahun_masuk' => 'required',
         ]);
-
         $updateProfile = User::findOrFail($user);
         $date = date('H-i-s');
         $random = \Str::random(5);
-
         if ($request->file('photo')) {
             $request->file('photo')->move('upload/profil', $date . $random . $request->file('photo')->getClientOriginalName());
             $updateProfile->photo = $date . $random . $request->file('photo')->getClientOriginalName();
         }
-
         $updateProfile->name = $request->name;
         $updateProfile->email = $request->email;
-        $updateProfile->status = $request->status;
-        // $updateProfile->phone = $request->phone;
-        // $updateProfile->no_kamar = $request->no_kamar;
-        // $updateProfile->instansi = $request->instansi;
-        // $updateProfile->alamat = $request->alamat;
-        // $updateProfile->tahun_masuk = $request->tahun_masuk;
-
-
+        if ($request->status) {
+            $updateProfile->status = $request->status;
+        } else {
+            $updateProfile->status = 'santri';
+        }
         $updateProfile->save();
         return redirect()->back()->with('success', 'Profile Successfully Updated');
     }

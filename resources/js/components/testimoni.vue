@@ -7,8 +7,8 @@
           :class="!editMode ? 'card-primary' : 'card-success'"
         >
           <div class="card-header">
-            <h3 class="card-title" v-if="!editMode">Membuat Biografi</h3>
-            <h3 class="card-title" v-if="editMode">Edit Biografi</h3>
+            <h3 class="card-title" v-if="!editMode">Membuat Testimoni</h3>
+            <h3 class="card-title" v-if="editMode">Edit Testimoni</h3>
           </div>
 
           <form
@@ -28,14 +28,14 @@
                 <has-error :form="form" field="nama"></has-error>
               </div>
               <div class="form-group">
-                <label> Biografi </label>
+                <label> Testimoni </label>
 
                 <ckeditor
-                  v-model="form.biografi"
-                  value="Tulis biografi"
-                  aria-placeholder="Tulis biografi"
+                  v-model="form.testimoni"
+                  value="Tulis testimoni"
+                  aria-placeholder="Tulis testimoni"
                 ></ckeditor>
-                <has-error :form="form" field="biografi"></has-error>
+                <has-error :form="form" field="testimoni"></has-error>
               </div>
               <button
                 type="submit"
@@ -61,7 +61,7 @@
       <div class="container-fluid">
         <div class="card-body table-responsive p-0">
           <v-table
-            :data="biografis"
+            :data="testimonis"
             :filters="filters"
             :currentPage.sync="currentPage"
             :pageSize="dataPerPage"
@@ -72,33 +72,53 @@
             <thead slot="head">
               <tr>
                 <th>#</th>
+                <th>Foto</th>
                 <v-th sortKey="nama">Nama</v-th>
-                <th>Biografi</th>
+                <th>Testimoni</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody slot="body" slot-scope="{ displayData }">
               <tr v-for="(row, index) in displayData" :key="row.id">
                 <td>{{ index + 1 }}</td>
-
+                <td>
+                  <img
+                    :src="'upload/testimoni/' + row.photo"
+                    style="height: 8rem"
+                  />
+                </td>
                 <td>{{ row.nama }}</td>
-                <td v-html="row.biografi"></td>
+                <td v-html="row.testimoni"></td>
 
                 <td>
                   <div style="width: 9rem" class="">
                     <button
                       class="text-white btn btn-sm btn-warning"
-                      v-show="idRole != 3"
                       @click="editTestimoni(row)"
                     >
                       <i class="fa fa-edit"></i>
                     </button>
                     <button
-                      v-show="idRole != 3"
                       class="btn btn-sm btn-danger"
                       @click="deleteTestimoni(row)"
                     >
                       <i class="fa fa-trash"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-success"
+                      @click="upPhoto(row)"
+                    >
+                      <i class="fa fa-image"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-primary"
+                      @click="publisTestimoni(row)"
+                    >
+                      <i v-if="row.publish == false" class="fa fa-star"></i>
+                      <i
+                        v-if="row.publish == true"
+                        class="fa fa-star text-warning"
+                      ></i>
                     </button>
                   </div>
                 </td>
@@ -111,6 +131,54 @@
               :totalPages="totalPages"
             />
           </center>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="uploadImg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="viewUserModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Upload Foto Testimoni
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <template>
+              <Upload
+                multiple
+                type="drag"
+                :action="/photo-testimoni/ + idTestimoni"
+                :headers="{ 'x-csrf-token': token }"
+                name="photo"
+              >
+                <div style="padding: 20px 0">
+                  <Icon
+                    type="ios-cloud-upload"
+                    size="52"
+                    style="color: #3399ff"
+                  ></Icon>
+                  <p>Click or drag files here to upload</p>
+                </div>
+              </Upload>
+            </template>
+          </div>
+          <div class="modal-footer"></div>
         </div>
       </div>
     </div>
@@ -127,15 +195,18 @@ export default {
       totalPages: 0,
       // smart table
       pageOfItems: [],
-      biografi: {},
-      biografis: [],
+      testimoni: {},
+      testimonis: [],
       loading: false,
       editMode: false,
+      idTestimoni: "",
+      token: "",
       isi: "",
       form: new Form({
         id: "",
         nama: "",
-        biografi: "",
+        testimoni: "",
+        publish: "",
       }),
       filters: {
         title: {
@@ -153,10 +224,10 @@ export default {
 
     createTestimoni() {
       this.form
-        .post("/biografi")
+        .post("/testimoni")
         .then((response) => {
           this.load = true;
-          this.$toastr.s("Biografi berhasil dibuat", "Created");
+          this.$toastr.s("testimoni berhasil dibuat", "Created");
           this.form.reset();
         })
         .catch(() => {
@@ -166,18 +237,18 @@ export default {
       this.getTestimoni();
     },
 
-    editTestimoni(biografi) {
+    editTestimoni(testimoni) {
       this.editMode = true;
       this.form.reset();
-      this.form.fill(biografi);
+      this.form.fill(testimoni);
     },
 
     updateTestimoni() {
       this.form
-        .put("/biografi/" + this.form.id)
+        .put("/testimoni/" + this.form.id)
         .then((response) => {
           this.load = true;
-          this.$toastr.s("Biografi berhasil diubah", "Updated");
+          this.$toastr.s("Testimoni berhasil diubah", "Updated");
           Fire.$emit("loadUser");
           this.form.reset();
         })
@@ -191,10 +262,10 @@ export default {
     getTestimoni() {
       this.loading = true;
       axios
-        .get("/getAllBiografi")
+        .get("/getAllTestimoni")
         .then((response) => {
           this.loading = false;
-          this.biografis = response.data.biografis;
+          this.testimonis = response.data.testimoni;
         })
         .catch(() => {
           this.loading = false;
@@ -202,11 +273,11 @@ export default {
         });
     },
 
-    deleteTestimoni(biografi) {
+    deleteTestimoni(testimoni) {
       swal
         .fire({
           title: "Are you sure?",
-          text: biografi.nama + "akan dihapus secara permanen!",
+          text: testimoni.nama + "akan dihapus secara permanen!",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
@@ -216,9 +287,9 @@ export default {
         .then((result) => {
           if (result.value) {
             axios
-              .delete("/biografi/" + biografi.id)
+              .delete("/testimoni/" + testimoni.id)
               .then(() => {
-                this.$toastr.s("Biografi berhasil dibuat", "Created");
+                this.$toastr.s("testimoni berhasil dibuat", "Created");
                 Fire.$emit("loadUser");
               })
               .catch(() => {
@@ -227,8 +298,30 @@ export default {
           }
         });
     },
+
+    publisTestimoni(row) {
+      this.form.nama = row.nama;
+      this.form.testimoni = row.testimoni;
+      this.form.publish = !row.publish;
+      this.form
+        .put("/testimoni/" + row.id)
+        .then((response) => {
+          this.$toastr.s("Testimoni berhasil diubah", "Updated");
+          Fire.$emit("loadUser");
+          this.form.reset();
+        })
+        .catch(() => {
+          this.$toastr.e("Tidak dapat di publish, coba lagi", "Error");
+        });
+    },
     onChangePage(pageOfItems) {
       this.pageOfItems = pageOfItems;
+    },
+
+    upPhoto(testimoni) {
+      $("#uploadImg").modal("show");
+      this.idTestimoni = testimoni.id;
+      this.token = window.Laravel.csrfToken;
     },
   },
   created() {

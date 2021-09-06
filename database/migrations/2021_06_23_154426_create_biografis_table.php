@@ -19,6 +19,7 @@ class CreateBiografisTable extends Migration
             $table->string('nama');
             $table->text('biografi');
             $table->unsignedBigInteger('user_id');
+            $table->boolean('publish')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

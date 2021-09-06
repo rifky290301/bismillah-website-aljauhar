@@ -76,8 +76,8 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{route('home')}}" class="brand-link">
-                <img src="{{ asset('img/logo_aljauhar.jpg') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AL-JAUHAR</span>
+                <img src="{{asset('assets/images/logoweb.png')}}" alt="AdminLTE Logo" class="img-fluid" style="opacity: .8">
+                {{-- <span class="brand-text font-weight-light">AL-JAUHAR</span> --}}
             </a>
 
             <!-- Sidebar -->
@@ -86,14 +86,15 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         @if (auth()->user()->photo == 'avatar.jpg' && auth()->user()->photo )
-                            <img src="{{ asset("img/user.svg") }}" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ asset("img/user.svg") }}" class=" img-fluid rounded elevation-2" alt="User Image">
                         @else
-                            <img src="{{ asset("upload/profil/".auth()->user()->photo) }}" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ asset("upload/profil/".auth()->user()->photo) }}" class=" img-fluid rounded elevation-2" alt="User Image">
                         @endif
                     </div>
                     <div class="info">
                         <a href="{{route("user.profile")}}" class="d-block">{{ auth()->user()->name }}</a>
                     </div>
+                {{-- <a href="{{route("user.profile")}}" class="brand-text font-weight-light">{{ auth()->user()->name }}</a> --}}
                 </div>
 
                 <!-- Sidebar Menu -->

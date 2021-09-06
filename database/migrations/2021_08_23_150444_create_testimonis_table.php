@@ -18,6 +18,7 @@ class CreateTestimonisTable extends Migration
             $table->string('photo')->nullable();
             $table->string('nama');
             $table->text('testimoni');
+            $table->boolean('publish')->default(false);
             $table->timestamps();
         });
     }

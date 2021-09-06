@@ -66,35 +66,22 @@
 								<nav class="navigation">
 									<ul>
 										<li>
-											<a href="/home">Home</a>
+											<a href="#">Home</a>
 											<i class="ion-ios-plus-empty hidden-md-up"></i>
 										</li>
 										<li>
-											<a href="#">Artikel</a>
+											<a href="#">Berita</a>
 										</li>
 										<li>
-											<a href="/aboutus">Tetang Kami</a>
+											<a href="#">Pengurus</a>
 											<i class="ion-ios-plus-empty hidden-md-up"></i>
 										</li>
-										
 										<li>
-											<a href="javascript:avoid(0);">Santri-santri</a>
+											<a href="#">Alumni</a>
 											<i class="ion-ios-plus-empty hidden-md-up"></i>
-											<ul class="sub-nav">
-												<li>
-													<a href="#work">Pengurus</a>
-												</li>
-												<li>
-													<a href="#artteam">Santri</a>
-												</li>
-
-												<li>
-													<a href="#testimoni">ALumni</a>
-												</li>
-											</ul>
 										</li>
 										<li>
-											<a href="/error">Aduan dan Saran</a>
+											<a href="#">Biografi</a>
 											<i class="ion-ios-plus-empty hidden-md-up"></i>
 										</li>
 										<li>
@@ -109,6 +96,7 @@
 				</div>
 			</div>
 		</header>
+
 		<!-- END HEADER -->
 
 		<!--  Main Banner Start Here-->
@@ -244,10 +232,15 @@
 					<div class="col-md-12">
 						<div class="slider_cours">
 
+							@foreach ($allBerita as $berita)
 							<div class="courses_popular">
 								<div class="top_cours">
 									<figure>
-										<img src="{{asset('assets/images/service/img_1.jpg')}}" alt="" />
+										@if ($berita->dokumentasi)
+											<img src="{{asset("upload/berita/$berita->dokumentasi")}}" alt="" />
+										@else
+											<img src="{{asset("img/default-image.png")}}" alt="" />
+										@endif
 									</figure>
 									<div class="apply_box d-flex align-items-center">
 										<div class="full_width">
@@ -256,99 +249,11 @@
 									</div>
 								</div>
 								<div class="courses_detail">
-									<h3><a href="#">House Cleaning</a></h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quos aperiam ipsam modi dolor suscipit asperiores perspiciatis.</p>
+									<h3><a href="#">{{ $berita->judul }}</a></h3>
+									{!! \Illuminate\Support\Str::limit($berita->isi, 150, $end='...') !!}
 								</div>
 							</div>
-
-							<div class="courses_popular">
-								<div class="top_cours">
-									<figure>
-										<img src="{{asset('assets/images/service/img_2.jpg')}}" alt="" />
-									</figure>
-									<div class="apply_box d-flex align-items-center">
-										<div class="full_width">
-											<a href="#" class="btn-text">Read More</a>
-										</div>
-									</div>
-								</div>
-								<div class="courses_detail">
-									<h3><a href="#">Apartment Cleaning</a></h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quos aperiam ipsam modi dolor suscipit asperiores perspiciatis.</p>
-								</div>
-							</div>
-
-							<div class="courses_popular">
-								<div class="top_cours">
-									<figure>
-										<img src="assets/images/service/img_3.jpg" alt="" />
-									</figure>
-									<div class="apply_box d-flex align-items-center">
-										<div class="full_width">
-											<a href="#" class="btn-text">Read More</a>
-										</div>
-									</div>
-								</div>
-								<div class="courses_detail">
-									<h3><a href="#">Carpet Cleaning</a></h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quos aperiam ipsam modi dolor suscipit asperiores perspiciatis.</p>
-								</div>
-
-							</div>
-
-							<div class="courses_popular">
-								<div class="top_cours">
-									<figure>
-										<img src="assets/images/service/img_4.jpg" alt="" />
-									</figure>
-									<div class="apply_box d-flex align-items-center">
-										<div class="full_width">
-											<a href="#" class="btn-text">Read More</a>
-										</div>
-									</div>
-								</div>
-								<div class="courses_detail">
-									<h3><a href="#">After Renovation</a></h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quos aperiam ipsam modi dolor suscipit asperiores perspiciatis.</p>
-								</div>
-
-							</div>
-
-							<div class="courses_popular">
-								<div class="top_cours">
-									<figure>
-										<img src="assets/images/service/img_5.jpg" alt="" />
-									</figure>
-									<div class="apply_box d-flex align-items-center">
-										<div class="full_width">
-											<a href="#" class="btn-text">Read More</a>
-										</div>
-									</div>
-								</div>
-								<div class="courses_detail">
-									<h3><a href="#">Commercial Cleaning</a></h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quos aperiam ipsam modi dolor suscipit asperiores perspiciatis.</p>
-								</div>
-
-							</div>
-
-							<div class="courses_popular">
-								<div class="top_cours">
-									<figure>
-										<img src="assets/images/service/img_6.jpg" alt="" />
-									</figure>
-									<div class="apply_box d-flex align-items-center">
-										<div class="full_width">
-											<a href="#" class="btn-text">Read More</a>
-										</div>
-									</div>
-								</div>
-								<div class="courses_detail">
-									<h3><a href="#">Residential Cleaning</a></h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quos aperiam ipsam modi dolor suscipit asperiores perspiciatis.</p>
-								</div>
-
-							</div>
+							@endforeach
 
 						</div>
 					</div>
@@ -471,158 +376,34 @@
 
 				<div class="row">
 					<div class="col-md-12">
-
 						<div class="say_testimonial dots_style owl-carousel">
 
+							@foreach ($allTestimoni as $testimoni)
 							<div class="item_testimonial">
 								<div class="patient_head d-flex align-items-stretch">
 									<div class="patient_img">
 										<figure>
-											<img src="assets/images/testimonial/1.jpg" alt="" />
+											@if ($testimoni->photo)
+												<img src="{{asset("upload/testimoni/$testimoni->photo")}}" alt="" />
+											@else
+												<img src="{{asset("img/profile-user.png")}}" alt="" />
+											@endif
 										</figure>
 									</div>
 									<div class="patient_detail d-flex align-items-center">
 										<div>
-											<h3>Vanessa Adams</h3>
-											
+											<h3>{{ $testimoni->nama }}</h3>
 										</div>
 									</div>
 								</div>
 								<div class="patient_text">
 									<p>
-										Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+										{!! \Illuminate\Support\Str::limit($testimoni->testimoni, 150, $end='...') !!}
 									</p>
 								</div>
 							</div>
-
-							<div class="item_testimonial">
-								<div class="patient_head d-flex align-items-stretch">
-									<div class="patient_img">
-										<figure>
-											<img src="assets/images/testimonial/2.jpg" alt="" />
-										</figure>
-									</div>
-									<div class="patient_detail d-flex align-items-center">
-										<div>
-											<h3>Vanessa Adams</h3>
-											
-										</div>
-									</div>
-								</div>
-								<div class="patient_text">
-									<p>
-										Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-									</p>
-								</div>
-							</div>
-
-							<div class="item_testimonial">
-								<div class="patient_head d-flex align-items-stretch">
-									<div class="patient_img">
-										<figure>
-											<img src="assets/images/testimonial/3.jpg" alt="" />
-										</figure>
-									</div>
-									<div class="patient_detail d-flex align-items-center">
-										<div>
-											<h3>Vanessa Adams</h3>
-											
-										</div>
-									</div>
-								</div>
-								<div class="patient_text">
-									<p>
-										Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-									</p>
-								</div>
-							</div>
-
-							<div class="item_testimonial">
-								<div class="patient_head d-flex align-items-stretch">
-									<div class="patient_img">
-										<figure>
-											<img src="assets/images/testimonial/1.jpg" alt="" />
-										</figure>
-									</div>
-									<div class="patient_detail d-flex align-items-center">
-										<div>
-											<h3>Vanessa Adams</h3>
-											
-										</div>
-									</div>
-								</div>
-								<div class="patient_text">
-									<p>
-										Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-									</p>
-								</div>
-							</div>
-
-							<div class="item_testimonial">
-								<div class="patient_head d-flex align-items-stretch">
-									<div class="patient_img">
-										<figure>
-											<img src="assets/images/testimonial/2.jpg" alt="" />
-										</figure>
-									</div>
-									<div class="patient_detail d-flex align-items-center">
-										<div>
-											<h3>Vanessa Adams</h3>
-											<span>CEO</span>
-										</div>
-									</div>
-								</div>
-								<div class="patient_text">
-									<p>
-										Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-									</p>
-								</div>
-							</div>
-
-							<div class="item_testimonial">
-								<div class="patient_head d-flex align-items-stretch">
-									<div class="patient_img">
-										<figure>
-											<img src="assets/images/testimonial/3.jpg" alt="" />
-										</figure>
-									</div>
-									<div class="patient_detail d-flex align-items-center">
-										<div>
-											<h3>Vanessa Adams</h3>
-											
-										</div>
-									</div>
-								</div>
-								<div class="patient_text">
-									<p>
-										Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-									</p>
-								</div>
-							</div>
-
-							<div class="item_testimonial">
-								<div class="patient_head d-flex align-items-stretch">
-									<div class="patient_img">
-										<figure>
-											<img src="assets/images/testimonial/1.jpg" alt="" />
-										</figure>
-									</div>
-									<div class="patient_detail d-flex align-items-center">
-										<div>
-											<h3>Vanessa Adams</h3>
-											
-										</div>
-									</div>
-								</div>
-								<div class="patient_text">
-									<p>
-										Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-									</p>
-								</div>
-							</div>
-
+							@endforeach
 						</div>
-
 					</div>
 				</div>
 
@@ -635,83 +416,37 @@
 				<div class="row pb-60 pb-xs-40">
 					<div class="col-md-8 offset-md-2 text-center">
 						<div class="section_tit">
-							<h2>Santri PP. AL-JAUHAR</h2>
+							<h2>Biografi</h2>
 							<span class="three_line"></span>
 						</div>
 					</div>
 				</div>
 
 				<div class="row">
+					@foreach ($allBiografi as $biografi)
 					<div class="col-md-6 mb-30">
-						<div class="color_box bg_light_red img-scale">
+						<div style="background: #479c18" class="color_box img-scale">
 							<div class="left_picher">
 								<figure>
-									<img src="assets/images/team/team1.jpg" alt="" />
+									@if ($biografi->photo)
+										<img src="{{asset("upload/biografi/$biografi->photo")}}" alt="" />
+									@else
+										<img src="{{asset("img/profile-user.png")}}" alt="" />
+									@endif
 								</figure>
 							</div>
 							<div class="detail_box">
-								<h3>Aaron Finch</h3>
+								<h3>{{ $biografi->nama }}</h3>
 								<p>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tristique vehicula porta.
+									{!! \Illuminate\Support\Str::limit($biografi->biografi, 150, $end='...') !!}
 								</p>
 								<h4>Status:<span>Availabe</span></h4>
 							</div>
 						</div>
 					</div>
-
-					<div class="col-md-6 mb-xs-30">
-						<div class="color_box bg_light_yellow img-scale">
-							<div class="left_picher">
-								<figure>
-									<img src="assets/images/team/team2.jpg" alt="" />
-								</figure>
-							</div>
-							<div class="detail_box">
-								<h3>Aaron Finch</h3>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tristique vehicula porta.
-								</p>
-								<h4>Status:<span>Availabe</span></h4>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-md-6 mb-xs-30">
-						<div class="color_box bg_light_green img-scale">
-							<div class="left_picher">
-								<figure>
-									<img src="assets/images/team/team3.jpg" alt="" />
-								</figure>
-							</div>
-							<div class="detail_box">
-								<h3>Aaron Finch</h3>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tristique vehicula porta.
-								</p>
-								<h4>Status:<span>Availabe</span></h4>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-md-6">
-						<div class="color_box bg_light_black img-scale">
-							<div class="left_picher">
-								<figure>
-									<img src="assets/images/team/team4.jpg" alt="" />
-								</figure>
-							</div>
-							<div class="detail_box">
-								<h3>Aaron Finch</h3>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tristique vehicula porta.
-								</p>
-								<h4>Status:<span>Availabe</span></h4>
-							</div>
-						</div>
-					</div>
+					@endforeach
 
 				</div>
-
 			</div>
 		</section>
 		<!-- Team_Section_End -->
@@ -785,7 +520,7 @@
 		<script type="text/javascript" src="{{asset('assets/js/jquery.min.js')}}"></script>
 		<script type="text/javascript" src="{{asset('assets/js/tether.min.js')}}"></script>
 		<script type="text/javascript" src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-		<script src="{{asset('assets/assets/js/jquery.easing.js')}}" type="text/javascript"></script>
+		<script src="{{asset('assets/js/jquery.easing.js')}}" type="text/javascript"></script>
 
 		<!-- fancybox Js -->
 		<script src="{{asset('assets/js/jquery.mousewheel-3.0.6.pack.js')}}" type="text/javascript"></script>

@@ -118,5 +118,14 @@ class DatabaseSeeder extends Seeder
         ]);
         $roleSantri->assignRole('Santri');
         event(new Registered($roleSantri));
+     
+     
+     
+        $this->call(ArtikelSeeder::class);
+        $this->call(BeritaSeeder::class);
+        $this->call(BiografiSeeder::class);
+        $this->call(TestimoniSeeder::class);
     }
+
+
 }

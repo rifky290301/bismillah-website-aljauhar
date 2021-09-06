@@ -72,6 +72,7 @@
             <thead slot="head">
               <tr>
                 <th>#</th>
+                <th>Foto</th>
                 <v-th sortKey="nama">Nama</v-th>
                 <th>Biografi</th>
                 <th>Action</th>
@@ -80,7 +81,12 @@
             <tbody slot="body" slot-scope="{ displayData }">
               <tr v-for="(row, index) in displayData" :key="row.id">
                 <td>{{ index + 1 }}</td>
-
+                <td>
+                  <img
+                    :src="'upload/biografi/' + row.photo"
+                    style="height: 8rem"
+                  />
+                </td>
                 <td>{{ row.nama }}</td>
                 <td v-html="row.biografi"></td>
 
@@ -88,17 +94,31 @@
                   <div style="width: 9rem" class="">
                     <button
                       class="text-white btn btn-sm btn-warning"
-                      v-show="idRole != 3"
                       @click="editBiografi(row)"
                     >
                       <i class="fa fa-edit"></i>
                     </button>
                     <button
-                      v-show="idRole != 3"
                       class="btn btn-sm btn-danger"
                       @click="deleteBiografi(row)"
                     >
                       <i class="fa fa-trash"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-success"
+                      @click="upPhoto(row)"
+                    >
+                      <i class="fa fa-image"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-primary"
+                      @click="publisBiografi(row)"
+                    >
+                      <i v-if="row.publish == false" class="fa fa-star"></i>
+                      <i
+                        v-if="row.publish == true"
+                        class="fa fa-star text-warning"
+                      ></i>
                     </button>
                   </div>
                 </td>
@@ -111,6 +131,54 @@
               :totalPages="totalPages"
             />
           </center>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="uploadImg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="viewUserModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Upload Foto Biografi
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <template>
+              <Upload
+                multiple
+                type="drag"
+                :action="/photo-biografi/ + idBiografi"
+                :headers="{ 'x-csrf-token': token }"
+                name="photo"
+              >
+                <div style="padding: 20px 0">
+                  <Icon
+                    type="ios-cloud-upload"
+                    size="52"
+                    style="color: #3399ff"
+                  ></Icon>
+                  <p>Click or drag files here to upload</p>
+                </div>
+              </Upload>
+            </template>
+          </div>
+          <div class="modal-footer"></div>
         </div>
       </div>
     </div>
@@ -132,10 +200,13 @@ export default {
       loading: false,
       editMode: false,
       isi: "",
+      idBiografi: "",
+      token: "",
       form: new Form({
         id: "",
         nama: "",
         biografi: "",
+        publish: "",
       }),
       filters: {
         title: {
@@ -227,8 +298,30 @@ export default {
           }
         });
     },
+
+    publisBiografi(row) {
+      this.form.nama = row.nama;
+      this.form.biografi = row.biografi;
+      this.form.publish = !row.publish;
+      this.form
+        .put("/biografi/" + row.id)
+        .then((response) => {
+          this.$toastr.s("Biografi berhasil diubah", "Updated");
+          Fire.$emit("loadUser");
+          this.form.reset();
+        })
+        .catch(() => {
+          this.$toastr.e("Tidak dapat di publish, coba lagi", "Error");
+        });
+    },
     onChangePage(pageOfItems) {
       this.pageOfItems = pageOfItems;
+    },
+
+    upPhoto(biografi) {
+      $("#uploadImg").modal("show");
+      this.idBiografi = biografi.id;
+      this.token = window.Laravel.csrfToken;
     },
   },
   created() {

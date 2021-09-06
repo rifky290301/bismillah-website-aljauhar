@@ -19,7 +19,7 @@
                   v-model="form.judul"
                   type="text"
                   name="judul"
-                  placeholder="Masukkan judul artikel"
+                  placeholder="Masukkan judul berita"
                   class="form-control"
                   :class="{ 'is-invaild': form.errors.has('judul') }"
                 />
@@ -97,12 +97,18 @@
                     >
                       <i class="fa fa-trash"></i>
                     </button>
-                    <a
+                    <!-- <a
                       class="btn btn-sm text-white btn-info"
                       :href="'berita/edit/' + row.id"
                     >
                       <i class="fa fa-eye"></i>
-                    </a>
+                    </a> -->
+                    <button
+                      class="btn btn-sm btn-success"
+                      @click="upPhoto(row)"
+                    >
+                      <i class="fa fa-image"></i>
+                    </button>
                     <button
                       class="btn btn-sm btn-primary"
                       @click="publisBerita(row)"
@@ -127,6 +133,53 @@
         </div>
       </div>
     </div>
+    <div
+      class="modal fade"
+      id="uploadImg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="viewUserModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Upload Foto Berita
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <template>
+              <Upload
+                multiple
+                type="drag"
+                :action="/photo-berita/ + idBerita"
+                :headers="{ 'x-csrf-token': token }"
+                name="photo"
+              >
+                <div style="padding: 20px 0">
+                  <Icon
+                    type="ios-cloud-upload"
+                    size="52"
+                    style="color: #3399ff"
+                  ></Icon>
+                  <p>Click or drag files here to upload</p>
+                </div>
+              </Upload>
+            </template>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -145,7 +198,8 @@ export default {
       loading: false,
       editMode: false,
       gambarBerita: "",
-
+      idBerita: "",
+      token: "",
       form: new Form({
         id: "",
         judul: "",
@@ -249,7 +303,7 @@ export default {
       this.form
         .put("/berita/" + row.id)
         .then((response) => {
-          this.$toastr.s("Berita berhasil di publish", "Updated");
+          this.$toastr.s("Berita berhasil diubah", "Updated");
           Fire.$emit("loadUser");
           this.form.reset();
         })
@@ -260,6 +314,12 @@ export default {
 
     onChangePage(pageOfItems) {
       this.pageOfItems = pageOfItems;
+    },
+
+    upPhoto(berita) {
+      $("#uploadImg").modal("show");
+      this.idBerita = berita.id;
+      this.token = window.Laravel.csrfToken;
     },
   },
 

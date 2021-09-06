@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Berita;
+use App\Models\Biografi;
+use App\Models\Testimoni;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', 'HomeController@welcome');
 Route::get('/', function () {
-    return view('index');
+    $allBerita = Berita::where('publish', true)->latest()->get();
+    $allTestimoni = Testimoni::where('publish', true)->latest()->get();
+    $allBiografi = Biografi::where('publish', true)->latest()->get();
+    return view('index', compact("allBerita", "allTestimoni", "allBiografi"));
 });
+
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -39,13 +47,12 @@ Route::group(['middleware' => ['auth', 'permission:create user']], function () {
     Route::delete("/alumni/{id}", "AlumniController@delete");
     Route::post("/photo-alumni/{id}", "AlumniController@upload");
 
-
     // !delete santri
     Route::delete("/santri/{id}", "SantriController@delete");
 });
 
 // !SANTRI AKTIF SEKARANG
-Route::post("/photo-santri/{id}", "SantriController@upload");    
+Route::post("/photo-santri/{id}", "SantriController@upload");
 Route::get('/santri', 'SantriController@index')->name('santri.index');
 Route::post('/santri', 'SantriController@store');
 Route::get('/getAllsantri', 'SantriController@getAll');
@@ -59,7 +66,8 @@ Route::group(['middleware' => ['auth', 'permission:membuat berita']], function (
     Route::put("/berita/{id}", "BeritaController@update");
     Route::delete("/berita/{id}", "BeritaController@delete");
     Route::get("/berita/edit/{id}", "BeritaController@edit");
-    Route::post("/berita/show/{id}", "BeritaController@update2")->name("show.beriita");
+    Route::post("/photo-berita/{id}", "BeritaController@upload");
+    // Route::post("/berita/show/{id}", "BeritaController@update2")->name("show.beriita");
     // Route::get('/berita/search', 'BeritaController@search');
 });
 
@@ -95,12 +103,15 @@ Route::group(['middleware' => ['auth', 'permission:membuat biografi']], function
     Route::post('/biografi', 'BiografiController@store');
     Route::delete("/biografi/{id}", "BiografiController@delete");
     Route::put("/biografi/{id}", "BiografiController@update");
-
+    Route::post("/photo-biografi/{id}", "BiografiController@upload");
+    
     //! TESTIMONI
+    Route::get("/getAllTestimoni", "TestimoniController@getAll");
     Route::get('/testimoni', 'TestimoniController@index')->name("testimoni.index");
     Route::post('/testimoni', 'TestimoniController@store');
     Route::delete("/testimoni/{id}", "TestimoniController@delete");
     Route::put("/testimoni/{id}", "TestimoniController@update");
+    Route::post("/photo-testimoni/{id}", "TestimoniController@upload");
 });
 
 

@@ -243,7 +243,7 @@ export default {
       this.form
         .put("/artikel/" + row.id)
         .then((response) => {
-          this.$toastr.s("Artikel telah di publish", "Updated");
+          this.$toastr.s("Artikel telah diubah", "Updated");
           Fire.$emit("loadUser");
           this.form.reset();
         })
