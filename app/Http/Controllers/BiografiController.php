@@ -30,16 +30,16 @@ class BiografiController extends Controller
         $this->validate($request, [
             'nama' => 'required|string',
             'biografi' => 'required',
+            'jabatan' => 'required',
         ]);
-
         $biografi = new Biografi();
 
         $biografi->user_id = auth()->user()->id;
         $biografi->nama = $request->nama;
+        $biografi->jabatan = $request->jabatan;
         $biografi->biografi = $request->biografi;
 
         $biografi->save();
-
         return response()->json("Biografi berhasil dibuat", 200);
     }
 
@@ -49,10 +49,12 @@ class BiografiController extends Controller
         $this->validate($request, [
             'nama' => 'required|string',
             'biografi' => 'required',
+            'jabatan' => 'required',
         ]);
 
         $biografi = Biografi::findOrFail($id);
         $biografi->nama = $request->nama;
+        $biografi->jabatan = $request->jabatan;
         $biografi->biografi = $request->biografi;
         $biografi->publish = $request->publish;
         $biografi->save();

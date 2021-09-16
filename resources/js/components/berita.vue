@@ -27,8 +27,60 @@
               </div>
               <div class="form-group">
                 <label> Isi </label>
-                <ckeditor v-model="form.isi" value="Tulis biografi"></ckeditor>
-                <has-error :form="form" field="isi"></has-error>
+                <div class="row">
+                  <div class="col-md-8">
+                    <ckeditor
+                      v-model="form.isi"
+                      value="Tulis biografi"
+                    ></ckeditor>
+                    <has-error :form="form" field="isi"></has-error>
+                  </div>
+                  <div v-if="!editMode" class="col-md-4">
+                    <img
+                      src="img/default-image.png"
+                      class="img-fluid"
+                      alt="Responsive image"
+                    />
+                  </div>
+                  <div v-else class="col-md-4">
+                    <div v-if="gambarBerita.dokumentasi">
+                      <div class="custom-image-hover">
+                        <img
+                          :src="'upload/berita/' + gambarBerita.dokumentasi"
+                          class="img-fluid"
+                          alt="Responsive image"
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          @click="upPhoto(gambarBerita)"
+                        >
+                          Ubah gambar
+                        </button>
+                      </div>
+                    </div>
+                    <div v-else>
+                      <template>
+                        <Upload
+                          multiple
+                          type="drag"
+                          :action="/photo-berita/ + gambarBerita.id"
+                          :headers="{ 'x-csrf-token': token }"
+                          name="photo"
+                        >
+                          <div style="padding: 20px 0">
+                            <Icon
+                              type="ios-cloud-upload"
+                              size="52"
+                              style="color: #3399ff"
+                            ></Icon>
+                            <p>Click or drag files here to upload</p>
+                          </div>
+                        </Upload>
+                      </template>
+                    </div>
+                  </div>
+                </div>
               </div>
               <button
                 type="submit"
@@ -67,24 +119,23 @@
                 <th>#</th>
                 <th>Gambar</th>
                 <v-th sortKey="judul">Judul</v-th>
-                <th>Berita</th>
+                <th style="min-width: 13cm">Berita</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody slot="body" slot-scope="{ displayData }">
               <tr v-for="(row, index) in displayData" :key="row.id">
                 <td>{{ index + 1 }}</td>
-
                 <td>
                   <img
                     :src="'upload/berita/' + row.dokumentasi"
-                    style="height: 8rem"
+                    style="width: 9rem"
                   />
                 </td>
                 <td>{{ row.judul }}</td>
                 <td v-html="row.isi"></td>
                 <td>
-                  <div style="width: 9rem" class="">
+                  <div style="width: 6.5rem" class="">
                     <button
                       class="text-white btn btn-sm btn-warning"
                       @click="editBerita(row)"
@@ -96,18 +147,6 @@
                       @click="deleteBerita(row)"
                     >
                       <i class="fa fa-trash"></i>
-                    </button>
-                    <!-- <a
-                      class="btn btn-sm text-white btn-info"
-                      :href="'berita/edit/' + row.id"
-                    >
-                      <i class="fa fa-eye"></i>
-                    </a> -->
-                    <button
-                      class="btn btn-sm btn-success"
-                      @click="upPhoto(row)"
-                    >
-                      <i class="fa fa-image"></i>
                     </button>
                     <button
                       class="btn btn-sm btn-primary"
@@ -145,7 +184,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              Upload Foto Berita
+              Upload dokumentasi berita
             </h5>
             <button
               type="button"
@@ -240,6 +279,8 @@ export default {
       this.editMode = true;
       this.form.reset();
       this.form.fill(berita);
+      this.gambarBerita = berita;
+      this.token = window.Laravel.csrfToken;
     },
 
     updateBerita() {
@@ -315,7 +356,6 @@ export default {
     onChangePage(pageOfItems) {
       this.pageOfItems = pageOfItems;
     },
-
     upPhoto(berita) {
       $("#uploadImg").modal("show");
       this.idBerita = berita.id;

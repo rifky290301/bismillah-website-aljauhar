@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Alumni;
 // use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class AlumniController extends Controller
 {
@@ -29,8 +30,6 @@ class AlumniController extends Controller
             array_push($kamar, $user["no_kamar"]);
             array_push($tahunMasuk, $user["tahun_masuk"]);
         }
-
-
         $kamar = array_unique($kamar);
         $tahunMasuk = array_unique($tahunMasuk);
 
@@ -109,16 +108,17 @@ class AlumniController extends Controller
             $alumni->photo = $request->photo;
         }
 
-
         $alumni->save();
-
         return response()->json('ok', 200);
     }
-
 
     public function delete($id)
     {
         $alumni = Alumni::findOrFail($id);
+        $path = public_path("upload/alumni/") . $alumni->photo;
+        if (File::exists($path)) {
+            unlink($path);
+        }
         $alumni->delete();
         return response()->json('ok', 200);
     }
@@ -164,6 +164,10 @@ class AlumniController extends Controller
         $date = date('H-i-s');
         $random = \Str::random(5);
         $alumni = Alumni::findOrFail($id);
+        $path = public_path("upload/alumni/") . $alumni->photo;
+        if (File::exists($path)) {
+            unlink($path);
+        }
         $request->file('photo')->move('upload/alumni', $date . $random . $request->file('photo')->getClientOriginalName());
         $alumni->photo = $date . $random . $request->file('photo')->getClientOriginalName();
         // return $name;

@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="login-logo">
-    <a href="{{ url('/') }}"><b>Laravel</b>Admin</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card">
+<!-- /.login-logo -->
+<div class="card ">
+    <div class="login-logo pt-3">
+        <a href="{{ url('/') }}">
+            <img src="{{asset('assets/images/logoweb.png')}}" alt="Logo Al Jauhar" srcset="">
+        </a>
+    </div>
     <div class="card-body login-card-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg"><b>Login</b></p>
 
         <form action="{{ route('login') }}" method="post">
             @csrf
@@ -15,7 +17,6 @@
                 <input id="email" type="email" placeholder="E-mail" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                 <div class="input-group-append">
                     <div class="input-group-text">
-                    <span class="fas fa-envelope"></span>
                     </div>
                 </div>
                 @error('email')
@@ -28,7 +29,6 @@
                 <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                 <div class="input-group-append">
                     <div class="input-group-text">
-                        <span class="fas fa-lock"></span>
                     </div>
                 </div>
                 @error('password')
@@ -48,13 +48,13 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-4">
-                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    <button type="submit" class="btn btn-primary btn-block">Masuk</button>
                 </div>
                 <!-- /.col -->
             </div>
         </form>
         <p class="mb-0">
-            <a href="{{route('register')}}" class="text-center">Create new account</a>
+            <a href="{{route('register')}}" class="text-center">Buat akun</a>
         </p>
     </div>
     <!-- /.login-card-body -->

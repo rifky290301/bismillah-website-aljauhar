@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth', 'permission:membuat artikel']], function 
     Route::get("/getAllArtikel", "ArtikelController@getAll");
     Route::delete("/artikel/{id}", "ArtikelController@delete");
     Route::put("/artikel/{id}", "ArtikelController@update");
+    Route::post("/gambar-artikel/{id}", "ArtikelController@upload");
 });
 
 
@@ -104,7 +105,7 @@ Route::group(['middleware' => ['auth', 'permission:membuat biografi']], function
     Route::delete("/biografi/{id}", "BiografiController@delete");
     Route::put("/biografi/{id}", "BiografiController@update");
     Route::post("/photo-biografi/{id}", "BiografiController@upload");
-    
+
     //! TESTIMONI
     Route::get("/getAllTestimoni", "TestimoniController@getAll");
     Route::get('/testimoni', 'TestimoniController@index')->name("testimoni.index");
@@ -141,3 +142,9 @@ Route::get('/search-kamar/user', 'UserController@searchKamar');
 
 
 Route::get("/getAllAlumni", "AlumniController@getAll");
+
+
+
+
+// !FRONTEND
+Route::get('/artikel-santri', 'ArtikelController@client')->name('artikel.santri');

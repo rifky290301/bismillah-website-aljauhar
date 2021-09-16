@@ -28,14 +28,74 @@
                 <has-error :form="form" field="nama"></has-error>
               </div>
               <div class="form-group">
+                <label> Jabatan </label>
+                <input
+                  v-model="form.jabatan"
+                  type="text"
+                  name="jabatan"
+                  placeholder="Masukkan jabatan"
+                  class="form-control"
+                  :class="{ 'is-invaild': form.errors.has('jabatan') }"
+                />
+                <has-error :form="form" field="jabatan"></has-error>
+              </div>
+              <div class="form-group">
                 <label> Biografi </label>
-
-                <ckeditor
-                  v-model="form.biografi"
-                  value="Tulis biografi"
-                  aria-placeholder="Tulis biografi"
-                ></ckeditor>
-                <has-error :form="form" field="biografi"></has-error>
+                <div class="row">
+                  <div class="col-md-8">
+                    <ckeditor
+                      v-model="form.biografi"
+                      value="Tulis biografi"
+                      aria-placeholder="Tulis biografi"
+                    ></ckeditor>
+                    <has-error :form="form" field="biografi"></has-error>
+                  </div>
+                  <div v-if="!editMode" class="col-md-4">
+                    <img
+                      src="img/default-image.png"
+                      class="img-fluid"
+                      alt="biografi AL JAUHAR"
+                    />
+                  </div>
+                  <div v-else class="col-md-4">
+                    <div v-if="gambarBiografi.photo">
+                      <div class="custom-image-hover">
+                        <img
+                          :src="'upload/biografi/' + gambarBiografi.photo"
+                          class="img-fluid"
+                          alt="biografi AL JAUHAR"
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          @click="upPhoto(gambarBiografi)"
+                        >
+                          Ubah gambar
+                        </button>
+                      </div>
+                    </div>
+                    <div v-else>
+                      <template>
+                        <Upload
+                          multiple
+                          type="drag"
+                          :action="/photo-biografi/ + gambarBiografi.id"
+                          :headers="{ 'x-csrf-token': token }"
+                          name="photo"
+                        >
+                          <div style="padding: 20px 0">
+                            <Icon
+                              type="ios-cloud-upload"
+                              size="52"
+                              style="color: #3399ff"
+                            ></Icon>
+                            <p>Click or drag files here to upload</p>
+                          </div>
+                        </Upload>
+                      </template>
+                    </div>
+                  </div>
+                </div>
               </div>
               <button
                 type="submit"
@@ -74,7 +134,8 @@
                 <th>#</th>
                 <th>Foto</th>
                 <v-th sortKey="nama">Nama</v-th>
-                <th>Biografi</th>
+                <v-th sortKey="jabatan">Jabatan</v-th>
+                <th style="min-width: 13cm">Biografi</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -84,14 +145,15 @@
                 <td>
                   <img
                     :src="'upload/biografi/' + row.photo"
-                    style="height: 8rem"
+                    style="width: 9rem"
                   />
                 </td>
                 <td>{{ row.nama }}</td>
+                <td>{{ row.jabatan }}</td>
                 <td v-html="row.biografi"></td>
 
                 <td>
-                  <div style="width: 9rem" class="">
+                  <div style="width: 6.5rem" class="">
                     <button
                       class="text-white btn btn-sm btn-warning"
                       @click="editBiografi(row)"
@@ -103,12 +165,6 @@
                       @click="deleteBiografi(row)"
                     >
                       <i class="fa fa-trash"></i>
-                    </button>
-                    <button
-                      class="btn btn-sm btn-success"
-                      @click="upPhoto(row)"
-                    >
-                      <i class="fa fa-image"></i>
                     </button>
                     <button
                       class="btn btn-sm btn-primary"
@@ -200,18 +256,20 @@ export default {
       loading: false,
       editMode: false,
       isi: "",
+      gambarBiografi: "",
       idBiografi: "",
       token: "",
       form: new Form({
         id: "",
         nama: "",
         biografi: "",
+        jabatan: "",
         publish: "",
       }),
       filters: {
         title: {
           value: "",
-          keys: ["nama"],
+          keys: ["nama", "jabatan", "biografi"],
         },
       },
     };
@@ -241,6 +299,8 @@ export default {
       this.editMode = true;
       this.form.reset();
       this.form.fill(biografi);
+      this.gambarBiografi = biografi;
+      this.token = window.Laravel.csrfToken;
     },
 
     updateBiografi() {
@@ -276,7 +336,7 @@ export default {
     deleteBiografi(biografi) {
       swal
         .fire({
-          title: "Are you sure?",
+          title: "Apakah kamu yakin?",
           text: biografi.nama + "akan dihapus secara permanen!",
           icon: "warning",
           showCancelButton: true,
@@ -301,6 +361,7 @@ export default {
 
     publisBiografi(row) {
       this.form.nama = row.nama;
+      this.form.jabatan = row.jabatan;
       this.form.biografi = row.biografi;
       this.form.publish = !row.publish;
       this.form

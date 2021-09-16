@@ -20,8 +20,8 @@ class TestimoniController extends Controller
         ]);
 
         $testimoni = new Testimoni();
-
         $testimoni->nama = $request->nama;
+        $testimoni->pekerjaan = $request->pekerjaan;
         $testimoni->testimoni = $request->testimoni;
 
         $testimoni->save();
@@ -42,11 +42,13 @@ class TestimoniController extends Controller
         $this->validate($request, [
             'nama' => 'required|string',
             'testimoni' => 'required',
+            'pekerjaan' => 'required',
         ]);
 
         $testimoni = Testimoni::findOrFail($id);
 
         $testimoni->nama = $request->nama;
+        $testimoni->pekerjaan = $request->pekerjaan;
         $testimoni->testimoni = $request->testimoni;
         $testimoni->publish = $request->publish;
         $testimoni->save();
@@ -57,7 +59,13 @@ class TestimoniController extends Controller
     public function delete($id)
     {
         $testimoni = Testimoni::findOrFail($id);
-        $testimoni->delete();
+        $path = public_path("upload/testimoni/") . $testimoni->photo;
+        try {
+            unlink($path);
+        } catch (\Throwable $th) {
+        } finally {
+            $testimoni->delete();
+        }
         return response()->json('ok', 200);
     }
 
@@ -66,9 +74,14 @@ class TestimoniController extends Controller
         $date = date('H-i-s');
         $random = \Str::random(5);
         $testimoni = Testimoni::findOrFail($id);
-        $request->file('photo')->move('upload/testimoni', $date . $random . $request->file('photo')->getClientOriginalName());
-        $testimoni->photo = $date . $random . $request->file('photo')->getClientOriginalName();
-        // return $name;
-        $testimoni->save();
+        $path = public_path("upload/testimoni/") . $testimoni->photo;
+        try {
+            unlink($path);
+        } catch (\Throwable $th) {
+        } finally {
+            $request->file('photo')->move('upload/testimoni', $date . $random . $request->file('photo')->getClientOriginalName());
+            $testimoni->photo = $date . $random . $request->file('photo')->getClientOriginalName();
+            $testimoni->save();
+        }
     }
 }

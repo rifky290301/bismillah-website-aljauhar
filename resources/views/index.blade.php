@@ -1,560 +1,651 @@
 <!DOCTYPE html>
 <html lang="en">
-	
-<!-- index106:36-->
+
 <head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>PP AL-JAUHAR</title>
-		<link rel="shortcut icon" type="image/x-icon" href="icon.png">
-		<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700" rel="stylesheet">
-		<link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
-		<link href="{{asset('assets/css/font-awesome.css')}}" rel="stylesheet" type="text/css">
-		<link href="{{asset('assets/css/ionicons.css')}}" rel="stylesheet" type="text/css">
-		<link href="{{asset('assets/css/jquery.fancybox.css')}}" rel="stylesheet" type="text/css">
-		<link href="{{asset('assets/css/magnific-popup.css')}}" type="text/css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-		<!--Main Slider-->
-		<link href="{{asset('assets/css/settings.css')}}" type="text/css" rel="stylesheet" media="screen">
-		<link href="{{asset('assets/css/layers.css')}}" type="text/css" rel="stylesheet" media="screen">
-		<link href="{{asset('assets/css/layers.css')}}" type="text/css" rel="stylesheet" media="screen">
-		<link href="{{asset('assets/css/owl.carousel.css')}}" type="text/css" rel="stylesheet" media="screen">
-		<link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
-		<link href="{{asset('assets/css/header1.css')}}" rel="stylesheet" type="text/css" />
-		<link href="{{asset('assets/css/footer1.css')}}" rel="stylesheet" type="text/css" />
-		<link href="{{asset('assets/css/index1.css')}}" rel="stylesheet" type="text/css" />
-		<link href="{{asset('assets/css/theme-color/default.css')}}" rel="stylesheet" type="text/css" id="theme-color" />
-	</head>
-	<body>
-		<!--loader-->
-		<div id="preloader">
-			<div class="sk-circle">
-				<div class="sk-circle1 sk-child"></div>
-				<div class="sk-circle2 sk-child"></div>
-				<div class="sk-circle3 sk-child"></div>
-				<div class="sk-circle4 sk-child"></div>
-				<div class="sk-circle5 sk-child"></div>
-				<div class="sk-circle6 sk-child"></div>
-				<div class="sk-circle7 sk-child"></div>
-				<div class="sk-circle8 sk-child"></div>
-				<div class="sk-circle9 sk-child"></div>
-				<div class="sk-circle10 sk-child"></div>
-				<div class="sk-circle11 sk-child"></div>
-				<div class="sk-circle12 sk-child"></div>
-			</div>
-		</div>
+  <title>Al-Jauhar</title>
+  <meta content="" name="description">
 
-		<!--loader-->
+  <meta content="" name="keywords">
 
-		<!-- HEADER -->
-		<header id="header" class="header header-1 header_tran">
-			<div id="top-bar" class="top-bar-section top-bar-bg-color">
-				
-			<div class="nav-wrap">
-				<div class="reletiv_box">
-					<div class="container">
-						<div class="row d-flex align-items-center">
-							<div class="col-md-3">
-								<div class="logo">
-									<a href="/home"><img src="{{asset('assets/images/logoweb.png')}}" alt=""></a>
-								</div>
-								<!-- Phone Menu button -->
-								<button id="menu" class="menu hidden-md-up"></button>
-							</div>
-							<div class="col-md-9 nav-bg">
-								<nav class="navigation">
-									<ul>
-										<li>
-											<a href="#">Home</a>
-											<i class="ion-ios-plus-empty hidden-md-up"></i>
-										</li>
-										<li>
-											<a href="#">Berita</a>
-										</li>
-										<li>
-											<a href="#">Pengurus</a>
-											<i class="ion-ios-plus-empty hidden-md-up"></i>
-										</li>
-										<li>
-											<a href="#">Alumni</a>
-											<i class="ion-ios-plus-empty hidden-md-up"></i>
-										</li>
-										<li>
-											<a href="#">Biografi</a>
-											<i class="ion-ios-plus-empty hidden-md-up"></i>
-										</li>
-										<li>
-											<a href="/login">LOGIN</a>
-											<!-- End Nav Dropdown -->
-										</li>
-									</ul>
-								</nav>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
+  <!-- Favicons -->
+  <link href={{ asset('img/logo_aljauhar.jpg') }} rel="icon">
+  <link href={{ asset("assets/img/apple-touch-icon.png")}} rel="apple-touch-icon">
 
-		<!-- END HEADER -->
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,60,500i,600,600i,700,700i"
+    rel="stylesheet">
 
-		<!--  Main Banner Start Here-->
-		<div class="main-banner banner_up">
-			<div id="rev_slider_34_1_wrapper" class="rev_slider_wrapper" data-alias="news-gallery34">
-				<!-- START REVOLUTION SLIDER 5.0.7 fullwidth mode -->
-				<div id="rev_slider_34_1" class="rev_slider" data-version="5.0.7">
-					<ul>
-						<!-- SLIDE  -->
-						<li data-index="rs-129"  >
-							<!-- MAIN IMAGE -->
-							<img src="assets/images/banner/slider1.jpg"  alt=""  class="rev-slidebg" >
-							<!-- LAYERS -->
-							<!-- LAYER NR. 2 -->
-							<div class="tp-caption Newspaper-Title tp-resizeme "
-							id="slide-129-layer-1"
-							data-x="['left','left','left','left']" data-hoffset="['100','50','50','30']"
-							data-y="['top','top','top','center']" data-voffset="['230','135','50','0']"
-							data-fontsize="['50','50','50','30']"
-							data-lineheight="['55','55','55','35']"
-							data-width="['700','700','700','720']"
-							data-height="none"
-							data-whitespace="normal"
-							data-transform_idle="o:1;"
-							data-transform_in="y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;s:1500;e:Power3.easeInOut;"
-							data-transform_out="auto:auto;s:1000;e:Power3.easeInOut;"
-							data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
-							data-mask_out="x:0;y:0;s:inherit;e:inherit;"
-							data-start="1000"
-							data-splitin="none"
-							data-splitout="none"
-							data-responsive_offset="on" >
-								<div class="banner-text">
-									<span class="sub-text">we are here to help you</span>
-									<h2>Pondok Pesantren Al-Jauhar Jember</h2>
-									<p>
-										Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever.
-									</p>
-									<a class="btn-text" href="#"> Read More</a>
-								</div>
-							</div>
-						</li>
-						<!-- SLIDE  -->
-						<li data-index="rs-130" data-title="" data-description="">
-							<!-- MAIN IMAGE -->
-							<img src="assets/images/banner/slider2.jpg"  alt=""   class="rev-slidebg">
-							<!-- LAYERS -->
-							<!-- LAYER NR. 2 -->
-							<div class="tp-caption Newspaper-Title   tp-resizeme "
-							id="slide-130-layer-1"
-							data-x="['left','left','left','left']" data-hoffset="['100','50','50','30']"
-							data-y="['top','top','top','center']" data-voffset="['230','135','50','0']"
-							data-fontsize="['50','50','50','30']"
-							data-lineheight="['55','55','55','35']"
-							data-width="['700','700','700','420']"
-							data-height="none"
-							data-whitespace="normal"
-							data-transform_idle="o:1;"
-							data-transform_in="y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;s:1500;e:Power3.easeInOut;"
-							data-transform_out="auto:auto;s:1000;e:Power3.easeInOut;"
-							data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
-							data-mask_out="x:0;y:0;s:inherit;e:inherit;"
-							data-start="1000"
-							data-splitin="none"
-							data-splitout="none"
-							data-responsive_offset="on">
-								<div class="banner-text">
-									<span class="sub-text">we are here to help you</span>
-									<h2>Professional Cleaning Services Provider</h2>
-									<p>
-										Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever.
-									</p>
-									<a class="btn-text" href="#"> Read More</a>
-								</div>
-							</div>
-						</li>
-						<!-- SLIDE  -->
-						<li data-index="rs-131">
-							<!-- MAIN IMAGE -->
-							<img src="{{asset('assets/images/banner/slider3.jpg')}}"  alt=""   class="rev-slidebg " >
-							<!-- LAYERS -->
-							<!-- LAYER NR. 2 -->
-							<div class="tp-caption Newspaper-Title   tp-resizeme "
-							id="slide-131-layer-1"
-							data-x="['left','left','left','left']" data-hoffset="['100','50','50','30']"
-							data-y="['top','top','top','center']" data-voffset="['230','135','50','0']"
-							data-fontsize="['50','50','50','30']"
-							data-lineheight="['55','55','55','35']"
-							data-width="['700','700','700','420']"
-							data-height="none"
-							data-whitespace="normal"
-							data-transform_idle="o:1;"
-							data-transform_in="y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;s:1500;e:Power3.easeInOut;"
-							data-transform_out="auto:auto;s:1000;e:Power3.easeInOut;"
-							data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
-							data-mask_out="x:0;y:0;s:inherit;e:inherit;"
-							data-start="1000"
-							data-splitin="none"
-							data-splitout="none"
-							data-responsive_offset="on">
-								<div class="banner-text">
-									<span class="sub-text">we are here to help you</span>
-									<h2>We Are Cleaning Manager Always at Your Service.</h2>
-									<p>
-										Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever.
-									</p>
-									<a class="btn-text" href="#"> Read More</a>
-								</div>
-							</div>
-						</li>
-						<!-- SLIDE  -->
-					</ul>
-					<div class="tp-bannertimer tp-bottom"></div>
-				</div>
-			</div>
-		</div>
-		<!--  Main Banner End Here-->
+  <!-- Vendor CSS Files -->
+  <link href={{ asset("assets/vendor/bootstrap/css/bootstrap.min.css")}} rel="stylesheet">
+  <link href={{ asset("assets/vendor/bootstrap-icons/bootstrap-icons.css")}} rel="stylesheet">
+  <link href={{ asset("assets/vendor/aos/aos.css")}} rel="stylesheet">
+  <link href={{ asset("assets/vendor/remixicon/remixicon.css")}} rel="stylesheet">
+  <link href={{ asset("assets/vendor/swiper/swiper-bundle.min.css")}} rel="stylesheet">
+  <link href={{ asset("assets/vendor/glightbox/css/glightbox.min.css")}} rel="stylesheet">
 
-		
-		<!-- Popular_Service_Section -->
-		<section class="padding ptb-xs-40 gray-bg">
-			<div class="container">
-				<div class="row pb-60 pb-xs-40">
-					<div class="col-md-8 offset-md-2 text-center">
-						<div class="section_tit">
-							<h2>Berita terkini</h2>
-							<span class="three_line"></span>
-						</div>
-					</div>
-				</div>
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
 
-				<div class="row">
-					<div class="col-md-12">
-						<div class="slider_cours">
+  <!-- =======================================================
+  * Template Name: FlexStart - v1.4.0
+  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
 
-							@foreach ($allBerita as $berita)
-							<div class="courses_popular">
-								<div class="top_cours">
-									<figure>
-										@if ($berita->dokumentasi)
-											<img src="{{asset("upload/berita/$berita->dokumentasi")}}" alt="" />
-										@else
-											<img src="{{asset("img/default-image.png")}}" alt="" />
-										@endif
-									</figure>
-									<div class="apply_box d-flex align-items-center">
-										<div class="full_width">
-											<a href="#" class="btn-text">Read More</a>
-										</div>
-									</div>
-								</div>
-								<div class="courses_detail">
-									<h3><a href="#">{{ $berita->judul }}</a></h3>
-									{!! \Illuminate\Support\Str::limit($berita->isi, 150, $end='...') !!}
-								</div>
-							</div>
-							@endforeach
+<body>
 
-						</div>
-					</div>
-				</div>
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-			</div>
-		</section>
-		<!-- Popular_Service_Section_End -->
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="assets/img/logoweb.png" alt="">
+      </a>
 
-		<!-- Gallery_Section -->
-		<section id="work" class="padding ptb-xs-40">
-			<div class="container">
-				<div class="row pb-60 pb-xs-40">
-					<div class="col-md-8 offset-md-2 text-center">
-						<div class="section_tit">
-							<h2>Pengurus PP. AL-JAUHAR</h2>
-							<span class="three_line"></span>
-						</div>
-					</div>
-				</div>
-				<!-- work Filter -->
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#tentang">Tentang</a></li>
+          <li><a class="nav-link scrollto" href="#faq">Pertanyaan</a></li>
+          <li><a class="nav-link scrollto" href="#recent-blog-posts">Berita</a></li>
+          <li class="dropdown"><a href="#"><span>Konten</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="/berita-terkini">Berita</a></li>
+              <li><a href="/artikel-santri">Artikel</a></li>
+              <li><a href="/biografi">Biografi</a></li>
+            </ul>
+          </li>
+          <li><a class="nav-link " href="#">Daftar</a></li>
+          <li><a class="button-masuk " href="/login">Masuk</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
 
-				<!-- End work Filter -->
-				<div class="row container-grid nf-col-3">
+    </div>
+  </header><!-- End Header -->
 
-					<div class="nf-item branding coffee spacing">
-						<div class="item-box">
-							<a> <img alt="1" src="assets/images/project/project_1.jpg" class="item-container"> </a>
-							<div class="link-zoom">
-								<a href="assets/images/project/project_1.jpg" class="fancylight popup-btn same_style" data-fancybox-group="light" > <i class="fa fa-search-plus"></i> </a>
-								<div class="gallery-heading">
-									<h4><a href="#">Cleaning Services</a></h4>
-								</div>
-							</div>
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero d-flex align-items-center">
 
-						</div>
-					</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+          <h1 data-aos="fade-up">Pondok Pesantren Al-Jauhar Jember
+          </h1>
+          <h2 data-aos="fade-up" data-aos-delay="400"><strong>Visi & Misi</strong> Unggul dalam Prestasi dan
+            Akhlaqul
+            Karimah
+            Serta Berpijak pada
+            Ajaran Ahlussunah Wal Jamaah Annahdiyah
+          </h2>
+          <div data-aos="fade-up" data-aos-delay="600">
+            <div class="text-center text-lg-start">
+              <a href="#tentang"
+                class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+                <span>Get Started</span>
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
+          <img src="assets/img/hero-img.png" class="img-fluid" alt="">
+        </div>
+      </div>
+    </div>
 
-					<div class="nf-item photo spacing">
-						<div class="item-box">
-							<a> <img alt="1" src="assets/images/project/project_2.jpg" class="item-container"> </a>
-							<div class="link-zoom">
-								<a href="assets/images/project/project_2.jpg" class="fancylight popup-btn same_style" data-fancybox-group="light" > <i class="fa fa-search-plus"></i> </a>
-								<div class="gallery-heading">
-									<h4><a href="#">Cleaning Services</a></h4>
-								</div>
-							</div>
+  </section><!-- End Hero -->
 
-						</div>
-					</div>
+  <main id="main">
+    <!-- ======= About Section ======= -->
+    <section id="tentang" class="about">
 
-					<div class="nf-item branding coffee spacing">
-						<div class="item-box">
-							<a> <img alt="1" src="assets/images/project/project_3.jpg" class="item-container"> </a>
-							<div class="link-zoom">
-								<a href="assets/images/project/project_3.jpg" class="fancylight popup-btn same_style" data-fancybox-group="light" > <i class="fa fa-search-plus"></i> </a>
-								<div class="gallery-heading">
-									<h4><a href="#">Cleaning Services</a></h4>
-								</div>
-							</div>
+      <div class="container" data-aos="fade-up">
+        <div class="row gx-0">
 
-						</div>
-					</div>
+          <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="content">
+              <h3>Tentang</h3>
+              <h2>Profil Singkat Pondok Pesantren Al-Jauhar.</h2>
+              <p>
+                Pendiri Pesantren Al-Jauhar adalah K.H Sodiq Machmud SH, beliau adalah cucu dari K.H Muhammad Shiddiq
+                seorang ulama besar dan salah satu pendiri kota Jember, yang dimakamkan di Pemakaman Condro jalan Gajah
+                Mada. Kyai Sodiq Machmud putra dari K.H Machmud Siddiq dan Ibu Nyai Jauharotul Maknunah. Di kalangan
+                santri pesantren Al-Jauhar, K.H. Shoddiq lebih akrab dengan sebutan Abah Sepuh.
+              </p>
+              <div class="text-center text-lg-start">
+                <a href="#"
+                  class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
+                  <span>Read More</span>
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
 
-					<div class="nf-item design spacing">
-						<div class="item-box">
-							<a> <img alt="1" src="assets/images/project/project_4.jpg" class="item-container"> </a>
-							<div class="link-zoom">
-								<a href="assets/images/project/project_4.jpg" class="fancylight popup-btn same_style" data-fancybox-group="light" > <i class="fa fa-search-plus"></i> </a>
-								<div class="gallery-heading">
-									<h4><a href="#">Cleaning Services</a></h4>
-								</div>
-							</div>
+          <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+            <img src="assets/img/pondokaj.jpg" class="img-fluid" alt="">
+          </div>
 
-						</div>
-					</div>
+        </div>
+      </div>
 
-					<div class="nf-item branding spacing">
-						<div class="item-box">
-							<a> <img alt="1" src="assets/images/project/project_5.jpg" class="item-container"> </a>
-							<div class="link-zoom">
-								<a href="assets/images/project/project_5.jpg" class="fancylight popup-btn same_style" data-fancybox-group="light" > <i class="fa fa-search-plus"></i> </a>
-								<div class="gallery-heading">
-									<h4><a href="#">Cleaning Services</a></h4>
-								</div>
-							</div>
+    </section><!-- End About Section -->
 
-						</div>
-					</div>
+    <!-- ======= Values Section ======= -->
+    <section id="values" class="values">
+      <div class="container" data-aos="fade-up">
+        <header class="section-header">
+          <h2>Ada apa saja sih?</h2>
+          <p>Yang Akan Anda Dapatkan !</p>
+        </header>
 
-					<div class="nf-item photo spacing">
-						<div class="item-box">
-							<a> <img alt="1" src="assets/images/project/project_6.jpg" class="item-container"> </a>
-							<div class="link-zoom">
-								<a href="assets/images/project/project_6.jpg" class="fancylight popup-btn same_style" data-fancybox-group="light" > <i class="fa fa-search-plus"></i> </a>
-								<div class="gallery-heading">
-									<h4><a href="#">Cleaning Services</a></h4>
-								</div>
-							</div>
+        <div class="row">
 
-						</div>
-					</div>
+          <div class="col-lg-4">
+            <div class="box" data-aos="fade-up" data-aos-delay="200">
+              <img src="assets/img/values-1.png" class="img-fluid" alt="">
+              <h3>Pengajian Rutin</h3>
+              <p>Pengajian di Pon Pes Al-Jauhar dilakukan ba'da subuh dan ba'da maghrib, Setiap hari pengajian
+                kitab dan pengajar yang berbeda</p>
+            </div>
+          </div>
 
-				</div>
+          <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="box" data-aos="fade-up" data-aos-delay="400">
+              <img src="assets/img/values-2.png" class="img-fluid" alt="">
+              <h3>Teman Santri</h3>
+              <p>Santri yang tinggal di Al-Jauhar mendapatkan saudara dan keluarga baru saat menuntut ilmu di Pon Pes
+                Al-Jauhar</p>
+            </div>
+          </div>
 
-			</div>
-		</section>
-		<!-- Gallery_Section_End -->
-		<!-- Testimonial_Section -->
-		<section class="padding ptb-xs-40 testimonial_section" id="testimoni">
-			<div class="container">
-				<div class="row pb-60 pb-xs-40 light-color">
-					<div class="col-md-8 offset-md-2 text-center">
-						<div class="section_tit">
-							<h2>Alumni PP. AL-JAUHAR</h2>
-							<span class="three_line"></span>
-						</div>
-					</div>
-				</div>
+          <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="box" data-aos="fade-up" data-aos-delay="600">
+              <img src="assets/img/values-3.png" class="img-fluid" alt="">
+              <h3>Peningkatan Skill Santri</h3>
+              <p>Santri tidak hanya dituntut untuk mengaji, Melainkan santri bisa mengembangkan bakat dan skill nya
+                melalui Ekstrakurikuler pondok</p>
+            </div>
+          </div>
 
-				<div class="row">
-					<div class="col-md-12">
-						<div class="say_testimonial dots_style owl-carousel">
+        </div>
 
-							@foreach ($allTestimoni as $testimoni)
-							<div class="item_testimonial">
-								<div class="patient_head d-flex align-items-stretch">
-									<div class="patient_img">
-										<figure>
-											@if ($testimoni->photo)
-												<img src="{{asset("upload/testimoni/$testimoni->photo")}}" alt="" />
-											@else
-												<img src="{{asset("img/profile-user.png")}}" alt="" />
-											@endif
-										</figure>
-									</div>
-									<div class="patient_detail d-flex align-items-center">
-										<div>
-											<h3>{{ $testimoni->nama }}</h3>
-										</div>
-									</div>
-								</div>
-								<div class="patient_text">
-									<p>
-										{!! \Illuminate\Support\Str::limit($testimoni->testimoni, 150, $end='...') !!}
-									</p>
-								</div>
-							</div>
-							@endforeach
-						</div>
-					</div>
-				</div>
+      </div>
 
-			</div>
-		</section>
-		<!-- Testimonial_Section_End -->
-		<!-- Team_Section -->
-		<section class="padding ptb-xs-40 gray-bg" id="artteam">
-			<div class="container">
-				<div class="row pb-60 pb-xs-40">
-					<div class="col-md-8 offset-md-2 text-center">
-						<div class="section_tit">
-							<h2>Biografi</h2>
-							<span class="three_line"></span>
-						</div>
-					</div>
-				</div>
+    </section><!-- End Values Section -->
 
-				<div class="row">
-					@foreach ($allBiografi as $biografi)
-					<div class="col-md-6 mb-30">
-						<div style="background: #479c18" class="color_box img-scale">
-							<div class="left_picher">
-								<figure>
-									@if ($biografi->photo)
-										<img src="{{asset("upload/biografi/$biografi->photo")}}" alt="" />
-									@else
-										<img src="{{asset("img/profile-user.png")}}" alt="" />
-									@endif
-								</figure>
-							</div>
-							<div class="detail_box">
-								<h3>{{ $biografi->nama }}</h3>
-								<p>
-									{!! \Illuminate\Support\Str::limit($biografi->biografi, 150, $end='...') !!}
-								</p>
-								<h4>Status:<span>Availabe</span></h4>
-							</div>
-						</div>
-					</div>
-					@endforeach
+    <!-- ======= Counts Section ======= -->
+    <section id="counts" class="counts">
+      <div class="container" data-aos="fade-up">
 
-				</div>
-			</div>
-		</section>
-		<!-- Team_Section_End -->
+        <div class="row gy-4">
 
-		<!--Video Sec-->
-		<section class="padding ptb-xs-40 video_sec">
-			<div class="opacity-extra-medium bg-black"></div>
-			<div class="container position-relative">
-				<div class="row">
-					<div class="col-lg-6 col-md-6 offset-md-3 text-center pop_section">
-						<a class="popup-youtube popup-youtube" href="https://www.youtube.com/channel/UCL91cTqwZw3w21vxtJ69-Nw/featured"><img src="assets/images/icon-play.png" alt="" data-no-retina=""></a>
-					</div>
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="bi bi-emoji-smile"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="210" data-purecounter-duration="1"
+                  class="purecounter"></span>
+                <p>Santri</p>
+              </div>
+            </div>
+          </div>
 
-				</div>
-			</div>
-		</section>
-		<!--Video Sec End-->
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="bi bi-journal-richtext" style="color: #ee6c20;"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="6" data-purecounter-duration="1"
+                  class="purecounter"></span>
+                <p>Kitab</p>
+              </div>
+            </div>
+          </div>
 
-		<!-- Footer -->
-	<footer>
-			<div class="top_footer_info__block ptb-20">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-4">
-							<div class="single_info__block">
-								<i class="fa fa-phone"></i>
-								<h4>Call Us +62 851 5994 5857<span>Monday-Friday, 8am-7pm</span></h4>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="single_info__block">
-								<i class="fa fa-envelope-o"></i>
-								<h4>ppm.aljauhar01@gmail.com <span>Monday-Friday, 8am-7pm</span></h4>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="single_info__block">
-								<i class="fa fa-map-marker"></i>
-								<h4>Jl. Ahmad Yani III, Tegal Boto Lor, Sumbersari, Kec. Sumbersari, Kabupaten Jember, Jawa Timur 68121<span>Monday-Friday, 9am-5pm</span></h4>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="main_footer__block pb-0 pt-60">
-				<div class="container">
-				
-					<div class="copyriight_block ptb-20 mt-20">
-						<div class="row">
-							<div class="col-sm-6">
-								<a href="/home" class="footer__block-logo"><img src="{{asset('assets/images/logoweb.png')}}" alt=""></a>
-							</div>
-							<div class="col-sm-6 text-right">
-								<i class="fa fa-twitter mx-1" style="font-size:1.5rem;"></i>
-								<i class="fa fa-facebook-official mx-1 "style="font-size:1.5rem;"></i>
-								<i class="fa fa-instagram mx-1" style="font-size:1.5rem;"></i>
-								<i class="fa fa-youtube mx-1" style="font-size:1.5rem;"></i>
-								<p>
-									Copyright @ 2021 PP Al-Jauhar All Rights Reserved
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="bi bi-headset" style="color: #15be56;"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="6" data-purecounter-duration="1"
+                  class="purecounter"></span>
+                <p>Ustad</p>
+              </div>
+            </div>
+          </div>
 
-		</footer>
-		<!-- Footer_End -->
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="bi bi-people" style="color: #bb0852;"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="1100" data-purecounter-duration="1"
+                  class="purecounter">&#177;</span>
+                <p>Alumni</p>
+              </div>
+            </div>
+          </div>
 
-			<!-- Site Wraper End -->
-		<script type="text/javascript" src="{{asset('assets/js/jquery.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('assets/js/tether.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-		<script src="{{asset('assets/js/jquery.easing.js')}}" type="text/javascript"></script>
+        </div>
 
-		<!-- fancybox Js -->
-		<script src="{{asset('assets/js/jquery.mousewheel-3.0.6.pack.js')}}" type="text/javascript"></script>
-		<script src="{{asset('assets/js/jquery.fancybox.pack.js')}}" type="text/javascript"></script>
-		<!-- popup -->
-		<script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}" type="text/javascript"></script>
+      </div>
+    </section><!-- End Counts Section -->
 
-		<!-- carousel Js -->
-		<script src="{{asset('assets/js/owl.carousel.js')}}" type="text/javascript"></script>
 
-		<!-- imagesloaded Js -->
-		<script src="{{asset('assets/js/imagesloaded.pkgd.min.js')}}" type="text/javascript"></script>
-		<!-- masonry,isotope Effect Js -->
-		<script src="{{asset('assets/js/imagesloaded.pkgd.min.js')}}" type="text/javascript"></script>
-		<script src="{{asset('assets/js/isotope.pkgd.min.js')}}" type="text/javascript"></script>
-		<script src="{{asset('assets/js/masonry.pkgd.min.js')}}" type="text/javascript"></script>
-		<script src="{{asset('assets/js/jquery.appear.js')}}" type="text/javascript"></script>
-		<!-- Mail Function Js -->
-		<script src="{{asset('assets/js/mail.js')}}" type="text/javascript"></script>
+    <!-- ======= Pengasuh ======= -->
+    <section id="team" class="team">
 
-		<!-- revolution Js -->
-		<script type="text/javascript" src="{{asset('assets/js/jquery.themepunch.tools.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('assets/js/jquery.themepunch.revolution.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('assets/extensions/revolution.extension.slideanims.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('assets/extensions/revolution.extension.layeranimation.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('assets/extensions/revolution.extension.navigation.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('assets/extensions/revolution.extension.parallax.min.js')}}"></script>
-		<script type="text/javascript" src="{{asset('assets/js/jquery.revolution.js')}}"></script>
-		<!-- custom Js -->
-		<script src="{{asset('assets/js/custom1.js')}}" type="text/javascript"></script>
-		
+      <div class="container" data-aos="fade-up">
 
-	</body>
+        <header class="section-header">
+          <h2>Pengasuh</h2>
+          <p>Biografi Pengasuh</p>
+        </header>
 
-<!-- index107:11-->
+        <div class="row gy-4 justify-content-center">
+
+          @foreach ($allBiografi as $item)
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+              <div class="member">
+                <div class="member-img">
+                  <img src="{{asset("upload/biografi/$item->photo")}}" class="img-fluid" alt="{{ $item->nama }}">
+
+                </div>
+                <div class="member-info">
+                  <h4>{{ $item->nama }}</h4>
+                  <span>{{ $item->jabatan }}</span>
+                  <p>{!! \Illuminate\Support\Str::limit($item->biografi, 100, $end='...') !!}</p>
+                </div>
+                <div class="mb-3">
+                  <a href="blog-singe.html" class="readmore stretched-link "><span>Read More</span><i
+                      class="bi bi-arrow-right"></i></a>
+                </div>
+              </div>
+            </div>
+          @endforeach
+
+        </div>
+
+      </div>
+
+    </section><!-- End Team Section -->
+
+
+    <!-- ======= Berita ======= -->
+    <section id="recent-blog-posts" class="recent-blog-posts">
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <h2>berita</h2>
+          <p>Berita Terkini</p>
+        </header>
+
+        <div class="row">
+
+          @foreach ($allBerita as $item)
+            <div class="col-lg-4 my-2">
+              <div class="post-box">
+                <div class="post-img"><img src="{{asset("upload/berita/$item->dokumentasi")}}" class="img-fluid" alt="{{ $item->judul }}"></div>
+                <span class="post-date">{{ $item->created_at->format('D, d-m-Y')}}</span>
+                <h3 class="post-title">{!! \Illuminate\Support\Str::limit($item->judul, 100, $end='...') !!}</h3>
+                <a href="blog-singe.html" class="readmore stretched-link mt-auto"><span>Read More</span><i
+                    class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          @endforeach
+
+        </div>
+      </div>
+
+    </section><!-- End Recent Blog Posts Section -->
+    <!-- ======= F.A.Q Section ======= -->
+    <section id="faq" class="faq">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <h2>F.A.Q</h2>
+          <p>Frequently Asked Questions</p>
+        </header>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <!-- F.A.Q List 1-->
+            <div class="accordion accordion-flush" id="faqlist1">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-1">
+                    Dimana tempat lokasi PP Al-Jauhar berada?
+                  </button>
+                </h2>
+                <div id="faq-content-1" class="accordion-collapse collapse" data-bs-parent="#faqlist1">
+                  <div class="accordion-body">
+                    Jl. Nias III No.5, Tegal Boto Lor, Sumbersari, Kec. Sumbersari, Kabupaten Jember, Jawa Timur
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-2">
+                    Kegiatannya apa saja yang ada di PP Al-Jauhar?
+                  </button>
+                </h2>
+                <div id="faq-content-2" class="accordion-collapse collapse" data-bs-parent="#faqlist1">
+                  <div class="accordion-body">
+                    Kegiatan utamanya adalah pengajian rutin dan shalat berjamaah. Santri wajib ikut Pengajian rutin
+                    setiap bakda shalat maghrib dan bakda shalat subuh. Tiap hari pengajian dengan kitab dan pengajar
+                    yang berbedasesuai jadwal pengajian yang diatur oleh Bidang Pendidikan. Selain juga ada kegiatan
+                    Yasin Tahlil, Istighosah, Yasin Fadilah, majmu’ Syarif, Surat Al-Kahfi dan Tadarus Al-Qur’an.Tiap
+                    bidang kepengurusan juga punya program. Seperti Seni Hadrah dan Musik Islami (Bid. Kesenian)
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-3">
+                    Apakah PP Al-Jauhar hanya untuk mahasiswa saja?
+                  </button>
+                </h2>
+                <div id="faq-content-3" class="accordion-collapse collapse" data-bs-parent="#faqlist1">
+                  <div class="accordion-body">
+                    PP Al-Jauhar sebenarnya merupakan pondok pesantren mahasiswa, akan tetapi dengan lokasi pondok yang
+                    berdekatan dengan sekolah SMA Negri 2 Jember, jadi pondok juga menerima pendaftaran santri SMA. Akan
+                    tetapi jumlah santri mahasiswa lebih banyak dibandingkan santri SMA.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+
+            <!-- F.A.Q List 2-->
+            <div class="accordion accordion-flush" id="faqlist2">
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq2-content-1">
+                    Fasilitas apa saja yang ada di PP Al-Jauhar?
+                  </button>
+                </h2>
+                <div id="faq2-content-1" class="accordion-collapse collapse" data-bs-parent="#faqlist2">
+                  <div class="accordion-body">
+                    Fasislitas yang ada di pondok yakni sebagai berikut: Masjid, Asrama, Lapangan, Kantin, Uks, Kantor,
+                    Tempat Parkir, Kamar Mandi, Perpustakaan, Ruang Tamu, Taman, Gazebo, Kebun, dan Studio Musik.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq2-content-2">
+                    Bagaimana metode ngaji atau pembelajaran di PP Al-Jauhar?
+                  </button>
+                </h2>
+                <div id="faq2-content-2" class="accordion-collapse collapse" data-bs-parent="#faqlist2">
+                  <div class="accordion-body">
+                    Metode pembelajaran ngaji santri mirip seperti perkuliah, jadi Ustadz menjelaskan materi yang ada di
+                    Kitab dan kemudian dilanjutkan sesi diskusi atau tanya jawab.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq2-content-3">
+                    Kitab apa saja yang dikaji atau dipelajari di PP Al-Jauhar?
+                  </button>
+                </h2>
+                <div id="faq2-content-3" class="accordion-collapse collapse" data-bs-parent="#faqlist2">
+                  <div class="accordion-body">
+                    Kitab yang di kaji di PP Al-Jauhar adalah sebagai berikut: Bulughul Mara, Riadus Sholihin, Fathul
+                    Qorib, Bidayatul Hidayah, Aswaja, Ta'lim Muta'alim, Tafsir Yasin dan Usul Fiqih.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- End F.A.Q Section -->
+
+    <!-- ======= Testimonials Section ======= -->
+    <section id="testimonials" class="testimonials">
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <h2>Testimoni</h2>
+          <p>Apa Kata Para Alumni</p>
+        </header>
+
+        <div class="testimonials-slider swiper-container" data-aos="fade-up" data-aos-delay="200">
+          <div class="swiper-wrapper">
+
+            @foreach ($allTestimoni as $item)
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <div class="stars">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                      class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                  </div>
+                  <p>
+                    {!! \Illuminate\Support\Str::limit($item->testimoni, 200, $end='...') !!}
+                  </p>
+                  <div class="profile mt-auto">
+                    <img src="{{asset("upload/testimoni/$item->photo")}}" class="testimonial-img" alt="{{ $item->nama }}">
+                    <h3>{{ $item->nama }}</h3>
+                    <h4>{{ $item->pekerjaan }}</h4>
+                  </div>
+                </div>
+              </div><!-- End testimonial item -->
+            @endforeach
+      
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+
+    </section><!-- End Testimonials Section -->
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <h2>kontak</h2>
+          <p>Hubungi Kami</p>
+        </header>
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6">
+
+            <div class="row gy-4">
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bi bi-geo-alt"></i>
+                  <h3>Alamat</h3>
+                  <p>Jl. Nias III No.5, Tegal Boto Lor, Sumbersari, Kec. Sumbersari, Kabupaten Jember, Jawa Timur</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bi bi-telephone"></i>
+                  <h3>Nomor</h3>
+                  <p>+62 851 5994 5857</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bi bi-envelope"></i>
+                  <h3>Email</h3>
+                  <p>ppm.aljauhar01@gmail.com</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bi bi-clock"></i>
+                  <h3>Waktu</h3>
+                  <p>Monday - Sunday<br>04.15AM - 11.00PM</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6">
+            <form action="forms/contact.php" method="post" class="php-email-form">
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Nama" required>
+                </div>
+
+                <div class="col-md-6 ">
+                  <input type="email" class="form-control" name="email" placeholder="Email" required>
+                </div>
+
+                <div class="col-md-12">
+                  <textarea class="form-control" name="message" rows="10" placeholder="Pesan" required></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                  <button type="submit">Kirim Pesan</button>
+                </div>
+
+              </div>
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- End Contact Section -->
+
+    <!-- ======= maps ======= -->
+    <section id="maps" class="p-0">
+      <div class="mapouter">
+        <div class="gmap_canvas">
+          <iframe width="100%" height="600" id="gmap_canvas"
+            src="https://maps.google.com/maps?q=Pondok%20Pesantren%20Al-Jauhar,%20Jalan%20Nias%20III,%20Tegal%20Boto%20Lor,%20Sumbersari,%20Jember%20Regency,%20East%20Java&t=&z=17&ie=UTF8&iwloc=&output=embed"
+            frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+          </iframe>
+          <a href="https://2piratebay.org"></a>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-5 col-md-12 footer-info">
+            <a href="index.html" class="logo d-flex align-items-center">
+              <img src="assets/img/logoweb.png" alt="">
+              {{-- <span>Al-Jauhar</span> --}}
+            </a>
+            <p><strong>Visi & Misi</strong> Unggul dalam Prestasi dan
+              Akhlaqul
+              Karimah
+              Serta Berpijak pada
+              Ajaran Ahlussunah Wal Jamaah Annahdiyah</p>
+            <div class="social-links mt-3">
+              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bi bi-instagram bx bxl-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin bx bxl-linkedin"></i></a>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-2 col-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-6 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#">Graphic Design</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+            <h4>Contact Us</h4>
+            <p>
+              A108 Adam Street <br>
+              New York, NY 535022<br>
+              United States <br><br>
+              <strong>Phone:</strong> +1 5589 55488 55<br>
+              <strong>Email:</strong> info@example.com<br>
+            </p>
+
+          </div> -->
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright 2021<strong><span>AL-JAUHAR</span></strong>. All Rights Reserved
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src={{ asset("assets/vendor/bootstrap/js/bootstrap.bundle.js")}}></script>
+  <script src={{ asset("assets/vendor/aos/aos.js")}}></script>
+  <script src={{ asset("assets/vendor/php-email-form/validate.js")}}></script>
+  <script src={{ asset("assets/vendor/swiper/swiper-bundle.min.js")}}></script>
+  <script src={{ asset("assets/vendor/purecounter/purecounter.js")}}></script>
+  <script src={{ asset("assets/vendor/isotope-layout/isotope.pkgd.min.js")}}></script>
+  <script src={{ asset("assets/vendor/glightbox/js/glightbox.min.js")}}></script>
+
+  <!-- Template Main JS File -->
+  <script src={{ asset("assets/js/main.js") }}></script>
+
+</body>
+
 </html>
-

@@ -1,20 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="login-logo">
-    <a href="{{ url('/') }}"><b>Laravel</b>Admin</a>
-  </div>
   <!-- /.login-logo -->
-  <div class="card">
+<div class="card">
+    <div class="login-logo pt-3">
+        <a href="{{ url('/') }}">
+            <img src="{{asset('assets/images/logoweb.png')}}" alt="Logo Al Jauhar" srcset="">
+        </a>
+    </div>
     <div class="card-body login-card-body">
-        <p class="login-box-msg">Create a new account</p>
+        <p class="login-box-msg"> <b> Registrasi </b></p>
 
         <form action="{{ route('register') }}" method="post">
             @csrf
             <div class="input-group mb-3">
-                <input id="name" type="text" placeholder="Name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>                <div class="input-group-append">
+                <input id="name" type="text" placeholder="Nama" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>                <div class="input-group-append">
                     <div class="input-group-text">
-                    <span class="fas fa-user"></span>
                     </div>
                 </div>
                 @error('name')
@@ -25,10 +26,9 @@
             </div>
 
             <div class="input-group mb-3">
-                <input id="email" type="email" placeholder="E-mail" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <input id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                 <div class="input-group-append">
                     <div class="input-group-text">
-                    <span class="fas fa-envelope"></span>
                     </div>
                 </div>
                 @error('email')
@@ -43,7 +43,6 @@
                 <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                 <div class="input-group-append">
                     <div class="input-group-text">
-                        <span class="fas fa-lock"></span>
                     </div>
                 </div>
                 @error('password')
@@ -54,21 +53,20 @@
             </div>
 
             <div class="input-group mb-3">
-                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                <input id="password-confirm" type="password" placeholder="Konfirmasi Password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                 <div class="input-group-append">
                     <div class="input-group-text">
-                        <span class="fas fa-lock"></span>
                     </div>
                 </div>
             </div>
 
 
             <div class="input-group mb-3">
-                <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                <button type="submit" class="btn btn-primary btn-block">Daftar</button>
             </div>
         </form>
         <p class="mb-0">
-            <a href="{{route('login')}}" class="text-center">Already have an account?</a>
+            <a href="{{route('login')}}" class="text-center">Sudah memiliki akun?</a>
         </p>
     </div>
     <!-- /.Register-card-body -->

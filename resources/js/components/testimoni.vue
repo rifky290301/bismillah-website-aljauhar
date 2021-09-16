@@ -28,14 +28,74 @@
                 <has-error :form="form" field="nama"></has-error>
               </div>
               <div class="form-group">
+                <label> Pekerjaan </label>
+                <input
+                  v-model="form.pekerjaan"
+                  type="text"
+                  name="judul"
+                  placeholder="Masukkan pekerjaan"
+                  class="form-control"
+                  :class="{ 'is-invaild': form.errors.has('pekerjaan') }"
+                />
+                <has-error :form="form" field="pekerjaan"></has-error>
+              </div>
+              <div class="form-group">
                 <label> Testimoni </label>
-
-                <ckeditor
-                  v-model="form.testimoni"
-                  value="Tulis testimoni"
-                  aria-placeholder="Tulis testimoni"
-                ></ckeditor>
-                <has-error :form="form" field="testimoni"></has-error>
+                <div class="row">
+                  <div class="col-md-8">
+                    <ckeditor
+                      v-model="form.testimoni"
+                      value="Tulis testimoni"
+                      aria-placeholder="Tulis testimoni"
+                    ></ckeditor>
+                    <has-error :form="form" field="testimoni"></has-error>
+                  </div>
+                  <div v-if="!editMode" class="col-md-4">
+                    <img
+                      src="img/default-image.png"
+                      class="img-fluid"
+                      alt="Artikel AL JAUHAR"
+                    />
+                  </div>
+                  <div v-else class="col-md-4">
+                    <div v-if="gambarTersimoni.photo">
+                      <div class="custom-image-hover">
+                        <img
+                          :src="'upload/testimoni/' + gambarTersimoni.photo"
+                          class="img-fluid"
+                          alt="Artikel AL JAUHAR"
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          @click="upPhoto(gambarTersimoni)"
+                        >
+                          Ubah gambar
+                        </button>
+                      </div>
+                    </div>
+                    <div v-else>
+                      <template>
+                        <Upload
+                          multiple
+                          type="drag"
+                          :action="/photo-testimoni/ + gambarTersimoni.id"
+                          :headers="{ 'x-csrf-token': token }"
+                          name="photo"
+                        >
+                          <div style="padding: 20px 0">
+                            <Icon
+                              type="ios-cloud-upload"
+                              size="52"
+                              style="color: #3399ff"
+                            ></Icon>
+                            <p>Click or drag files here to upload</p>
+                          </div>
+                        </Upload>
+                      </template>
+                    </div>
+                  </div>
+                </div>
               </div>
               <button
                 type="submit"
@@ -74,7 +134,10 @@
                 <th>#</th>
                 <th>Foto</th>
                 <v-th sortKey="nama">Nama</v-th>
-                <th>Testimoni</th>
+                <v-th sortKey="pekerjaan">Pekerjaan</v-th>
+                <v-th sortKey="testimoni" style="min-width: 13cm"
+                  >Testimoni</v-th
+                >
                 <th>Action</th>
               </tr>
             </thead>
@@ -84,14 +147,15 @@
                 <td>
                   <img
                     :src="'upload/testimoni/' + row.photo"
-                    style="height: 8rem"
+                    style="width: 9rem"
                   />
                 </td>
                 <td>{{ row.nama }}</td>
+                <td>{{ row.pekerjaan }}</td>
                 <td v-html="row.testimoni"></td>
 
                 <td>
-                  <div style="width: 9rem" class="">
+                  <div style="width: 6.5rem" class="">
                     <button
                       class="text-white btn btn-sm btn-warning"
                       @click="editTestimoni(row)"
@@ -104,12 +168,12 @@
                     >
                       <i class="fa fa-trash"></i>
                     </button>
-                    <button
+                    <!-- <button
                       class="btn btn-sm btn-success"
                       @click="upPhoto(row)"
                     >
                       <i class="fa fa-image"></i>
-                    </button>
+                    </button> -->
                     <button
                       class="btn btn-sm btn-primary"
                       @click="publisTestimoni(row)"
@@ -200,18 +264,20 @@ export default {
       loading: false,
       editMode: false,
       idTestimoni: "",
+      gambarTersimoni: "",
       token: "",
       isi: "",
       form: new Form({
         id: "",
         nama: "",
+        pekerjaan: "",
         testimoni: "",
         publish: "",
       }),
       filters: {
         title: {
           value: "",
-          keys: ["nama"],
+          keys: ["nama", "pekerjaan", "testimoni"],
         },
       },
     };
@@ -241,6 +307,8 @@ export default {
       this.editMode = true;
       this.form.reset();
       this.form.fill(testimoni);
+      this.gambarTersimoni = testimoni;
+      this.token = window.Laravel.csrfToken;
     },
 
     updateTestimoni() {
@@ -301,6 +369,7 @@ export default {
 
     publisTestimoni(row) {
       this.form.nama = row.nama;
+      this.form.pekerjaan = row.pekerjaan;
       this.form.testimoni = row.testimoni;
       this.form.publish = !row.publish;
       this.form

@@ -76,7 +76,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{route('home')}}" class="brand-link">
-                <img src="{{asset('assets/images/logoweb.png')}}" alt="AdminLTE Logo" class="img-fluid" style="opacity: .8">
+                <img src="{{asset('assets/img/logoweb.png')}}" alt="AdminLTE Logo" class="img-fluid" style="opacity: .8">
                 {{-- <span class="brand-text font-weight-light">AL-JAUHAR</span> --}}
             </a>
 
@@ -85,7 +85,7 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        @if (auth()->user()->photo == 'avatar.jpg' && auth()->user()->photo )
+                        @if (auth()->user()->photo == null )
                             <img src="{{ asset("img/user.svg") }}" class=" img-fluid rounded elevation-2" alt="User Image">
                         @else
                             <img src="{{ asset("upload/profil/".auth()->user()->photo) }}" class=" img-fluid rounded elevation-2" alt="User Image">

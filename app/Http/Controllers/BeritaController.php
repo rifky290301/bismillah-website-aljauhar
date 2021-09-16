@@ -52,19 +52,25 @@ class BeritaController extends Controller
             'isi' => 'required',
         ]);
 
-        $artikel = Berita::findOrFail($id);
-        $artikel->judul = $request->judul;
-        $artikel->isi = $request->isi;
-        $artikel->publish = $request->publish;
-        $artikel->save();
+        $berita = Berita::findOrFail($id);
+        $berita->judul = $request->judul;
+        $berita->isi = $request->isi;
+        $berita->publish = $request->publish;
+        $berita->save();
 
         return response()->json("Artikel berhasil diubah", 200);
     }
 
     public function delete($id)
     {
-        $artikel = Berita::findOrFail($id);
-        $artikel->delete();
+        $berita = Berita::findOrFail($id);
+        $path = public_path("upload/berita/") . $berita->dokumentasi;
+        try {
+            unlink($path);
+        } catch (\Throwable $th) {
+        } finally {
+            $berita->delete();
+        }
         return response()->json('ok', 200);
     }
 
@@ -73,9 +79,14 @@ class BeritaController extends Controller
         $date = date('H-i-s');
         $random = \Str::random(5);
         $berita = Berita::findOrFail($id);
-        $request->file('photo')->move('upload/berita', $date . $random . $request->file('photo')->getClientOriginalName());
-        $berita->dokumentasi = $date . $random . $request->file('photo')->getClientOriginalName();
-        // return $name;
-        $berita->save();
+        $path = public_path("upload/berita/") . $berita->dokumentasi;
+        try {
+            unlink($path);
+        } catch (\Throwable $th) {
+        } finally {
+            $request->file('photo')->move('upload/berita', $date . $random . $request->file('photo')->getClientOriginalName());
+            $berita->dokumentasi = $date . $random . $request->file('photo')->getClientOriginalName();
+            $berita->save();
+        }
     }
 }

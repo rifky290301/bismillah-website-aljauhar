@@ -17,7 +17,8 @@ class CreateArtikelsTable extends Migration
             $table->id();
             $table->string('judul');
             $table->text('isi');
-            $table->boolean('publish')->default(false);
+            $table->enum('publish', ['faforit', 'publish', 'not']);
+            $table->string('gambar')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

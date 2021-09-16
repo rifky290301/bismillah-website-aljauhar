@@ -18,6 +18,7 @@ class CreateBiografisTable extends Migration
             $table->string('photo')->nullable();
             $table->string('nama');
             $table->text('biografi');
+            $table->string('jabatan');
             $table->unsignedBigInteger('user_id');
             $table->boolean('publish')->default(false);
             $table->timestamps();
